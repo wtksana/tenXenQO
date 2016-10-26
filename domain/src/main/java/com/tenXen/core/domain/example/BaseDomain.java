@@ -1,4 +1,4 @@
-package com.tenXen.core.domain;
+package com.tenXen.core.domain.example;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

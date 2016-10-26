@@ -1,4 +1,4 @@
-package com.tenXen.core.domain;
+package com.tenXen.core.domain.example;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.UserMapper" >
+<mapper namespace="com.tenXen.core.dao.UserDao" >
   <resultMap id="BaseResultMap" type="com.tenXen.core.domain.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -71,7 +71,7 @@
   <sql id="Base_Column_List" >
     id, user_name, pwd, name, signature, mobile, address
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tenXen.core.domain.UserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tenXen.core.domain.example.UserExample" >
     select
     <if test="distinct" >
       distinct
@@ -103,7 +103,7 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.tenXen.core.domain.UserExample" >
+  <delete id="deleteByExample" parameterType="com.tenXen.core.domain.example.UserExample" >
     delete from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -166,7 +166,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.tenXen.core.domain.UserExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.tenXen.core.domain.example.UserExample" resultType="java.lang.Integer" >
     select count(*) from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />

@@ -1,6 +1,8 @@
 package com.tenXen.core.domain;
 
-public class User extends BaseDomain{
+import com.tenXen.core.domain.example.BaseDomain;
+
+public class User extends BaseDomain {
 
     private static final long serialVersionUID = 1L;
     /**

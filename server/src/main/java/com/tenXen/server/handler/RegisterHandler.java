@@ -1,29 +1,35 @@
 package com.tenXen.server.handler;
 
 import com.tenXen.core.domain.User;
+import com.tenXen.core.model.UserModel;
 import com.tenXen.core.service.UserService;
+import com.tenXen.server.util.SpringContainer;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
  * Created by wt on 2016/9/11.
  */
-@Service()
 public class RegisterHandler extends ChannelHandlerAdapter {
 
-    @Resource
     private UserService userService;
+
+    public RegisterHandler() {
+        this.userService = SpringContainer.getBean(UserService.class);
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("channelRead...start");
-        if (msg instanceof User) {
-            User u = (User) msg;
+        if (msg instanceof UserModel) {
+            UserModel model = (UserModel) msg;
+            switch (model.getHandlerCode()) {
+//                case UserModel.REGISTER_CODE:
+
+            }
+            User u = new User(model.getUserName(), model.getPwd());
             int count = userService.save(u);
             String result;
             if (count > 0) {
@@ -37,7 +43,6 @@ public class RegisterHandler extends ChannelHandlerAdapter {
             ctx.fireChannelRead(msg);
             System.out.println("channelRead...error");
         }
-        System.out.println("channelRead...end");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.tenXen.core.dao;
 
 import com.tenXen.core.domain.User;
-import com.tenXen.core.domain.UserExample;
+import com.tenXen.core.domain.example.UserExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
