@@ -2,6 +2,7 @@ package com.tenXen.client.controller;
 
 import com.tenXen.client.common.Connect;
 import com.tenXen.core.domain.User;
+import com.tenXen.core.model.UserModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -25,8 +26,10 @@ public class RegisterControl {
         output.setText("注册中...");
         String userName = this.userName.getText();
         String pwd = this.pwd.getText();
-        User u = new User(userName,pwd);
-        Connect.CHANNEL.writeAndFlush(u);
+        UserModel model = new UserModel();
+        model.setUserName(userName);
+        model.setPwd(pwd);
+        Connect.CHANNEL.writeAndFlush(model);
     }
 
     @FXML

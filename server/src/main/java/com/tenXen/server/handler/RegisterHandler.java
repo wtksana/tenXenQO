@@ -25,10 +25,10 @@ public class RegisterHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof UserModel) {
             UserModel model = (UserModel) msg;
-            switch (model.getHandlerCode()) {
+//            switch (model.getHandlerCode()) {
 //                case UserModel.REGISTER_CODE:
-
-            }
+//
+//            }
             User u = new User(model.getUserName(), model.getPwd());
             int count = userService.save(u);
             String result;
