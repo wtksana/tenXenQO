@@ -1,7 +1,10 @@
 package com.tenXen.client.handler;
 
+import com.tenXen.core.model.UserModel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -10,29 +13,14 @@ import java.io.IOException;
  */
 public class RegisterHandler extends ChannelHandlerAdapter {
 
-//    private String userName;
-//    private String pwd;
-//
-//    public RegisterHandler() {
-//    }
-//
-//    public RegisterHandler(String userName, String pwd) {
-//        this.userName = userName;
-//        this.pwd = pwd;
-//    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-//        User u = new User(userName,pwd);
-//        ctx.writeAndFlush(u);
-        System.out.println("channelActive...ok");
-    }
-
+    private final Logger Log = LoggerFactory.getLogger(getClass());
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println((String)msg);
-        System.out.println("channelRead...ok");
+        if (msg instanceof UserModel) {
+            UserModel model = (UserModel) msg;
+        }
+        Log.info("channelRead...ok");
     }
 
     @Override

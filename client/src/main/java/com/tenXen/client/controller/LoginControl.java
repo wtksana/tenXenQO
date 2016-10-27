@@ -1,18 +1,5 @@
 package com.tenXen.client.controller;
 
-import com.tenXen.client.handler.LoginHandler;
-import com.tenXen.client.util.ConnectUtil;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -36,7 +23,7 @@ public class LoginControl {
         output.setText("登入中...");
         String userName = this.userName.getText();
         String pwd = this.pwd.getText();
-        connect(userName, pwd);
+//        connect(userName, pwd);
     }
 
     @FXML
@@ -49,7 +36,7 @@ public class LoginControl {
         STAGE.close();
     }
 
-    private void connect(String userName, String pwd) throws Exception {
+    /*private void connect(String userName, String pwd) throws Exception {
         new Thread() {
             public void run() {
                 EventLoopGroup group = new NioEventLoopGroup();
@@ -77,6 +64,6 @@ public class LoginControl {
                 }
             }
         }.start();
-    }
+    }*/
 
 }

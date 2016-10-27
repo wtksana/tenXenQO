@@ -7,11 +7,17 @@ import com.tenXen.core.domain.User;
  */
 public class UserModel extends User {
 
-    public static int LOGIN_CODE = 1;
-
-    public static int REGISTER_CODE = 2;
-
     private int handlerCode;
+
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public int getHandlerCode() {
         return handlerCode;

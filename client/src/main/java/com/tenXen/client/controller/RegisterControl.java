@@ -36,4 +36,5 @@ public class RegisterControl {
     public void close() throws Exception {
         STAGE.close();
     }
+
 }
