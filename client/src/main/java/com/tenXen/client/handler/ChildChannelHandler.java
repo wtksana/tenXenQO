@@ -18,7 +18,7 @@ public class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
 //                .addLast("decoder", new StringDecoder())
                 .addLast(new ObjectDecoder(1024,ClassResolvers.cacheDisabled(this.getClass().getClassLoader())))
                 .addLast(new ObjectEncoder())
-                .addLast("registerHandler", new RegisterHandler());
+                .addLast(new UserHandler());
         System.out.println("ChildChannelHandler...");
     }
 }

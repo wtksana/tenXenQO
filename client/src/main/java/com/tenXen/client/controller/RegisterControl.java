@@ -1,6 +1,8 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.Connect;
+import com.tenXen.client.common.LayoutContainer;
+import com.tenXen.common.constant.Constants;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.UserModel;
 import javafx.fxml.FXML;
@@ -13,7 +15,6 @@ import javafx.stage.Stage;
  */
 public class RegisterControl {
 
-    public static Stage STAGE;
     @FXML
     private TextField userName;
     @FXML
@@ -23,18 +24,22 @@ public class RegisterControl {
 
     @FXML
     public void doRegister() throws Exception {
-        output.setText("注册中...");
+        LayoutContainer.REGISTER_OUTPUT = this.output;
+        this.userName.setDisable(true);
+        this.pwd.setDisable(true);
+        this.output.setText("注册中...");
         String userName = this.userName.getText();
         String pwd = this.pwd.getText();
         UserModel model = new UserModel();
         model.setUserName(userName);
         model.setPwd(pwd);
+        model.setHandlerCode(Constants.REGISTER_CODE);
         Connect.CHANNEL.writeAndFlush(model);
     }
 
     @FXML
     public void close() throws Exception {
-        STAGE.close();
+        LayoutContainer.REGISTERSTAGE.close();
     }
 
 }

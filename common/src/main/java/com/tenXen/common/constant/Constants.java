@@ -11,4 +11,8 @@ public class Constants {
 
     public static final int LOGIN_CODE = 1;
     public static final int REGISTER_CODE = 2;
+
+    public static final int RESULT_SUC = 1;
+    public static final int RESULT_FAIL = 2;
+
 }

@@ -16,13 +16,13 @@ import java.io.IOException;
 /**
  * Created by wt on 2016/9/11.
  */
-public class RegisterHandler extends ChannelHandlerAdapter {
+public class UserHandler extends ChannelHandlerAdapter {
 
     private final Logger Log = LoggerFactory.getLogger(getClass());
 
     private UserService userService;
 
-    public RegisterHandler() {
+    public UserHandler() {
         this.userService = SpringContainer.getBean(UserService.class);
     }
 
@@ -45,6 +45,7 @@ public class RegisterHandler extends ChannelHandlerAdapter {
                 }
             }
             model.setMsg(result);
+            model.setResultCode(Constants.RESULT_SUC);
             Log.info(result);
             ctx.writeAndFlush(model);
         } else {

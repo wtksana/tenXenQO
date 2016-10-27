@@ -2,26 +2,16 @@ package com.tenXen.client.controller;/**
  * Created by wt on 2016/9/4.
  */
 
-import com.tenXen.client.common.Connect;
-import com.tenXen.client.handler.ChildChannelHandler;
-import com.tenXen.client.util.ConnectUtil;
+import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.client.util.LayoutLoader;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
-    private static Stage loginStage;
-    private static Parent loginLayout;
 //    private Light.Point point = new Light.Point();
 
     public static void main(String[] args) {
@@ -30,35 +20,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.loginStage = primaryStage;
-        initLoginLayout();
-        connect();
+        initLoginLayout(primaryStage);
+//        connect();
     }
 
-    public static void initLoginLayout() {
+    public void initLoginLayout(Stage primaryStage) {
+        Stage loginStage = primaryStage;
         loginStage.setTitle("tenxenQO");
-        loginLayout = LayoutLoader.load(LayoutLoader.LOGIN);
+        Parent loginLayout = LayoutLoader.load(LayoutLoader.LOGIN);
         Scene loginScene = new Scene(loginLayout);
         loginStage.setScene(loginScene);
         loginStage.initStyle(StageStyle.UNIFIED);
         loginStage.show();
-        LoginControl.STAGE = loginStage;
+        LayoutContainer.LOGINSTAGE = loginStage;
 //        EventUtil.setCommonEvent(loginStage,loginLayout,point);
     }
 
-    public static void initRegisterLayout(){
-        Parent registerLayout = LayoutLoader.load(LayoutLoader.REGISTER);
-        Stage registerStage = new Stage();
-        registerStage.setTitle("tenxenQO");
-        registerStage.initModality(Modality.WINDOW_MODAL);
-        registerStage.initOwner(loginStage);
-        registerStage.setScene(new Scene(registerLayout));
-        registerStage.initStyle(StageStyle.UNIFIED);
-        registerStage.show();
-        RegisterControl.STAGE = registerStage;
-    }
-
-    private void connect() throws Exception {
+    /*private void connect() throws Exception {
         new Thread() {
             public void run() {
                 EventLoopGroup group = new NioEventLoopGroup();
@@ -76,5 +54,5 @@ public class Main extends Application {
                 }
             }
         }.start();
-    }
+    }*/
 }

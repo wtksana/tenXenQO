@@ -11,6 +11,16 @@ public class UserModel extends User {
 
     private String msg;
 
+    private int resultCode;
+
+    public int getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(int resultCode) {
+        this.resultCode = resultCode;
+    }
+
     public String getMsg() {
         return msg;
     }
