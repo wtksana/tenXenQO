@@ -32,20 +32,39 @@ public class UserHandler extends ChannelHandlerAdapter {
             UserModel model = (UserModel) msg;
             String result = "error";
             if (model.getHandlerCode() == Constants.REGISTER_CODE) {
-                User u = new User(model.getUserName(), model.getPwd());
                 try {
+                    User u = new User(model.getUserName(), model.getPwd());
                     int count = userService.save(u);
                     if (count > 0) {
                         result = "register success";
+                        model.setResultCode(Constants.RESULT_SUC);
                     } else {
                         result = "register fail";
+                        model.setResultCode(Constants.RESULT_FAIL);
                     }
                 } catch (Exception e) {
                     result = e.getMessage();
+                    model.setResultCode(Constants.RESULT_FAIL);
+                }
+            }
+            if (model.getHandlerCode() == Constants.LOGIN_CODE) {
+                try {
+                    User u = new User(model.getUserName(), model.getPwd());
+                    u = userService.login(u);
+                    if (u != null) {
+                        result = "login success";
+                        model.setResultCode(Constants.RESULT_SUC);
+                    }else{
+                        result = "register fail";
+                        model.setResultCode(Constants.RESULT_FAIL);
+                    }
+                } catch (Exception e) {
+                    Log.info(e.getMessage());
+                    result = e.getMessage();
+                    model.setResultCode(Constants.RESULT_FAIL);
                 }
             }
             model.setMsg(result);
-            model.setResultCode(Constants.RESULT_SUC);
             Log.info(result);
             ctx.writeAndFlush(model);
         } else {

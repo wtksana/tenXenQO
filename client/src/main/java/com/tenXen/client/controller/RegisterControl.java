@@ -2,13 +2,18 @@ package com.tenXen.client.controller;
 
 import com.tenXen.client.common.Connect;
 import com.tenXen.client.common.LayoutContainer;
+import com.tenXen.client.handler.ChildChannelHandler;
+import com.tenXen.client.util.ConnectUtil;
 import com.tenXen.common.constant.Constants;
-import com.tenXen.core.domain.User;
 import com.tenXen.core.model.UserModel;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * Created by wt on 2016/9/4.
@@ -39,7 +44,6 @@ public class RegisterControl {
 
     @FXML
     public void close() throws Exception {
-        LayoutContainer.REGISTERSTAGE.close();
+        LayoutContainer.REGISTER_STAGE.close();
     }
-
 }

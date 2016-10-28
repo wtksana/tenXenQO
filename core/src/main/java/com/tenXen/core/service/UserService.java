@@ -14,5 +14,7 @@ public interface UserService {
 
     int save(User user);
 
+    User login(User user);
+
     List<User> getUserByUserName(String userName);
 }

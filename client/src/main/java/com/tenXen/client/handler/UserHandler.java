@@ -5,6 +5,7 @@ import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +22,21 @@ public class UserHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof UserModel) {
             UserModel model = (UserModel) msg;
-            if(model.getHandlerCode()== Constants.REGISTER_CODE){
-                if(model.getResultCode()==Constants.RESULT_SUC){
+            if (model.getHandlerCode() == Constants.REGISTER_CODE) {
+                if (model.getResultCode() == Constants.RESULT_SUC) {
+                    Platform.runLater(() -> LayoutContainer.REGISTER_STAGE.close());
+                    LayoutContainer.LOGIN_OUTPUT.setText(model.getMsg());
+                } else {
+                    LayoutContainer.REGISTER_OUTPUT.setText(model.getMsg());
+                }
+            }
+            if (model.getHandlerCode() == Constants.LOGIN_CODE) {
+                if (model.getResultCode() == Constants.RESULT_SUC) {
+                    Platform.runLater(() -> {
+                        LayoutContainer.LOGIN_STAGE.close();
+                        LayoutContainer.initCharLayout();
+                    });
+                } else {
                     LayoutContainer.LOGIN_OUTPUT.setText(model.getMsg());
                 }
             }

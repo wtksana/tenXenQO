@@ -29,6 +29,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User login(User user) {
+        UserExample userExample = new UserExample();
+        userExample.or().andUserNameEqualTo(user.getUserName()).andPwdEqualTo(user.getPwd());
+        List<User> list = userDao.selectByExample(userExample);
+        User u = null;
+        if (list != null && list.size() > 0) {
+            u = list.get(0);
+        }
+        return u;
+    }
+
+    @Override
     public List<User> getUserByUserName(String userName) {
         UserExample userExample = new UserExample();
         userExample.or().andUserNameEqualTo(userName);
