@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tenXen.client.controller.charControl">
-   <children>
-      <ScrollPane layoutX="400.0" prefHeight="400.0" prefWidth="120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <VBox fx:id="charBox" prefHeight="400.0" prefWidth="100.0">
-            </VBox>
-         </content>
-      </ScrollPane>
-      <TextArea fx:id="sendBox" layoutY="200.0" prefHeight="100.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0" />
-      <ScrollPane prefHeight="300.0" prefWidth="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <VBox fx:id="userBox" prefHeight="300.0" prefWidth="460.0" />
-         </content>
-      </ScrollPane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tenXen.client.controller.charControl">
+    <children>
+        <ScrollPane layoutX="400.0" prefHeight="400.0" prefWidth="120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+                <ListView fx:id="userBox" prefHeight="400.0" prefWidth="105.0"/>
+            </content>
+        </ScrollPane>
+        <TextArea fx:id="sendBox" layoutY="200.0" prefHeight="100.0" prefWidth="480.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0"/>
+        <Button layoutX="420.0" layoutY="360.0" mnemonicParsing="false" text="发送" onAction="#doSend"/>
+        <ScrollPane prefHeight="300.0" prefWidth="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+                <VBox fx:id="charBox" prefHeight="300.0" prefWidth="460.0"/>
+            </content>
+        </ScrollPane>
+    </children>
 </AnchorPane>

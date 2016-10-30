@@ -1,5 +1,6 @@
 package com.tenXen.client.handler;
 
+import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
@@ -34,6 +35,7 @@ public class UserHandler extends ChannelHandlerAdapter {
                 if (model.getResultCode() == Constants.RESULT_SUC) {
                     Platform.runLater(() -> {
                         LayoutContainer.LOGIN_STAGE.close();
+                        ConnectContainer.USER_LIST = model.getUserList();
                         LayoutContainer.initCharLayout();
                     });
                 } else {
@@ -41,7 +43,8 @@ public class UserHandler extends ChannelHandlerAdapter {
                 }
             }
         }
-        Log.info("channelRead...ok");
+        Log.info("clientChannelRead...ok");
+        super.channelRead(ctx, msg);
     }
 
     @Override

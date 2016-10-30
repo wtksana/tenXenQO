@@ -2,7 +2,7 @@ package com.tenXen.client.controller;/**
  * Created by wt on 2016/9/4.
  */
 
-import com.tenXen.client.common.Connect;
+import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.client.handler.ChildChannelHandler;
 import com.tenXen.client.util.ConnectUtil;
@@ -35,7 +35,7 @@ public class Main extends Application {
                     b.group(group).channel(NioSocketChannel.class)
                             .handler(new ChildChannelHandler());
                     ChannelFuture f = b.connect(ConnectUtil.getRemoteAddress()).sync();
-                    Connect.CHANNEL = f.channel();
+                    ConnectContainer.CHANNEL = f.channel();
                     f.channel().closeFuture().sync();
                 } catch (Exception e) {
                     e.printStackTrace();

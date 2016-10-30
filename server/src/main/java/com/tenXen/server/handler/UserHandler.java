@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by wt on 2016/9/11.
@@ -52,9 +53,11 @@ public class UserHandler extends ChannelHandlerAdapter {
                     User u = new User(model.getUserName(), model.getPwd());
                     u = userService.login(u);
                     if (u != null) {
+                        List<User> userList = userService.getAllUser();
+                        model.setUserList(userList);
                         result = "login success";
                         model.setResultCode(Constants.RESULT_SUC);
-                    }else{
+                    } else {
                         result = "register fail";
                         model.setResultCode(Constants.RESULT_FAIL);
                     }
@@ -69,13 +72,14 @@ public class UserHandler extends ChannelHandlerAdapter {
             ctx.writeAndFlush(model);
         } else {
             ctx.fireChannelRead(msg);
-            Log.info("channelRead...error");
+            Log.info("serverChannelRead...error");
         }
+        super.channelRead(ctx, msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        Log.info("channelRead...Complete");
+        Log.info("serverChannelRead...Complete");
     }
 
     @Override

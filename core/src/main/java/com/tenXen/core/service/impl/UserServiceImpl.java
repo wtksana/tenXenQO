@@ -1,6 +1,6 @@
 package com.tenXen.core.service.impl;
 
-import com.tenXen.core.dao.UserDao;
+import com.tenXen.core.dao.UserMapper;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.domain.example.UserExample;
 import com.tenXen.core.service.UserService;
@@ -16,23 +16,23 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Resource
-    private UserDao userDao;
+    private UserMapper userMapper;
 
     @Override
     public User getUserById(int userId) {
-        return userDao.selectByPrimaryKey(userId);
+        return userMapper.selectByPrimaryKey(userId);
     }
 
     @Override
     public int save(User user) {
-        return userDao.insert(user);
+        return userMapper.insert(user);
     }
 
     @Override
     public User login(User user) {
         UserExample userExample = new UserExample();
         userExample.or().andUserNameEqualTo(user.getUserName()).andPwdEqualTo(user.getPwd());
-        List<User> list = userDao.selectByExample(userExample);
+        List<User> list = userMapper.selectByExample(userExample);
         User u = null;
         if (list != null && list.size() > 0) {
             u = list.get(0);
@@ -44,6 +44,11 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserByUserName(String userName) {
         UserExample userExample = new UserExample();
         userExample.or().andUserNameEqualTo(userName);
-        return userDao.selectByExample(userExample);
+        return userMapper.selectByExample(userExample);
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return userMapper.selectByExample(null);
     }
 }
