@@ -4,7 +4,9 @@ import com.tenXen.common.constant.Constants;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.UserModel;
 import com.tenXen.core.service.UserService;
+import com.tenXen.server.util.ChannelGroups;
 import com.tenXen.server.util.SpringContainer;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -58,8 +60,10 @@ public class UserHandler extends ChannelHandlerAdapter {
                         model.setUserList(userList);
                         result = "login success";
                         model.setResultCode(Constants.RESULT_SUC);
+                        Channel ch = ctx.channel();
+                        ChannelGroups.add(ch);
                     } else {
-                        result = "register fail";
+                        result = "login fail";
                         model.setResultCode(Constants.RESULT_FAIL);
                     }
                 } catch (Exception e) {

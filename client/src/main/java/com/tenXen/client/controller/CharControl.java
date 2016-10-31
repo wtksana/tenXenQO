@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
@@ -30,6 +31,10 @@ public class CharControl {
     private ListView userBox;
     @FXML
     private Button send;
+    @FXML
+    private ScrollPane userScroll;
+    @FXML
+    private ScrollPane charScroll;
 
     @FXML
     private void initialize() {
@@ -49,6 +54,7 @@ public class CharControl {
             userBox.setItems(users);
         }
         LayoutContainer.CHAR_BOX = this.charBox;
+        LayoutContainer.CHAR_SCROLL = this.charScroll;
     }
 
     @FXML

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<Pane maxHeight="Infinity" maxWidth="465.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tenXen.client.controller.component.CharItem">
+<Pane fx:id="charItem" maxHeight="Infinity" maxWidth="465.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tenXen.client.controller.component.CharItem">
     <children>
         <Label fx:id="userName" style="-fx-background-color: #EAEAEA; -fx-max-width: 120;" text="admin" textFill="#515151">
             <padding>

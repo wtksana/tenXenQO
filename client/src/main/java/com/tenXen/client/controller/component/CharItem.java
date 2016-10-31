@@ -6,6 +6,7 @@ import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.MessageModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 
 /**
  * Created by wt on 2016/10/31.
@@ -18,6 +19,8 @@ public class CharItem {
     private Label createTime;
     @FXML
     private Label content;
+    @FXML
+    private Pane charItem;
 
     @FXML
     private void initialize() {
