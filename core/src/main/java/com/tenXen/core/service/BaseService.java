@@ -82,7 +82,7 @@ public interface BaseService<T extends BaseDomain> {
      * @throws Exception
      * @Title: findeModelPage @param @param model @param @param
      * pageParam @param @return 设定文件 @return Pages<T> 返回类型 @Description:
-     * TODO 分页查询对象的基础方法 @throws
+     * 分页查询对象的基础方法 @throws
      */
     Pages<T> findeModelPage(T model, BasePageRequest pageParam) throws Exception;
 

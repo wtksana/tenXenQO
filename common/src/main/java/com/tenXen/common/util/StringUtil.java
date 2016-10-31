@@ -506,8 +506,7 @@ public class StringUtil extends StringUtils {
     }
 
     /**
-     * TODO 删除字符串中包含的 html 元素 <>
-     *
+     * 删除字符串中包含的 html 元素 <>
      * @param str
      * @return
      */
