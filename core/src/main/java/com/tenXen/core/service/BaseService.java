@@ -2,8 +2,6 @@ package com.tenXen.core.service;
 
 
 import com.tenXen.core.domain.BaseDomain;
-import com.tenXen.core.model.BasePageRequest;
-import com.tenXen.core.util.Pages;
 
 import java.util.List;
 
@@ -84,7 +82,7 @@ public interface BaseService<T extends BaseDomain> {
      * pageParam @param @return 设定文件 @return Pages<T> 返回类型 @Description:
      * 分页查询对象的基础方法 @throws
      */
-    Pages<T> findeModelPage(T model, BasePageRequest pageParam) throws Exception;
+//    Pages<T> findeModelPage(T model, BasePageRequest pageParam) throws Exception;
 
     /**
      * 分页查询
@@ -93,7 +91,7 @@ public interface BaseService<T extends BaseDomain> {
      * @return
      * @throws Exception
      */
-    Pages<T> findeModelPage(T model) throws Exception;
+//    Pages<T> findeModelPage(T model) throws Exception;
 
     /**
      * 自定义分页查询
@@ -105,6 +103,6 @@ public interface BaseService<T extends BaseDomain> {
      * @return
      * @throws Exception
      */
-    Pages<T> findeModelPage(T model, Integer pageNum, Integer pageSize, String sort, String orderBy) throws Exception;
+//    Pages<T> findeModelPage(T model, Integer pageNum, Integer pageSize, String sort, String orderBy) throws Exception;
 
 }

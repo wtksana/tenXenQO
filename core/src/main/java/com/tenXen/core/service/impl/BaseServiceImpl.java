@@ -1,14 +1,8 @@
 package com.tenXen.core.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.tenXen.common.constant.Constants;
 import com.tenXen.core.dao.BaseMapper;
 import com.tenXen.core.domain.BaseDomain;
-import com.tenXen.core.model.BasePageRequest;
 import com.tenXen.core.service.BaseService;
-import com.tenXen.core.util.Pages;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +113,7 @@ public abstract class BaseServiceImpl<T extends BaseDomain> implements BaseServi
         return baseMapper.findModelList(model);
     }
 
+/*
     @Override
     public Pages<T> findeModelPage(T model, BasePageRequest pageParam) throws Exception {
         if (null == model) {
@@ -165,4 +160,5 @@ public abstract class BaseServiceImpl<T extends BaseDomain> implements BaseServi
         List<T> list = baseMapper.findModelList(model);
         return new Pages<T>((Page<T>) list);
     }
+    */
 }
