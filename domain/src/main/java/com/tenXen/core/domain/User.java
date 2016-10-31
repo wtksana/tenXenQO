@@ -1,95 +1,1 @@
-package com.tenXen.core.domain;
-
-import com.tenXen.core.domain.example.BaseDomain;
-
-public class User extends BaseDomain {
-
-    private static final long serialVersionUID = 1L;
-    /**
-    * 登录用户名
-    */
-    private String userName;
-
-    /**
-    * 密码
-    */
-    private String pwd;
-
-    /**
-    * 昵称
-    */
-    private String name;
-
-    /**
-    * 个姓签名
-    */
-    private String signature;
-
-    /**
-    * 手机号
-    */
-    private Integer mobile;
-
-    /**
-    * 地址
-    */
-    private String address;
-
-    public User() {
-
-    }
-
-    public User(String userName, String pwd) {
-        super();
-        this.userName = userName;
-        this.pwd = pwd;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public Integer getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(Integer mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-}
+package com.tenXen.core.domain;/** * @author createUser * @ClassName: UserService * @date 10月31日 10:20 * @Description: TODO(这里用一句话描述这个类的作用)<br> * wt */public class User extends BaseDomain {    private static final long serialVersionUID = 1L;    /**     * 用户名     **/    private String userName;    /**     * 密码     **/    private String pwd;    /**     * 昵称     **/    private String nickname;    /**     * 签名     **/    private String signature;    /**     * 手机号     **/    private Integer mobile;    /**     * 地址     **/    private String address;    public User() {    }    public User(String userName, String pwd) {        this.userName = userName;        this.pwd = pwd;    }    public String getUserName() {        return this.userName;    }    public void setUserName(String userName) {        this.userName = userName;    }    public String getPwd() {        return this.pwd;    }    public void setPwd(String pwd) {        this.pwd = pwd;    }    public String getNickname() {        return this.nickname;    }    public void setNickname(String nickname) {        this.nickname = nickname;    }    public String getSignature() {        return this.signature;    }    public void setSignature(String signature) {        this.signature = signature;    }    public Integer getMobile() {        return this.mobile;    }    public void setMobile(Integer mobile) {        this.mobile = mobile;    }    public String getAddress() {        return this.address;    }    public void setAddress(String address) {        this.address = address;    }}

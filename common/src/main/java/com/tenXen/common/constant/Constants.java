@@ -15,4 +15,7 @@ public class Constants {
     public static final int RESULT_SUC = 1;
     public static final int RESULT_FAIL = 2;
 
+    /** 默认分页大小 **/
+    public static final Integer PAGE_SIZE = 20;
+
 }

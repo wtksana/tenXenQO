@@ -2,6 +2,8 @@ package com.tenXen.server.handler;
 
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.MessageModel;
+import com.tenXen.core.service.MessageService;
+import com.tenXen.server.util.SpringContainer;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -17,29 +19,27 @@ public class MessageHandler extends ChannelHandlerAdapter {
 
     private final Logger Log = LoggerFactory.getLogger(getClass());
 
-//    private UserService userService;
-//
-//    public MessageHandler() {
-//        this.userService = SpringContainer.getBean(UserService.class);
-//    }
+    private MessageService messageService;
+
+    public MessageHandler() {
+        this.messageService = SpringContainer.getBean(MessageService.class);
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof MessageModel) {
             MessageModel model = (MessageModel) msg;
+            messageService.saveModel(model);
             model.setResultCode(Constants.RESULT_SUC);
             ctx.writeAndFlush(model);
-            Log.info("serverMessageHandler...suc");
         } else {
             ctx.fireChannelRead(msg);
-            Log.info("serverChannelRead...error");
         }
-        super.channelRead(ctx, msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        Log.info("serverChannelRead...Complete");
+        Log.info("serverMessageHandler...Complete");
     }
 
     @Override

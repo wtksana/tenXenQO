@@ -17,6 +17,16 @@ public class UserModel extends User {
 
     private List userList;
 
+    private User self;
+
+    public User getSelf() {
+        return self;
+    }
+
+    public void setSelf(User self) {
+        this.self = self;
+    }
+
     public List getUserList() {
         return userList;
     }

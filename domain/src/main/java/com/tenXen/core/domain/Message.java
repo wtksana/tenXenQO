@@ -1,19 +1,1 @@
-package com.tenXen.core.domain;
-
-import com.tenXen.core.domain.example.BaseDomain;
-
-/**
- * Created by wt on 2016/10/30.
- */
-public class Message extends BaseDomain {
-
-    private String content;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-}
+package com.tenXen.core.domain;/** * @author createUser * @ClassName: MessageService * @date 10月31日 10:20 * @Description: TODO(这里用一句话描述这个类的作用)<br> * wt */public class Message extends BaseDomain {    private static final long serialVersionUID = 1L;    /**     * 发送人     **/    private Integer user;    /**     * 接收人     **/    private Integer touser;    /**     * 内容     **/    private String content;    public Integer getUser() {        return this.user;    }    public void setUser(Integer user) {        this.user = user;    }    public Integer getTouser() {        return this.touser;    }    public void setTouser(Integer touser) {        this.touser = touser;    }    public String getContent() {        return this.content;    }    public void setContent(String content) {        this.content = content;    }}

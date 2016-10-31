@@ -1,251 +1,182 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tenXen.core.dao.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.tenXen.core.domain.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="signature" property="signature" jdbcType="VARCHAR" />
-    <result column="mobile" property="mobile" jdbcType="INTEGER" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    id, user_name, pwd, name, signature, mobile, address
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tenXen.core.domain.example.UserExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from user
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-    <if test="limit != null" >
-      <if test="offset != null" >
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null" >
-        limit ${limit}
-      </if>
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.tenXen.core.domain.example.UserExample" >
-    delete from user
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.tenXen.core.domain.User" >
-    insert into user (id, user_name, pwd, 
-      name, signature, mobile, 
-      address)
-    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{mobile,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.tenXen.core.domain.User" >
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="pwd != null" >
-        pwd,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="signature != null" >
-        signature,
-      </if>
-      <if test="mobile != null" >
-        mobile,
-      </if>
-      <if test="address != null" >
-        address,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="pwd != null" >
-        #{pwd,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="signature != null" >
-        #{signature,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null" >
-        #{mobile,jdbcType=INTEGER},
-      </if>
-      <if test="address != null" >
-        #{address,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.tenXen.core.domain.example.UserExample" resultType="java.lang.Integer" >
-    select count(*) from user
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update user
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.userName != null" >
-        user_name = #{record.userName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pwd != null" >
-        pwd = #{record.pwd,jdbcType=VARCHAR},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.signature != null" >
-        signature = #{record.signature,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mobile != null" >
-        mobile = #{record.mobile,jdbcType=INTEGER},
-      </if>
-      <if test="record.address != null" >
-        address = #{record.address,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update user
-    set id = #{record.id,jdbcType=INTEGER},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      pwd = #{record.pwd,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      signature = #{record.signature,jdbcType=VARCHAR},
-      mobile = #{record.mobile,jdbcType=INTEGER},
-      address = #{record.address,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.tenXen.core.domain.User" >
-    update user
-    <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="pwd != null" >
-        pwd = #{pwd,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="signature != null" >
-        signature = #{signature,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null" >
-        mobile = #{mobile,jdbcType=INTEGER},
-      </if>
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.tenXen.core.domain.User" >
-    update user
-    set user_name = #{userName,jdbcType=VARCHAR},
-      pwd = #{pwd,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      signature = #{signature,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=INTEGER},
-      address = #{address,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-</mapper>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenXen.core.dao.UserMapper" > 
+<!-- Result Map-->
+<resultMap id="baseResultMap" type="com.tenXen.core.domain.User" >
+	<result column="id" property="id"/>
+	<result column="user_name" property="userName"/>
+	<result column="pwd" property="pwd"/>
+	<result column="nickname" property="nickname"/>
+	<result column="signature" property="signature"/>
+	<result column="mobile" property="mobile"/>
+	<result column="address" property="address"/>
+	<result column="status" property="status"/>
+	<result column="create_time" property="createTime"/>
+	<result column="update_time" property="updateTime"/>
+</resultMap>
+       
+<!-- user table all fields -->
+<sql id="base_column_list" >
+	 id,user_name,pwd,nickname,signature,mobile,address,status,create_time,update_time
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="base_where_clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="id != null" >
+	    and id =  #{id}
+	</if>
+	 	<if test="userName != null and userName != ''" >
+	    and user_name =  #{userName}
+	</if>
+	 	<if test="pwd != null and pwd != ''" >
+	    and pwd =  #{pwd}
+	</if>
+	 	<if test="nickname != null and nickname != ''" >
+	    and nickname =  #{nickname}
+	</if>
+	 	<if test="signature != null and signature != ''" >
+	    and signature =  #{signature}
+	</if>
+	<if test="mobile != null" >
+	    and mobile =  #{mobile}
+	</if>
+	 	<if test="address != null and address != ''" >
+	    and address =  #{address}
+	</if>
+	<if test="status != null" >
+	    and status =  #{status}
+	</if>
+	<if test="createTime != null" >
+	    and create_time =  #{createTime}
+	</if>
+	<if test="updateTime != null" >
+	    and update_time =  #{updateTime}
+	</if>
+</trim>
+</sql>
+
+<!-- 插入记录 -->
+<insert id="saveModel" parameterType="com.tenXen.core.domain.User"  useGeneratedKeys="true" keyProperty="id" >
+  insert into user ( 
+	<trim  suffixOverrides="," >
+		 id , 
+	<if test="userName != null  and userName != '' ">
+		user_name,
+	</if>
+	<if test="pwd != null  and pwd != '' ">
+		pwd,
+	</if>
+	<if test="nickname != null  and nickname != '' ">
+		nickname,
+	</if>
+	<if test="signature != null  and signature != '' ">
+		signature,
+	</if>
+	<if test="mobile != null  ">
+		mobile,
+	</if>
+	<if test="address != null  and address != '' ">
+		address,
+	</if>
+	<if test="status != null  ">
+		status,
+	</if>
+	<if test="createTime != null  ">
+		create_time,
+	</if>
+	</trim> )  values  ( 
+	<trim  suffixOverrides="," >
+		 #{id} , 
+	<if test="userName != null  and userName != '' ">
+		#{userName},
+	</if>
+	<if test="pwd != null  and pwd != '' ">
+		#{pwd},
+	</if>
+	<if test="nickname != null  and nickname != '' ">
+		#{nickname},
+	</if>
+	<if test="signature != null  and signature != '' ">
+		#{signature},
+	</if>
+	<if test="mobile != null  ">
+		#{mobile},
+	</if>
+	<if test="address != null  and address != '' ">
+		#{address},
+	</if>
+	<if test="status != null  ">
+		#{status},
+	</if>
+	<if test="createTime != null  ">
+		now(),
+	</if>
+	</trim> ) 
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="updateModelById" parameterType="com.tenXen.core.domain.User" >
+  update user set user_name=#{userName},pwd=#{pwd},nickname=#{nickname},signature=#{signature},mobile=#{mobile},address=#{address},status=#{status},update_time=now() where id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.User">
+	update user set 
+	<trim  suffixOverrides="," >
+	<if test="userName != null  and userName != '' ">
+		user_name=#{userName},
+	</if>
+	<if test="pwd != null  and pwd != '' ">
+		pwd=#{pwd},
+	</if>
+	<if test="nickname != null  and nickname != '' ">
+		nickname=#{nickname},
+	</if>
+	<if test="signature != null  and signature != '' ">
+		signature=#{signature},
+	</if>
+	<if test="mobile != null  ">
+		mobile=#{mobile},
+	</if>
+	<if test="address != null  and address != '' ">
+		address=#{address},
+	</if>
+	<if test="status != null  ">
+		status=#{status},
+	</if>
+	<if test="updateTime != null  ">
+		update_time=#{updateTime},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="deleteModelById" parameterType="com.tenXen.core.domain.User">
+	delete 	 from user where id = #{id}
+</delete>
+ 
+<!-- 根据id查询 用户表 -->
+<select id="getModelById"  resultMap="baseResultMap" parameterType="com.tenXen.core.domain.User">
+	select <include refid="base_column_list" /> 
+	 from user where id = #{id}
+</select>
+
+<!-- 用户表 列表总数-->
+<select id="getCount" resultType="java.lang.Integer"  parameterType="com.tenXen.core.domain.User">
+	select count(1) from user 
+	<include refid="base_where_clause"/>
+</select>
+  	
+<!-- 查询用户表列表 -->
+<select id="findModelList" resultMap="baseResultMap"  parameterType="com.tenXen.core.domain.User">
+	select 
+	<include refid="base_column_list"/>
+	from user 
+	<include refid="base_where_clause"/>
+</select>
+  	
+</mapper>   

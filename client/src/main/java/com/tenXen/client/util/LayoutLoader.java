@@ -23,6 +23,10 @@ public class LayoutLoader {
      * 聊天界面
      */
     public static URL CHAR = LayoutLoader.class.getResource("/views/charLayout.fxml");
+    /**
+     * 聊天记录
+     */
+    public static URL CHAR_ITEM = LayoutLoader.class.getResource("/views/charItem.fxml");
 
 
     public static Parent load(URL layout) {

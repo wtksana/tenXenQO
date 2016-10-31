@@ -1,22 +1,14 @@
 package com.tenXen.core.service;
 
-
 import com.tenXen.core.domain.User;
 
-import java.util.List;
-
 /**
- * Created by wt on 2016/9/5.
+ * @author createUser
+ * @ClassName: UserService
+ * @date 10月31日 10:20
+ * wt
  */
-public interface UserService {
+public interface UserService extends BaseService<User> {
 
-    User getUserById(int userId);
-
-    int save(User user);
-
-    User login(User user);
-
-    List<User> getUserByUserName(String userName);
-
-    List<User> getAllUser();
+    User login(User user) throws Exception;
 }

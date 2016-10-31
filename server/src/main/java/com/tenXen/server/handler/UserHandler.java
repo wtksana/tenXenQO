@@ -35,8 +35,8 @@ public class UserHandler extends ChannelHandlerAdapter {
             if (model.getHandlerCode() == Constants.REGISTER_CODE) {
                 try {
                     User u = new User(model.getUserName(), model.getPwd());
-                    int count = userService.save(u);
-                    if (count > 0) {
+                    User user = userService.saveModel(u);
+                    if (user != null) {
                         result = "register success";
                         model.setResultCode(Constants.RESULT_SUC);
                     } else {
@@ -53,7 +53,8 @@ public class UserHandler extends ChannelHandlerAdapter {
                     User u = new User(model.getUserName(), model.getPwd());
                     u = userService.login(u);
                     if (u != null) {
-                        List<User> userList = userService.getAllUser();
+                        List<User> userList = userService.findModelList(new User());
+                        model.setSelf(u);
                         model.setUserList(userList);
                         result = "login success";
                         model.setResultCode(Constants.RESULT_SUC);
@@ -72,9 +73,7 @@ public class UserHandler extends ChannelHandlerAdapter {
             ctx.writeAndFlush(model);
         } else {
             ctx.fireChannelRead(msg);
-            Log.info("serverChannelRead...error");
         }
-        super.channelRead(ctx, msg);
     }
 
     @Override

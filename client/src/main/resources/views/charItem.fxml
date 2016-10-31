@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<Pane maxHeight="Infinity" maxWidth="465.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tenXen.client.controller.component.CharItem">
+    <children>
+        <Label fx:id="userName" style="-fx-background-color: #EAEAEA; -fx-max-width: 120;" text="admin" textFill="#515151">
+            <padding>
+                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0"/>
+            </padding>
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <Label fx:id="createTime" layoutX="120.0" text="2016年11月11日 11:11:11" textFill="#838383">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="7.0"/>
+            </padding>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </Label>
+        <Label fx:id="content" layoutY="30.0" style="-fx-background-color: #BFEFFF; -fx-max-width: 465;" text="content" wrapText="true">
+            <padding>
+                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0"/>
+            </padding>
+        </Label>
+    </children>
+</Pane>

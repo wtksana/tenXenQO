@@ -1,9 +1,11 @@
 package com.tenXen.client.common;
 
 import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.core.model.MessageModel;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -17,7 +19,7 @@ public class LayoutContainer {
 
     public static TextArea REGISTER_OUTPUT;
 
-    public static TextArea SEND_BOX;
+    public static VBox CHAR_BOX;
 
     public static Stage LOGIN_STAGE;
 
@@ -58,6 +60,11 @@ public class LayoutContainer {
         charStage.initStyle(StageStyle.DECORATED);
         charStage.show();
         LayoutContainer.CHAR_STAGE = charStage;
+    }
+
+    public static void receiveMessage(MessageModel message) {
+        ConnectContainer.MESSAGE = message;
+        LayoutContainer.CHAR_BOX.getChildren().add(LayoutLoader.load(LayoutLoader.CHAR_ITEM));
     }
 
 }

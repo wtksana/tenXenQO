@@ -36,15 +36,16 @@ public class UserHandler extends ChannelHandlerAdapter {
                     Platform.runLater(() -> {
                         LayoutContainer.LOGIN_STAGE.close();
                         ConnectContainer.USER_LIST = model.getUserList();
+                        ConnectContainer.SELF = model.getSelf();
                         LayoutContainer.initCharLayout();
                     });
                 } else {
                     LayoutContainer.LOGIN_OUTPUT.setText(model.getMsg());
                 }
             }
+        } else {
+            ctx.fireChannelRead(msg);
         }
-        Log.info("clientChannelRead...ok");
-        super.channelRead(ctx, msg);
     }
 
     @Override

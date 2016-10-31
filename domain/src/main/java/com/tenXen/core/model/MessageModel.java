@@ -7,11 +7,41 @@ import com.tenXen.core.domain.Message;
  */
 public class MessageModel extends Message {
 
+    private String userName;
+
+    private String nickName;
+
+    private String toUserName;
+
     private int handlerCode;
 
     private String msg;
 
     private int resultCode;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
 
     public int getHandlerCode() {
         return handlerCode;
