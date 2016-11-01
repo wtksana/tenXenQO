@@ -25,7 +25,7 @@ CREATE TABLE `message` (
   `toUser` int(16) DEFAULT NULL COMMENT '接收人',
   `content` text COMMENT '内容',
   `status` int(1) DEFAULT NULL COMMENT '状态',
-  `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
@@ -43,7 +43,7 @@ CREATE TABLE `user` (
   `mobile` int(11) DEFAULT NULL COMMENT '手机号',
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `status` int(1) DEFAULT NULL COMMENT '状态',
-  `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;

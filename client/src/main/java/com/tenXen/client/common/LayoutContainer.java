@@ -131,6 +131,9 @@ public class LayoutContainer {
             ConnectContainer.MESSAGE = model;
             Pane charItem = (Pane) LayoutLoader.load(LayoutLoader.CHAR_ITEM);
             LayoutContainer.CHAR_BOX.getChildren().add(charItem);
+            if (LayoutContainer.CHAR_BOX.getChildren().size() > 50) {
+                LayoutContainer.CHAR_BOX.getChildren().remove(0, 20);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

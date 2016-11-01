@@ -1,0 +1,8 @@
+.emotion {
+    -fx-background-color: #33ccff;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+}
+.sendButton{
+    -fx-background-color: #33ccff;
+}
