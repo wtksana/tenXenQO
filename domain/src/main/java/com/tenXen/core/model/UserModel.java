@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class UserModel extends User {
 
+    private static final long serialVersionUID = 1L;
+
     private int handlerCode;
 
     private String msg;

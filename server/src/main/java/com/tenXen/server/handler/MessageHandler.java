@@ -32,7 +32,6 @@ public class MessageHandler extends ChannelHandlerAdapter {
             MessageModel model = (MessageModel) msg;
             messageService.saveModel(model);
             model.setResultCode(Constants.RESULT_SUC);
-//            ctx.writeAndFlush(model);
             ChannelGroups.broadcast(model);
         } else {
             ctx.fireChannelRead(msg);
@@ -41,7 +40,7 @@ public class MessageHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        Log.info("serverMessageHandler...Complete");
+
     }
 
     @Override

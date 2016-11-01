@@ -1,6 +1,7 @@
 package com.tenXen.core.service;
 
 import com.tenXen.core.domain.User;
+import com.tenXen.core.model.UserModel;
 
 /**
  * @author createUser
@@ -10,5 +11,12 @@ import com.tenXen.core.domain.User;
  */
 public interface UserService extends BaseService<User> {
 
-    User login(User user) throws Exception;
+    UserModel doRegister(UserModel model) throws Exception;
+
+    UserModel doLogin(UserModel model) throws Exception;
+
+    UserModel doLogout(UserModel model) throws Exception;
+
+    UserModel getOnlineUserList() throws Exception;
+
 }

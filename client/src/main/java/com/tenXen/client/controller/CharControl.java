@@ -5,18 +5,15 @@ import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.MessageModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by wt on 2016/10/28.
@@ -38,29 +35,22 @@ public class CharControl {
 
     @FXML
     private void initialize() {
-        List<User> userList = ConnectContainer.USER_LIST;
-        if (userList != null && userList.size() > 0) {
-            List<String> userNames = new ArrayList();
-            for (User user : userList) {
-                String userName = user.getUserName();
-                String name = user.getNickname();
-                if (!StringUtil.isBlank(name)) {
-                    userNames.add(name);
-                } else {
-                    userNames.add(userName);
-                }
+        this.charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
+                charScroll.setVvalue((Double) newValue)
+        );
+        this.sendBox.setOnKeyPressed(event -> {
+            if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
+                doSend();
             }
-            ObservableList<String> users = FXCollections.observableArrayList(userNames);
-            userBox.setItems(users);
-        }
+        });
+        LayoutContainer.USER_BOX = this.userBox;
         LayoutContainer.CHAR_BOX = this.charBox;
-        LayoutContainer.CHAR_SCROLL = this.charScroll;
     }
 
     @FXML
     private void doSend() {
         String sms = this.sendBox.getText();
-        if(!StringUtil.isBlank(sms)) {
+        if (!StringUtil.isBlank(sms)) {
             MessageModel model = new MessageModel();
             model.setContent(sms);
             User u = ConnectContainer.SELF;
@@ -72,8 +62,8 @@ public class CharControl {
                 model.setNickName(u.getNickname());
             }
             ConnectContainer.CHANNEL.writeAndFlush(model);
-            this.sendBox.setText("");
         }
+        this.sendBox.setText("");
     }
 
 }

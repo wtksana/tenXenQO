@@ -43,6 +43,9 @@ public class UserHandler extends ChannelHandlerAdapter {
                     LayoutContainer.LOGIN_OUTPUT.setText(model.getMsg());
                 }
             }
+            if (model.getHandlerCode() == Constants.UPDATE_ONLINE_CODE) {
+                Platform.runLater(() -> LayoutContainer.updateOnlineUser(model));
+            }
         } else {
             ctx.fireChannelRead(msg);
         }

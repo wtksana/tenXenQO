@@ -36,8 +36,10 @@ public class Main extends Application {
                             .handler(new ChildChannelHandler());
                     ChannelFuture f = b.connect(ConnectUtil.getRemoteAddress()).sync();
                     ConnectContainer.CHANNEL = f.channel();
+                    ConnectContainer.USER_GROUP = group;
                     f.channel().closeFuture().sync();
                 } catch (Exception e) {
+                    LayoutContainer.LOGIN_OUTPUT.setText(e.getMessage());
                     e.printStackTrace();
                 } finally {
                     group.shutdownGracefully();

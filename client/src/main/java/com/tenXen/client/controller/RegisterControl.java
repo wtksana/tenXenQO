@@ -21,6 +21,11 @@ public class RegisterControl {
     private TextArea output;
 
     @FXML
+    private void initialize() {
+        LayoutContainer.REGISTER_OUTPUT = this.output;
+    }
+
+    @FXML
     private void doRegister() throws Exception {
         LayoutContainer.REGISTER_OUTPUT = this.output;
         this.userName.setDisable(true);

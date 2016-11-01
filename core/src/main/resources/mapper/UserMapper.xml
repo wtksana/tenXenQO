@@ -1,182 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tenXen.core.dao.UserMapper" > 
-<!-- Result Map-->
-<resultMap id="baseResultMap" type="com.tenXen.core.domain.User" >
-	<result column="id" property="id"/>
-	<result column="user_name" property="userName"/>
-	<result column="pwd" property="pwd"/>
-	<result column="nickname" property="nickname"/>
-	<result column="signature" property="signature"/>
-	<result column="mobile" property="mobile"/>
-	<result column="address" property="address"/>
-	<result column="status" property="status"/>
-	<result column="create_time" property="createTime"/>
-	<result column="update_time" property="updateTime"/>
-</resultMap>
-       
-<!-- user table all fields -->
-<sql id="base_column_list" >
-	 id,user_name,pwd,nickname,signature,mobile,address,status,create_time,update_time
-</sql>
-   
-<!-- 查询条件 -->
-<sql id="base_where_clause">
-where 1=1
-<trim  suffixOverrides="," >
-	<if test="id != null" >
-	    and id =  #{id}
-	</if>
-	 	<if test="userName != null and userName != ''" >
-	    and user_name =  #{userName}
-	</if>
-	 	<if test="pwd != null and pwd != ''" >
-	    and pwd =  #{pwd}
-	</if>
-	 	<if test="nickname != null and nickname != ''" >
-	    and nickname =  #{nickname}
-	</if>
-	 	<if test="signature != null and signature != ''" >
-	    and signature =  #{signature}
-	</if>
-	<if test="mobile != null" >
-	    and mobile =  #{mobile}
-	</if>
-	 	<if test="address != null and address != ''" >
-	    and address =  #{address}
-	</if>
-	<if test="status != null" >
-	    and status =  #{status}
-	</if>
-	<if test="createTime != null" >
-	    and create_time =  #{createTime}
-	</if>
-	<if test="updateTime != null" >
-	    and update_time =  #{updateTime}
-	</if>
-</trim>
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenXen.core.dao.UserMapper">
+    <!-- Result Map-->
+    <resultMap id="baseResultMap" type="com.tenXen.core.domain.User">
+        <result column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="pwd" property="pwd"/>
+        <result column="nickname" property="nickname"/>
+        <result column="signature" property="signature"/>
+        <result column="mobile" property="mobile"/>
+        <result column="address" property="address"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="online" property="online"/>
+    </resultMap>
+
+    <!-- user table all fields -->
+    <sql id="base_column_list">
+	 id,user_name,pwd,nickname,signature,mobile,address,status,create_time,update_time,online
 </sql>
 
-<!-- 插入记录 -->
-<insert id="saveModel" parameterType="com.tenXen.core.domain.User"  useGeneratedKeys="true" keyProperty="id" >
-  insert into user ( 
-	<trim  suffixOverrides="," >
-		 id , 
-	<if test="userName != null  and userName != '' ">
-		user_name,
-	</if>
-	<if test="pwd != null  and pwd != '' ">
-		pwd,
-	</if>
-	<if test="nickname != null  and nickname != '' ">
-		nickname,
-	</if>
-	<if test="signature != null  and signature != '' ">
-		signature,
-	</if>
-	<if test="mobile != null  ">
-		mobile,
-	</if>
-	<if test="address != null  and address != '' ">
-		address,
-	</if>
-	<if test="status != null  ">
-		status,
-	</if>
-	<if test="createTime != null  ">
-		create_time,
-	</if>
-	</trim> )  values  ( 
-	<trim  suffixOverrides="," >
-		 #{id} , 
-	<if test="userName != null  and userName != '' ">
-		#{userName},
-	</if>
-	<if test="pwd != null  and pwd != '' ">
-		#{pwd},
-	</if>
-	<if test="nickname != null  and nickname != '' ">
-		#{nickname},
-	</if>
-	<if test="signature != null  and signature != '' ">
-		#{signature},
-	</if>
-	<if test="mobile != null  ">
-		#{mobile},
-	</if>
-	<if test="address != null  and address != '' ">
-		#{address},
-	</if>
-	<if test="status != null  ">
-		#{status},
-	</if>
-	<if test="createTime != null  ">
-		now(),
-	</if>
-	</trim> ) 
-</insert>
+    <!-- 查询条件 -->
+    <sql id="base_where_clause">
+        where 1=1
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="pwd != null and pwd != ''">
+                and pwd = #{pwd}
+            </if>
+            <if test="nickname != null and nickname != ''">
+                and nickname = #{nickname}
+            </if>
+            <if test="signature != null and signature != ''">
+                and signature = #{signature}
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="online != null">
+                and online = #{online}
+            </if>
+        </trim>
+    </sql>
 
-<!-- 根据id，修改记录-->  
- <update id="updateModelById" parameterType="com.tenXen.core.domain.User" >
-  update user set user_name=#{userName},pwd=#{pwd},nickname=#{nickname},signature=#{signature},mobile=#{mobile},address=#{address},status=#{status},update_time=now() where id=#{id}
+    <!-- 插入记录 -->
+    <insert id="saveModel" parameterType="com.tenXen.core.domain.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (
+        <trim suffixOverrides=",">
+            id ,
+            <if test="userName != null  and userName != '' ">
+                user_name,
+            </if>
+            <if test="pwd != null  and pwd != '' ">
+                pwd,
+            </if>
+            <if test="nickname != null  and nickname != '' ">
+                nickname,
+            </if>
+            <if test="signature != null  and signature != '' ">
+                signature,
+            </if>
+            <if test="mobile != null  ">
+                mobile,
+            </if>
+            <if test="address != null  and address != '' ">
+                address,
+            </if>
+            <if test="status != null  ">
+                status,
+            </if>
+            <if test="createTime != null  ">
+                create_time,
+            </if>
+            <if test="online != null  ">
+                online,
+            </if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            #{id} ,
+            <if test="userName != null  and userName != '' ">
+                #{userName},
+            </if>
+            <if test="pwd != null  and pwd != '' ">
+                #{pwd},
+            </if>
+            <if test="nickname != null  and nickname != '' ">
+                #{nickname},
+            </if>
+            <if test="signature != null  and signature != '' ">
+                #{signature},
+            </if>
+            <if test="mobile != null  ">
+                #{mobile},
+            </if>
+            <if test="address != null  and address != '' ">
+                #{address},
+            </if>
+            <if test="status != null  ">
+                #{status},
+            </if>
+            <if test="createTime != null  ">
+                now(),
+            </if>
+            <if test="online != null  ">
+                #{online},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <!-- 根据id，修改记录-->
+    <update id="updateModelById" parameterType="com.tenXen.core.domain.User">
+  update user set user_name=#{userName},pwd=#{pwd},nickname=#{nickname},signature=#{signature},mobile=#{mobile},address=#{address},status=#{status},update_time=now(),online = #{online} where id=#{id}
  </update>
- 
- <!-- 修改记录，只修改只不为空的字段 -->
-<update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.User">
-	update user set 
-	<trim  suffixOverrides="," >
-	<if test="userName != null  and userName != '' ">
-		user_name=#{userName},
-	</if>
-	<if test="pwd != null  and pwd != '' ">
-		pwd=#{pwd},
-	</if>
-	<if test="nickname != null  and nickname != '' ">
-		nickname=#{nickname},
-	</if>
-	<if test="signature != null  and signature != '' ">
-		signature=#{signature},
-	</if>
-	<if test="mobile != null  ">
-		mobile=#{mobile},
-	</if>
-	<if test="address != null  and address != '' ">
-		address=#{address},
-	</if>
-	<if test="status != null  ">
-		status=#{status},
-	</if>
-	<if test="updateTime != null  ">
-		update_time=#{updateTime},
-	</if>
-	</trim> where id=#{id}
-</update>
 
-<!-- 删除记录 -->
-<delete id="deleteModelById" parameterType="com.tenXen.core.domain.User">
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.User">
+        update user set
+        <trim suffixOverrides=",">
+            <if test="userName != null  and userName != '' ">
+                user_name=#{userName},
+            </if>
+            <if test="pwd != null  and pwd != '' ">
+                pwd=#{pwd},
+            </if>
+            <if test="nickname != null  and nickname != '' ">
+                nickname=#{nickname},
+            </if>
+            <if test="signature != null  and signature != '' ">
+                signature=#{signature},
+            </if>
+            <if test="mobile != null  ">
+                mobile=#{mobile},
+            </if>
+            <if test="address != null  and address != '' ">
+                address=#{address},
+            </if>
+            <if test="status != null  ">
+                status=#{status},
+            </if>
+            <if test="updateTime != null  ">
+                update_time=#{updateTime},
+            </if>
+            <if test="online != null  ">
+                online=#{online},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteModelById" parameterType="com.tenXen.core.domain.User">
 	delete 	 from user where id = #{id}
 </delete>
- 
-<!-- 根据id查询 用户表 -->
-<select id="getModelById"  resultMap="baseResultMap" parameterType="com.tenXen.core.domain.User">
-	select <include refid="base_column_list" /> 
-	 from user where id = #{id}
-</select>
 
-<!-- 用户表 列表总数-->
-<select id="getCount" resultType="java.lang.Integer"  parameterType="com.tenXen.core.domain.User">
-	select count(1) from user 
-	<include refid="base_where_clause"/>
-</select>
-  	
-<!-- 查询用户表列表 -->
-<select id="findModelList" resultMap="baseResultMap"  parameterType="com.tenXen.core.domain.User">
-	select 
-	<include refid="base_column_list"/>
-	from user 
-	<include refid="base_where_clause"/>
-</select>
-  	
+    <!-- 根据id查询 用户表 -->
+    <select id="getModelById" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.User">
+        select
+        <include refid="base_column_list"/>
+        from user where id = #{id}
+    </select>
+
+    <!-- 用户表 列表总数-->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.tenXen.core.domain.User">
+        select count(1) from user
+        <include refid="base_where_clause"/>
+    </select>
+
+    <!-- 查询用户表列表 -->
+    <select id="findModelList" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.User">
+        select
+        <include refid="base_column_list"/>
+        from user
+        <include refid="base_where_clause"/>
+    </select>
+
+    <select id="countByUserName" resultType="java.lang.Integer" parameterType="String">
+        SELECT count(1) FROM user WHERE user_name = #{userName}
+    </select>
+
+    <select id="setUserOnline" parameterType="int">
+        UPDATE user SET online = 1 WHERE id = #{id}
+    </select>
+
+    <select id="getOnlineUserList" resultMap="baseResultMap">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM user WHERE online = 1;
+    </select>
+
+    <select id="setUserOffline" parameterType="int">
+        UPDATE user SET online = 0 WHERE id = #{id}
+    </select>
+
 </mapper>   

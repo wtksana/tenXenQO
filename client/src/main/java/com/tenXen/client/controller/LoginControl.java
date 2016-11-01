@@ -21,6 +21,11 @@ public class LoginControl {
     private TextArea output;
 
     @FXML
+    private void initialize() {
+        LayoutContainer.LOGIN_OUTPUT = this.output;
+    }
+
+    @FXML
     private void doLogin() throws Exception {
         LayoutContainer.LOGIN_OUTPUT = this.output;
         this.output.setText("登入中...");
@@ -30,6 +35,7 @@ public class LoginControl {
         model.setUserName(userName);
         model.setPwd(pwd);
         model.setHandlerCode(Constants.LOGIN_CODE);
+        model.setResultCode(Constants.RESULT_FAIL);
         ConnectContainer.CHANNEL.writeAndFlush(model);
     }
 

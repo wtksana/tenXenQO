@@ -14,10 +14,7 @@ public class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         socketChannel.pipeline()
-//                .addLast("framer", new LineBasedFrameDecoder(1024))
-//                .addLast("decoder", new StringDecoder())
-                .addLast(new ObjectDecoder(1024 * 1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())))
-                .addLast(new ObjectEncoder())
+                .addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this.getClass().getClassLoader())), new ObjectEncoder())
                 .addLast(new UserHandler())
                 .addLast(new MessageHandler());
         System.out.println("ChildChannelHandler...");

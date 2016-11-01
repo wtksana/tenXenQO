@@ -1,12 +1,10 @@
 package com.tenXen.server.handler;
 
 import com.tenXen.common.constant.Constants;
-import com.tenXen.core.domain.User;
 import com.tenXen.core.model.UserModel;
 import com.tenXen.core.service.UserService;
 import com.tenXen.server.util.ChannelGroups;
 import com.tenXen.server.util.SpringContainer;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -14,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by wt on 2016/9/11.
@@ -33,48 +30,29 @@ public class UserHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof UserModel) {
             UserModel model = (UserModel) msg;
-            String result = "error";
             if (model.getHandlerCode() == Constants.REGISTER_CODE) {
-                try {
-                    User u = new User(model.getUserName(), model.getPwd());
-                    User user = userService.saveModel(u);
-                    if (user != null) {
-                        result = "register success";
-                        model.setResultCode(Constants.RESULT_SUC);
-                    } else {
-                        result = "register fail";
-                        model.setResultCode(Constants.RESULT_FAIL);
-                    }
-                } catch (Exception e) {
-                    result = e.getMessage();
-                    model.setResultCode(Constants.RESULT_FAIL);
-                }
+                model = userService.doRegister(model);
             }
             if (model.getHandlerCode() == Constants.LOGIN_CODE) {
-                try {
-                    User u = new User(model.getUserName(), model.getPwd());
-                    u = userService.login(u);
-                    if (u != null) {
-                        List<User> userList = userService.findModelList(new User());
-                        model.setSelf(u);
-                        model.setUserList(userList);
-                        result = "login success";
-                        model.setResultCode(Constants.RESULT_SUC);
-                        Channel ch = ctx.channel();
-                        ChannelGroups.add(ch);
-                    } else {
-                        result = "login fail";
-                        model.setResultCode(Constants.RESULT_FAIL);
-                    }
-                } catch (Exception e) {
-                    Log.info(e.getMessage());
-                    result = e.getMessage();
-                    model.setResultCode(Constants.RESULT_FAIL);
+                model = userService.doLogin(model);
+                if (model.getResultCode() == Constants.RESULT_SUC) {
+                    ChannelGroups.add(ctx.channel());
                 }
             }
-            model.setMsg(result);
-            Log.info(result);
+            if (model.getHandlerCode() == Constants.LOGOUT_CODE) {
+                userService.doLogout(model);
+                if (ChannelGroups.contains(ctx.channel())) {
+                    ChannelGroups.remove(ctx.channel());
+                }
+            }
+            Log.info(model.getMsg());
             ctx.writeAndFlush(model);
+            if (model.getHandlerCode() == Constants.LOGOUT_CODE || model.getHandlerCode() == Constants.LOGIN_CODE && model.getResultCode() == Constants.RESULT_SUC) {
+                UserModel m = userService.getOnlineUserList();
+                if (m.getResultCode() == Constants.RESULT_SUC) {
+                    ChannelGroups.broadcast(m);
+                }
+            }
         } else {
             ctx.fireChannelRead(msg);
         }
@@ -82,7 +60,6 @@ public class UserHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        Log.info("serverChannelRead...Complete");
     }
 
     @Override

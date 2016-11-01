@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by wt on 2016/10/25.
  */
-public class BaseDomain implements Serializable {
+public abstract class BaseDomain implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -7,6 +7,8 @@ import com.tenXen.core.domain.Message;
  */
 public class MessageModel extends Message {
 
+    private static final long serialVersionUID = 1L;
+
     private String userName;
 
     private String nickName;

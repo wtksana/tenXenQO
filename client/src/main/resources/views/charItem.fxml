@@ -29,4 +29,10 @@
             </padding>
         </Label>
     </children>
+   <padding>
+      <Insets bottom="5.0" />
+   </padding>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </Pane>
