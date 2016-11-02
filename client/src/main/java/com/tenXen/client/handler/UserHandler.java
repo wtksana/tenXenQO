@@ -1,7 +1,8 @@
 package com.tenXen.client.handler;
 
-import com.tenXen.client.common.ConnectContainer;
-import com.tenXen.client.common.LayoutContainer;
+import com.tenXen.client.controller.CharControl;
+import com.tenXen.client.controller.LoginControl;
+import com.tenXen.client.controller.RegisterControl;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -24,27 +25,13 @@ public class UserHandler extends ChannelHandlerAdapter {
         if (msg instanceof UserModel) {
             UserModel model = (UserModel) msg;
             if (model.getHandlerCode() == Constants.REGISTER_CODE) {
-                if (model.getResultCode() == Constants.RESULT_SUC) {
-                    Platform.runLater(() -> LayoutContainer.REGISTER_STAGE.close());
-                    LayoutContainer.LOGIN_OUTPUT.setText(model.getMsg());
-                } else {
-                    LayoutContainer.REGISTER_OUTPUT.setText(model.getMsg());
-                }
+                Platform.runLater(() -> RegisterControl.getInstance().handleRegister(model));
             }
             if (model.getHandlerCode() == Constants.LOGIN_CODE) {
-                if (model.getResultCode() == Constants.RESULT_SUC) {
-                    Platform.runLater(() -> {
-                        LayoutContainer.LOGIN_STAGE.close();
-                        ConnectContainer.USER_LIST = model.getUserList();
-                        ConnectContainer.SELF = model.getSelf();
-                        LayoutContainer.initCharLayout();
-                    });
-                } else {
-                    LayoutContainer.LOGIN_OUTPUT.setText(model.getMsg());
-                }
+                Platform.runLater(() -> LoginControl.getInstance().handleLogin(model));
             }
             if (model.getHandlerCode() == Constants.UPDATE_ONLINE_CODE) {
-                Platform.runLater(() -> LayoutContainer.updateOnlineUser(model));
+                Platform.runLater(() -> CharControl.getInstance().updateOnlineUser(model));
             }
         } else {
             ctx.fireChannelRead(msg);

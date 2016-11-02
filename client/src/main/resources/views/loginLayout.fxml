@@ -2,14 +2,13 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="260.0" xmlns="http://javafx.com/javafx/8.0.60"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tenXen.client.controller.LoginControl">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TitledPane animated="false" collapsible="false" text="登入">
+        <TitledPane animated="false" collapsible="false" prefHeight="150.0" prefWidth="240.0" text="登入" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane prefHeight="180.0">
                     <children>
-                        <GridPane AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <GridPane prefWidth="185.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
                             <columnConstraints>
                                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="73.0"/>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="127.0"/>
@@ -25,12 +24,15 @@
                                 <TextField fx:id="pwd" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                             </children>
                         </GridPane>
-                        <Button fx:id="login" layoutX="175.0" layoutY="85.0" mnemonicParsing="false" onAction="#doLogin" text="登入"/>
-                        <Button fx:id="register" layoutX="115.0" layoutY="85.0" mnemonicParsing="false" onAction="#register" text="注册"/>
+                        <Button fx:id="login" mnemonicParsing="false" onAction="#doLogin" text="登入" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="80.0"/>
+                        <Button fx:id="register" layoutX="90.0" layoutY="85.0" mnemonicParsing="false" onAction="#register" text="注册" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="80.0"/>
+                        <Button fx:id="showConfig" mnemonicParsing="false" text="连接设置" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="80.0" onAction="#showConfig"/>
                     </children>
                 </AnchorPane>
             </content>
         </TitledPane>
-        <TextArea fx:id="output" editable="false" prefHeight="100.0" prefWidth="300.0"/>
+        <TextArea fx:id="output" editable="false" prefHeight="50.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0"/>
+        <TextField fx:id="config" promptText="请输入IP" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="165.0"/>
+        <Button fx:id="modify" mnemonicParsing="false" text="确定" visible="false" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="165.0" onAction="#modifyConfig"/>
     </children>
-</VBox>
+</AnchorPane>

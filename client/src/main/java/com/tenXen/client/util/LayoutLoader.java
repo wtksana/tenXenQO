@@ -1,9 +1,7 @@
 package com.tenXen.client.util;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -29,10 +27,10 @@ public class LayoutLoader {
     public static URL CHAR_ITEM = LayoutLoader.class.getResource("/views/charItem.fxml");
 
 
-    public static Parent load(URL layout) {
+    public static FXMLLoader load(URL layout) {
         try {
-            return FXMLLoader.load(layout);
-        } catch (IOException e) {
+            return new FXMLLoader(layout);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

@@ -1,6 +1,7 @@
 package com.tenXen.client.handler;
 
 import com.tenXen.client.common.LayoutContainer;
+import com.tenXen.client.controller.CharControl;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.MessageModel;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -22,7 +23,7 @@ public class MessageHandler extends ChannelHandlerAdapter {
         if (msg instanceof MessageModel) {
             MessageModel model = (MessageModel) msg;
             if (model.getResultCode() == Constants.RESULT_SUC) {
-                Platform.runLater(() -> LayoutContainer.receiveMessage(model));
+                Platform.runLater(() -> CharControl.getInstance().receiveMessage(model));
             } else {
                 Log.info("clientMessageHandler...fail");
             }
