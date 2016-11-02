@@ -1,7 +1,6 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
-import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.client.controller.component.CharItemControl;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
@@ -9,9 +8,9 @@ import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.MessageModel;
 import com.tenXen.core.model.UserModel;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,8 +25,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,34 +63,19 @@ public class CharControl {
 
     public void initCharLayout() {
         try {
+            this.charStage = new Stage();
+            Platform.setImplicitExit(false);
+            createTrayIcon(charStage);
             FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAR);
             loader.setController(CharControl.getInstance());
             Parent charLayout = loader.load();
-            this.charStage = new Stage();
+            charStage.getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
             charStage.setTitle("tenXenQO");
             charStage.initModality(Modality.NONE);
             charStage.setScene(new Scene(charLayout));
             charStage.initStyle(StageStyle.UNIFIED);
             charStage.setResizable(false);
             charStage.show();
-            charStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    System.out.print("监听到窗口关闭");
-                    try {
-                        UserModel model = new UserModel();
-                        model.setHandlerCode(Constants.LOGOUT_CODE);
-                        model.setSelf(ConnectContainer.SELF);
-                        model.setResultCode(Constants.RESULT_FAIL);
-                        ConnectContainer.CHANNEL.writeAndFlush(model);
-                        ConnectContainer.USER_GROUP.shutdownGracefully();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        System.exit(0);
-                    }
-                }
-            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,4 +144,69 @@ public class CharControl {
         this.userBox.setItems(users);
     }
 
+    private void createTrayIcon(Stage stage) {
+        try {
+            Toolkit.getDefaultToolkit();
+            if (!SystemTray.isSupported()) {
+                Platform.exit();
+                return;
+            }
+            stage.setOnCloseRequest(t -> hide());
+            SystemTray tray = SystemTray.getSystemTray();
+            Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
+            TrayIcon trayIcon = new TrayIcon(image);
+            trayIcon.addActionListener(event -> show());
+            MenuItem openItem = new MenuItem("show");
+            openItem.addActionListener(event -> show());
+            MenuItem exitItem = new MenuItem("Exit");
+            exitItem.addActionListener(event -> exit());
+            final PopupMenu popup = new PopupMenu();
+            popup.add(openItem);
+            popup.addSeparator();
+            popup.add(exitItem);
+            trayIcon.setPopupMenu(popup);
+            tray.add(trayIcon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void show() {
+        Platform.runLater(() -> {
+            if (charStage != null) {
+                charStage.show();
+                charStage.toFront();
+            }
+        });
+    }
+
+    private void hide() {
+        Platform.runLater(() -> {
+            if (SystemTray.isSupported()) {
+                charStage.hide();
+            } else {
+                System.exit(0);
+            }
+        });
+    }
+
+    private void exit() {
+        Platform.runLater(() -> {
+            System.out.print("监听到窗口关闭");
+            try {
+                UserModel model = new UserModel();
+                model.setHandlerCode(Constants.LOGOUT_CODE);
+                model.setSelf(ConnectContainer.SELF);
+                model.setResultCode(Constants.RESULT_FAIL);
+                ConnectContainer.CHANNEL.writeAndFlush(model);
+                ConnectContainer.USER_GROUP.shutdownGracefully();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                System.exit(0);
+            }
+        });
+    }
 }

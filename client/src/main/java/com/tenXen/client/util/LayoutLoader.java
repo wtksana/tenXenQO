@@ -2,6 +2,7 @@ package com.tenXen.client.util;
 
 import javafx.fxml.FXMLLoader;
 
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -26,6 +27,9 @@ public class LayoutLoader {
      */
     public static URL CHAR_ITEM = LayoutLoader.class.getResource("/views/charItem.fxml");
 
+    public static URL TRAY_IMAGE = LayoutLoader.class.getResource("/image/qoTray.jpg");
+
+    public static InputStream STAG_IMAGE = LayoutLoader.class.getResourceAsStream("/image/qo_48X48.jpg");
 
     public static FXMLLoader load(URL layout) {
         try {
