@@ -83,7 +83,7 @@ public class LoginControl {
 
     @FXML
     private void doLogin() throws Exception {
-        this.output.setText("登入中...");
+        setOutput("登入中...");
         String userName = this.userName.getText();
         String pwd = this.pwd.getText();
         UserModel model = new UserModel();
@@ -92,12 +92,10 @@ public class LoginControl {
         model.setHandlerCode(Constants.LOGIN_CODE);
         model.setResultCode(Constants.RESULT_FAIL);
 
-        ConnectUtil.connect();//连接netty
-
         if (ConnectContainer.CHANNEL != null) {
             ConnectContainer.CHANNEL.writeAndFlush(model);
         } else {
-            setOutput("连接失败...请检查连接设置");
+            setOutput("连接失败...请检查连接设置...");
         }
     }
 
@@ -122,10 +120,12 @@ public class LoginControl {
     private void modifyConfig() throws Exception {
         this.config.setVisible(false);
         this.modify.setVisible(false);
+        this.setOutput("重新连接中...");
         String config = this.config.getText();
         if (StringUtil.isNotBlank(config)) {
             ConnectUtil.SERVER_HOST = config;
         }
+        ConnectUtil.connect();
     }
 
     public void setOutput(String msg) {

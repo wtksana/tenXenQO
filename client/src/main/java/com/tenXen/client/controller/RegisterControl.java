@@ -1,7 +1,6 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
-import com.tenXen.client.util.ConnectUtil;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
@@ -72,7 +71,7 @@ public class RegisterControl {
     private void doRegister() throws Exception {
         this.userName.setDisable(true);
         this.pwd.setDisable(true);
-        this.output.setText("注册中...");
+        setOutput("注册中...");
         String userName = this.userName.getText();
         String pwd = this.pwd.getText();
         UserModel model = new UserModel();
@@ -80,12 +79,10 @@ public class RegisterControl {
         model.setPwd(pwd);
         model.setHandlerCode(Constants.REGISTER_CODE);
 
-        ConnectUtil.connect();//连接netty
-
         if (ConnectContainer.CHANNEL != null) {
             ConnectContainer.CHANNEL.writeAndFlush(model);
         } else {
-            setOutput("连接失败...");
+            setOutput("连接失败...请检查连接设置...");
         }
     }
 

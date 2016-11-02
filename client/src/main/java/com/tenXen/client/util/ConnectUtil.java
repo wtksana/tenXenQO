@@ -53,6 +53,7 @@ public class ConnectUtil {
 
     public static void connect() throws Exception {
         if (ConnectContainer.CHANNEL != null) {
+            LoginControl.getInstance().setOutput("连接成功...");
             return;
         }
         new Thread(() -> {
@@ -62,11 +63,12 @@ public class ConnectUtil {
                 b.group(group).channel(NioSocketChannel.class)
                         .handler(new ChildChannelHandler());
                 ChannelFuture f = b.connect(getRemoteAddress()).sync();
+                LoginControl.getInstance().setOutput("连接成功...");
                 ConnectContainer.CHANNEL = f.channel();
                 ConnectContainer.USER_GROUP = group;
                 f.channel().closeFuture().sync();
             } catch (Exception e) {
-                LoginControl.getInstance().setOutput("连接失败...");
+                LoginControl.getInstance().setOutput("连接失败...请检查连接设置...");
                 e.printStackTrace();
             } finally {
                 group.shutdownGracefully();

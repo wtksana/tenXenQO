@@ -1,7 +1,7 @@
-package com.tenXen.client.controller;/**
- * Created by wt on 2016/9/4.
- */
+package com.tenXen.client;
 
+import com.tenXen.client.controller.LoginControl;
+import com.tenXen.client.util.ConnectUtil;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -16,6 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         //初始化登录窗口
         LoginControl.getInstance().initLoginLayout(primaryStage);
+        ConnectUtil.connect();
     }
 
 }
