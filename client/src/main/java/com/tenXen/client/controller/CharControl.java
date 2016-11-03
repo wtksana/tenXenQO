@@ -1,8 +1,10 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
+import com.tenXen.client.controller.component.CharEmotionControl;
 import com.tenXen.client.controller.component.CharItemControl;
 import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.domain.User;
@@ -19,7 +21,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -31,6 +35,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wt on 2016/10/28.
@@ -58,6 +63,10 @@ public class CharControl {
     private ScrollPane userScroll;
     @FXML
     private ScrollPane charScroll;
+    @FXML
+    private ScrollPane emotionPane;
+    @FXML
+    private Button emotion;
 
     private Stage charStage;
 
@@ -91,6 +100,17 @@ public class CharControl {
                 doSend();
             }
         });
+        this.emotionPane.setVisible(false);
+        createEmotionPane(this.emotionPane);
+    }
+
+    @FXML
+    private void toggleEmotionPane() {
+        if (emotionPane.isVisible()) {
+            emotionPane.setVisible(false);
+        } else {
+            emotionPane.setVisible(true);
+        }
     }
 
     @FXML
@@ -98,6 +118,7 @@ public class CharControl {
         String sms = this.sendBox.getText();
         if (!StringUtil.isBlank(sms)) {
             MessageModel model = new MessageModel();
+            model.setIsEmotion(Constants.NO);
             model.setContent(sms);
             User u = ConnectContainer.SELF;
             if (u != null) {
@@ -114,11 +135,17 @@ public class CharControl {
 
     public void receiveMessage(MessageModel model) {
         try {
-            CharItemControl charItemControl = new CharItemControl(model);
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAR_ITEM);
-            loader.setController(charItemControl);
+            FXMLLoader loader;
+            if (model.getIsEmotion() == Constants.YES) {
+                CharEmotionControl charEmotionControl = new CharEmotionControl(model);
+                loader = LayoutLoader.load(LayoutLoader.CHAR_EMOTION);
+                loader.setController(charEmotionControl);
+            } else {
+                CharItemControl charItemControl = new CharItemControl(model);
+                loader = LayoutLoader.load(LayoutLoader.CHAR_ITEM);
+                loader.setController(charItemControl);
+            }
             Pane charItem = loader.load();
-
             this.charBox.getChildren().add(charItem);
             if (this.charBox.getChildren().size() > 50) {
                 this.charBox.getChildren().remove(0, 20);
@@ -208,5 +235,59 @@ public class CharControl {
                 System.exit(0);
             }
         });
+    }
+
+    private void createEmotionPane(ScrollPane pane) {
+        Platform.runLater(() -> {
+            try {
+                Map<String, javafx.scene.image.Image> emotions = EmotionWorker.getInstance().getAllEmotion();
+                if (!emotions.isEmpty()) {
+                    int i = 1;
+                    VBox vBox = new VBox();
+                    vBox.setPrefWidth(400);
+                    HBox hBox = new HBox();
+                    hBox.setPrefHeight(80);
+                    hBox.setPrefWidth(400);
+                    for (Map.Entry<String, javafx.scene.image.Image> entry : emotions.entrySet()) {
+                        hBox.getChildren().add(createEmotion(entry.getKey(), entry.getValue()));
+                        if (i % 5 == 0) {
+                            vBox.getChildren().add(hBox);
+                            hBox = new HBox();
+                            hBox.setPrefHeight(80);
+                            hBox.setPrefWidth(400);
+                        }
+                        i++;
+                    }
+                    pane.setContent(vBox);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private ImageView createEmotion(String name, javafx.scene.image.Image image) {
+        ImageView emotion = new ImageView();
+        emotion.setImage(image);
+        emotion.setFitHeight(80.0);
+        emotion.setFitWidth(80.0);
+        emotion.setOnMouseClicked(event -> doSendEmotion(name));
+        return emotion;
+    }
+
+    private void doSendEmotion(String name) {
+        this.emotionPane.setVisible(false);
+        MessageModel model = new MessageModel();
+        model.setIsEmotion(Constants.YES);
+        model.setContent(name);
+        User u = ConnectContainer.SELF;
+        if (u != null) {
+            model.setUser(u.getId());
+            model.setTouser(0);
+            model.setCreateTime(new Date());
+            model.setUserName(u.getUserName());
+            model.setNickName(u.getNickname());
+        }
+        ConnectContainer.CHANNEL.writeAndFlush(model);
     }
 }

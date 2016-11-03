@@ -3,6 +3,17 @@
     -fx-text-fill: white;
     -fx-background-radius: 20;
 }
-.sendButton{
+
+.sendButton {
     -fx-background-color: #33ccff;
+}
+
+.contentLabel {
+    -fx-background-color: #BFEFFF;
+    -fx-max-width: 465;
+}
+
+.userNameLabel {
+    -fx-background-color: #EAEAEA;
+    -fx-max-width: 120;
 }

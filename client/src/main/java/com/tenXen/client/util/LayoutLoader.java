@@ -27,6 +27,8 @@ public class LayoutLoader {
      */
     public static URL CHAR_ITEM = LayoutLoader.class.getResource("/views/charItem.fxml");
 
+    public static URL CHAR_EMOTION = LayoutLoader.class.getResource("/views/charEmotion.fxml");
+
     public static URL TRAY_IMAGE = LayoutLoader.class.getResource("/image/qoTray.jpg");
 
     public static InputStream STAG_IMAGE = LayoutLoader.class.getResourceAsStream("/image/qo_48X48.jpg");

@@ -21,6 +21,16 @@ public class MessageModel extends Message {
 
     private int resultCode;
 
+    private int isEmotion;
+
+    public int getIsEmotion() {
+        return isEmotion;
+    }
+
+    public void setIsEmotion(int isEmotion) {
+        this.isEmotion = isEmotion;
+    }
+
     public String getNickName() {
         return nickName;
     }
