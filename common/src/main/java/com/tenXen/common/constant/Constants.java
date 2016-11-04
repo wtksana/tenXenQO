@@ -14,7 +14,7 @@ public class Constants {
     public static final int LOGIN_CODE = 1;
     public static final int REGISTER_CODE = 2;
     public static final int LOGOUT_CODE = 3;
-    public static final int UPDATE_ONLINE_CODE = 9;
+    public static final int UPDATE_ONLINE_USER = 9;
 
     public static final int RESULT_SUC = 1;
     public static final int RESULT_FAIL = 2;
@@ -22,9 +22,8 @@ public class Constants {
     public static final int YES = 1;
     public static final int NO = 0;
 
-    /**
-     * 默认分页大小
-     **/
-//    public static final Integer PAGE_SIZE = 20;
+    public static final int UPDATE_CODE_EMOTION = 1;
+
+    public static final Integer PAGE_SIZE = 20;
 
 }

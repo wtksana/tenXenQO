@@ -86,7 +86,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         UserModel model = new UserModel();
         List<User> list = userMapper.getOnlineUserList();
         if (list != null && list.size() > 0) {
-            model.setHandlerCode(Constants.UPDATE_ONLINE_CODE);
+            model.setHandlerCode(Constants.UPDATE_ONLINE_USER);
             model.setResultCode(Constants.RESULT_SUC);
             model.setUserList(list);
         } else {

@@ -33,15 +33,16 @@ public class MessageHandler extends ChannelHandlerAdapter {
             messageService.saveModel(model);
             model.setResultCode(Constants.RESULT_SUC);
             ChannelGroups.broadcast(model);
+            Log.info(model.getMsg());
         } else {
             ctx.fireChannelRead(msg);
         }
     }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-
-    }
+//    @Override
+//    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+//
+//    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

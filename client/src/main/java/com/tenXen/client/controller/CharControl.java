@@ -100,37 +100,40 @@ public class CharControl {
                 doSend();
             }
         });
+        this.send.setOnMouseReleased(event -> doSend());
+        this.emotion.setOnMousePressed(event -> toggleEmotionPane());
         this.emotionPane.setVisible(false);
         createEmotionPane(this.emotionPane);
     }
 
     @FXML
     private void toggleEmotionPane() {
-        if (emotionPane.isVisible()) {
-            emotionPane.setVisible(false);
-        } else {
+        if (!emotionPane.isVisible()) {
             emotionPane.setVisible(true);
+            Platform.runLater(() -> emotionPane.requestFocus());
         }
     }
 
     @FXML
     private void doSend() {
         String sms = this.sendBox.getText();
-        if (!StringUtil.isBlank(sms)) {
-            MessageModel model = new MessageModel();
-            model.setIsEmotion(Constants.NO);
-            model.setContent(sms);
-            User u = ConnectContainer.SELF;
-            if (u != null) {
-                model.setUser(u.getId());
-                model.setTouser(0);
-                model.setCreateTime(new Date());
-                model.setUserName(u.getUserName());
-                model.setNickName(u.getNickname());
-            }
-            ConnectContainer.CHANNEL.writeAndFlush(model);
-        }
         this.sendBox.setText("");
+        Platform.runLater(() -> {
+            if (!StringUtil.isBlank(sms)) {
+                MessageModel model = new MessageModel();
+                model.setIsEmotion(Constants.NO);
+                model.setContent(sms);
+                User u = ConnectContainer.SELF;
+                if (u != null) {
+                    model.setUser(u.getId());
+                    model.setTouser(0);
+                    model.setCreateTime(new Date());
+                    model.setUserName(u.getUserName());
+                    model.setNickName(u.getNickname());
+                }
+                ConnectContainer.CHANNEL.writeAndFlush(model);
+            }
+        });
     }
 
     public void receiveMessage(MessageModel model) {
@@ -172,32 +175,32 @@ public class CharControl {
     }
 
     private void createTrayIcon(Stage stage) {
-        try {
-            Toolkit.getDefaultToolkit();
-            if (!SystemTray.isSupported()) {
-                Platform.exit();
-                return;
+        Platform.runLater(() -> {
+            try {
+                Toolkit.getDefaultToolkit();
+                if (!SystemTray.isSupported()) {
+                    Platform.exit();
+                    return;
+                }
+                stage.setOnCloseRequest(t -> hide());
+                SystemTray tray = SystemTray.getSystemTray();
+                Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
+                TrayIcon trayIcon = new TrayIcon(image);
+                trayIcon.addActionListener(event -> show());
+                MenuItem openItem = new MenuItem("show");
+                openItem.addActionListener(event -> show());
+                MenuItem exitItem = new MenuItem("Exit");
+                exitItem.addActionListener(event -> exit());
+                final PopupMenu popup = new PopupMenu();
+                popup.add(openItem);
+                popup.addSeparator();
+                popup.add(exitItem);
+                trayIcon.setPopupMenu(popup);
+                tray.add(trayIcon);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            stage.setOnCloseRequest(t -> hide());
-            SystemTray tray = SystemTray.getSystemTray();
-            Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
-            TrayIcon trayIcon = new TrayIcon(image);
-            trayIcon.addActionListener(event -> show());
-            MenuItem openItem = new MenuItem("show");
-            openItem.addActionListener(event -> show());
-            MenuItem exitItem = new MenuItem("Exit");
-            exitItem.addActionListener(event -> exit());
-            final PopupMenu popup = new PopupMenu();
-            popup.add(openItem);
-            popup.addSeparator();
-            popup.add(exitItem);
-            trayIcon.setPopupMenu(popup);
-            tray.add(trayIcon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
+        });
     }
 
     private void show() {
@@ -240,6 +243,11 @@ public class CharControl {
     private void createEmotionPane(ScrollPane pane) {
         Platform.runLater(() -> {
             try {
+                pane.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (!newValue) {
+                        pane.setVisible(false);
+                    }
+                });
                 Map<String, javafx.scene.image.Image> emotions = EmotionWorker.getInstance().getAllEmotion();
                 if (!emotions.isEmpty()) {
                     int i = 1;
@@ -276,18 +284,20 @@ public class CharControl {
     }
 
     private void doSendEmotion(String name) {
-        this.emotionPane.setVisible(false);
-        MessageModel model = new MessageModel();
-        model.setIsEmotion(Constants.YES);
-        model.setContent(name);
-        User u = ConnectContainer.SELF;
-        if (u != null) {
-            model.setUser(u.getId());
-            model.setTouser(0);
-            model.setCreateTime(new Date());
-            model.setUserName(u.getUserName());
-            model.setNickName(u.getNickname());
-        }
-        ConnectContainer.CHANNEL.writeAndFlush(model);
+        Platform.runLater(() -> {
+            this.emotionPane.setVisible(false);
+            MessageModel model = new MessageModel();
+            model.setIsEmotion(Constants.YES);
+            model.setContent(name);
+            User u = ConnectContainer.SELF;
+            if (u != null) {
+                model.setUser(u.getId());
+                model.setTouser(0);
+                model.setCreateTime(new Date());
+                model.setUserName(u.getUserName());
+                model.setNickName(u.getNickname());
+            }
+            ConnectContainer.CHANNEL.writeAndFlush(model);
+        });
     }
 }

@@ -21,18 +21,18 @@
                                 <Label text="用户名："/>
                                 <Label text="密码：" GridPane.rowIndex="1"/>
                                 <TextField fx:id="userName" GridPane.columnIndex="1"/>
-                                <TextField fx:id="pwd" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <PasswordField fx:id="pwd" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                             </children>
                         </GridPane>
-                        <Button fx:id="login" mnemonicParsing="false" onAction="#doLogin" text="登入" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="80.0"/>
-                        <Button fx:id="register" layoutX="90.0" layoutY="85.0" mnemonicParsing="false" onAction="#register" text="注册" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="80.0"/>
-                        <Button fx:id="showConfig" mnemonicParsing="false" text="连接设置" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="80.0" onAction="#showConfig"/>
+                        <Button fx:id="login" mnemonicParsing="false" text="登入" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="80.0"/>
+                        <Button fx:id="register" layoutX="90.0" layoutY="85.0" mnemonicParsing="false" text="注册" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="80.0"/>
+                        <Button fx:id="showConfig" mnemonicParsing="false" text="连接设置" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="80.0"/>
                     </children>
                 </AnchorPane>
             </content>
         </TitledPane>
         <TextArea fx:id="output" editable="false" prefHeight="50.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0"/>
         <TextField fx:id="config" promptText="请输入IP" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="165.0"/>
-        <Button fx:id="modify" mnemonicParsing="false" text="确定" visible="false" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="165.0" onAction="#modifyConfig"/>
+        <Button fx:id="modify" mnemonicParsing="false" text="确定" visible="false" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="165.0"/>
     </children>
 </AnchorPane>

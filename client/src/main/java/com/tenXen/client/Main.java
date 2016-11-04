@@ -13,10 +13,14 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         //初始化登录窗口
         LoginControl.getInstance().initLoginLayout(primaryStage);
-        ConnectUtil.connect();
+        try {
+            ConnectUtil.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

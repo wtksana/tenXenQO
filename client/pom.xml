@@ -18,9 +18,9 @@
             <version>0.1</version>
         </dependency>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
+            <groupId>com.tenXen</groupId>
+            <artifactId>common</artifactId>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 

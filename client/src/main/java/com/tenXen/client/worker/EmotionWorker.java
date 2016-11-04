@@ -1,8 +1,13 @@
 package com.tenXen.client.worker;
 
+import com.tenXen.common.util.FileUtil;
+import com.tenXen.common.util.ZipUtil;
+import com.tenXen.core.model.UpdateModel;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,17 +25,19 @@ public class EmotionWorker {
         return instance;
     }
 
-    public static String EMOTION_PATH = "/image/emotion/";
+    private static String EMOTION_PATH = "data/client/emotion";
+    private static String EMOTION_ZIP_PATH = EMOTION_PATH + "/emotion.zip";
 
     public Map<String, Image> getAllEmotion() throws Exception {
         Map<String, Image> emotions = new HashMap<>();
-        File file = new File(this.getClass().getResource("/image/emotion").getFile().replaceAll("%20", " "));
-        if (file != null) {
+        File file = new File(EMOTION_PATH);
+        if (file.exists()) {
             File[] tempList = file.listFiles();
             if (tempList != null && tempList.length > 0) {
                 for (File f : tempList) {
                     String name = f.getName();
-                    Image image = new Image(this.getClass().getResourceAsStream(EMOTION_PATH + name));
+                    InputStream is = new FileInputStream(f);
+                    Image image = new Image(is);
                     emotions.put(name, image);
                 }
             }
@@ -39,11 +46,26 @@ public class EmotionWorker {
     }
 
     public Image getEmotion(String name) throws Exception {
-        Image image = new Image(this.getClass().getResourceAsStream(EMOTION_PATH + name));
+        File file = new File(EMOTION_PATH + "/" + name);
+        InputStream is = new FileInputStream(file);
+        Image image = new Image(is);
         return image;
     }
 
-//    public static void main(String[] args) throws Exception {
-//        getAllEmotion();
-//    }
+    public void updateEmotionResponse(UpdateModel model) throws Exception {
+        if (model.getEmotionDatas() == null) {
+            return;
+        }
+//        FileUtil.writeFile(EMOTION_ZIP_PATH, model.getData());
+//        ZipUtil.unZip(EMOTION_ZIP_PATH, EMOTION_PATH);
+    }
+
+    public void updateEmotionRequest() throws Exception{
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        EmotionWorker worker = new EmotionWorker();
+        worker.getAllEmotion();
+    }
 }

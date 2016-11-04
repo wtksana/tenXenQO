@@ -4,11 +4,13 @@ import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -36,6 +38,10 @@ public class RegisterControl {
     private TextField pwd;
     @FXML
     private TextArea output;
+    @FXML
+    private Button cancel;
+    @FXML
+    private Button register;
 
     private Stage registerStage;
 
@@ -65,29 +71,33 @@ public class RegisterControl {
 
     @FXML
     private void initialize() {
+        this.cancel.setOnMouseReleased(event -> close());
+        this.register.setOnMouseReleased(event -> doRegister());
     }
 
     @FXML
-    private void doRegister() throws Exception {
-        this.userName.setDisable(true);
-        this.pwd.setDisable(true);
-        setOutput("注册中...");
-        String userName = this.userName.getText();
-        String pwd = this.pwd.getText();
-        UserModel model = new UserModel();
-        model.setUserName(userName);
-        model.setPwd(pwd);
-        model.setHandlerCode(Constants.REGISTER_CODE);
+    private void doRegister() {
+        Platform.runLater(() -> {
+            this.userName.setDisable(true);
+            this.pwd.setDisable(true);
+            setOutput("注册中...");
+            String userName = this.userName.getText();
+            String pwd = this.pwd.getText();
+            UserModel model = new UserModel();
+            model.setUserName(userName);
+            model.setPwd(pwd);
+            model.setHandlerCode(Constants.REGISTER_CODE);
 
-        if (ConnectContainer.CHANNEL != null) {
-            ConnectContainer.CHANNEL.writeAndFlush(model);
-        } else {
-            setOutput("连接失败...请检查连接设置...");
-        }
+            if (ConnectContainer.CHANNEL != null) {
+                ConnectContainer.CHANNEL.writeAndFlush(model);
+            } else {
+                setOutput("连接失败...请检查连接设置...");
+            }
+        });
     }
 
     @FXML
-    private void close() throws Exception {
+    private void close() {
         this.registerStage.close();
     }
 

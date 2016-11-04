@@ -30,7 +30,7 @@ public class UserHandler extends ChannelHandlerAdapter {
             if (model.getHandlerCode() == Constants.LOGIN_CODE) {
                 Platform.runLater(() -> LoginControl.getInstance().handleLogin(model));
             }
-            if (model.getHandlerCode() == Constants.UPDATE_ONLINE_CODE) {
+            if (model.getHandlerCode() == Constants.UPDATE_ONLINE_USER) {
                 Platform.runLater(() -> CharControl.getInstance().updateOnlineUser(model));
             }
         } else {

@@ -5,13 +5,16 @@ import com.tenXen.client.util.ConnectUtil;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
+import com.tenXen.core.model.UpdateModel;
 import com.tenXen.core.model.UserModel;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -32,7 +35,7 @@ public class LoginControl {
     @FXML
     private TextField userName;
     @FXML
-    private TextField pwd;
+    private PasswordField pwd;
     @FXML
     private TextArea output;
     @FXML
@@ -41,6 +44,10 @@ public class LoginControl {
     private Button modify;
     @FXML
     private Button showConfig;
+    @FXML
+    private Button login;
+    @FXML
+    private Button register;
 
     private Stage loginStage;
 
@@ -79,28 +86,34 @@ public class LoginControl {
 
     @FXML
     private void initialize() {
+        this.login.setOnMouseReleased(event -> doLogin());
+        this.register.setOnMouseReleased(event -> register());
+        this.showConfig.setOnMouseReleased(event -> showConfig());
+        this.modify.setOnMouseReleased(event -> modifyConfig());
     }
 
     @FXML
-    private void doLogin() throws Exception {
+    private void doLogin() {
         setOutput("登入中...");
-        String userName = this.userName.getText();
-        String pwd = this.pwd.getText();
-        UserModel model = new UserModel();
-        model.setUserName(userName);
-        model.setPwd(pwd);
-        model.setHandlerCode(Constants.LOGIN_CODE);
-        model.setResultCode(Constants.RESULT_FAIL);
+        Platform.runLater(() -> {
+            String userName = this.userName.getText();
+            String pwd = this.pwd.getText();
+            UserModel model = new UserModel();
+            model.setUserName(userName);
+            model.setPwd(pwd);
+            model.setHandlerCode(Constants.LOGIN_CODE);
+            model.setResultCode(Constants.RESULT_FAIL);
+            if (ConnectContainer.CHANNEL != null) {
+                ConnectContainer.CHANNEL.writeAndFlush(model);
+            } else {
+                setOutput("连接失败...请检查连接设置...");
+            }
 
-        if (ConnectContainer.CHANNEL != null) {
-            ConnectContainer.CHANNEL.writeAndFlush(model);
-        } else {
-            setOutput("连接失败...请检查连接设置...");
-        }
+        });
     }
 
     @FXML
-    private void register() throws Exception {
+    private void register() {
         RegisterControl.getInstance().initRegisterLayout(this.loginStage);
     }
 
@@ -110,14 +123,14 @@ public class LoginControl {
     }
 
     @FXML
-    private void showConfig() throws Exception {
+    private void showConfig() {
         this.config.setText(ConnectUtil.SERVER_HOST);
         this.config.setVisible(true);
         this.modify.setVisible(true);
     }
 
     @FXML
-    private void modifyConfig() throws Exception {
+    private void modifyConfig() {
         this.config.setVisible(false);
         this.modify.setVisible(false);
         this.setOutput("重新连接中...");
@@ -125,7 +138,11 @@ public class LoginControl {
         if (StringUtil.isNotBlank(config)) {
             ConnectUtil.SERVER_HOST = config;
         }
-        ConnectUtil.connect();
+        try {
+            ConnectUtil.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setOutput(String msg) {
