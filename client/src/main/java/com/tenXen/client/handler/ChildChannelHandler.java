@@ -16,7 +16,8 @@ public class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
                 .addLast(MarshallingCodeCFactory.buildMarshallingDecoder())
                 .addLast(MarshallingCodeCFactory.buildMarshallingEncoder())
                 .addLast(new UserHandler())
-                .addLast(new MessageHandler());
+                .addLast(new MessageHandler())
+                .addLast(new UpdateHandler());
         System.out.println("ChildChannelHandler...");
     }
 }

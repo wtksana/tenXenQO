@@ -3,11 +3,10 @@ package com.tenXen.client.controller;
 import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.ConnectUtil;
 import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
-import com.tenXen.core.model.UpdateModel;
 import com.tenXen.core.model.UserModel;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,21 +94,19 @@ public class LoginControl {
     @FXML
     private void doLogin() {
         setOutput("登入中...");
-        Platform.runLater(() -> {
-            String userName = this.userName.getText();
-            String pwd = this.pwd.getText();
-            UserModel model = new UserModel();
-            model.setUserName(userName);
-            model.setPwd(pwd);
-            model.setHandlerCode(Constants.LOGIN_CODE);
-            model.setResultCode(Constants.RESULT_FAIL);
-            if (ConnectContainer.CHANNEL != null) {
-                ConnectContainer.CHANNEL.writeAndFlush(model);
-            } else {
-                setOutput("连接失败...请检查连接设置...");
-            }
-
-        });
+        String userName = this.userName.getText();
+        String pwd = this.pwd.getText();
+        UserModel model = new UserModel();
+        model.setUserName(userName);
+        model.setPwd(pwd);
+        model.setHandlerCode(Constants.LOGIN_CODE);
+        model.setResultCode(Constants.RESULT_FAIL);
+        if (ConnectContainer.CHANNEL != null) {
+            ConnectContainer.CHANNEL.writeAndFlush(model);
+        } else {
+            setOutput("连接失败...请检查连接设置...");
+        }
+        new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
     }
 
     @FXML

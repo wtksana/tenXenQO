@@ -103,7 +103,7 @@ public class CharControl {
         this.send.setOnMouseReleased(event -> doSend());
         this.emotion.setOnMousePressed(event -> toggleEmotionPane());
         this.emotionPane.setVisible(false);
-        createEmotionPane(this.emotionPane);
+//        createEmotionPane();
     }
 
     @FXML
@@ -187,9 +187,9 @@ public class CharControl {
                 Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
                 TrayIcon trayIcon = new TrayIcon(image);
                 trayIcon.addActionListener(event -> show());
-                MenuItem openItem = new MenuItem("show");
+                MenuItem openItem = new MenuItem("显示");
                 openItem.addActionListener(event -> show());
-                MenuItem exitItem = new MenuItem("Exit");
+                MenuItem exitItem = new MenuItem("退出");
                 exitItem.addActionListener(event -> exit());
                 final PopupMenu popup = new PopupMenu();
                 popup.add(openItem);
@@ -240,12 +240,12 @@ public class CharControl {
         });
     }
 
-    private void createEmotionPane(ScrollPane pane) {
+    public void createEmotionPane() {
         Platform.runLater(() -> {
             try {
-                pane.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                this.emotionPane.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (!newValue) {
-                        pane.setVisible(false);
+                        this.emotionPane.setVisible(false);
                     }
                 });
                 Map<String, javafx.scene.image.Image> emotions = EmotionWorker.getInstance().getAllEmotion();
@@ -266,7 +266,8 @@ public class CharControl {
                         }
                         i++;
                     }
-                    pane.setContent(vBox);
+                    vBox.getChildren().add(hBox);
+                    this.emotionPane.setContent(vBox);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

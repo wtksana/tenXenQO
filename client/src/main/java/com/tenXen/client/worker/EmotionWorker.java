@@ -1,15 +1,16 @@
 package com.tenXen.client.worker;
 
+import com.tenXen.client.controller.CharControl;
+import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.FileUtil;
-import com.tenXen.common.util.ZipUtil;
 import com.tenXen.core.model.UpdateModel;
 import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by wt on 2016/11/3.
@@ -52,16 +53,38 @@ public class EmotionWorker {
         return image;
     }
 
-    public void updateEmotionResponse(UpdateModel model) throws Exception {
-        if (model.getEmotionDatas() == null) {
-            return;
+    public void updateEmotionResponse(UpdateModel model) {
+        if (model.getServerEmotionMap() == null || model.getServerEmotionMap().isEmpty()) {
+
+        } else {
+            FileUtil.createFullFolder(EMOTION_PATH);
+            Map<String, byte[]> emotion = model.getServerEmotionMap();
+            for (Map.Entry<String, byte[]> entry : emotion.entrySet()) {
+                try {
+                    FileUtil.writeFile(EMOTION_PATH + "/" + entry.getKey(), entry.getValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-//        FileUtil.writeFile(EMOTION_ZIP_PATH, model.getData());
-//        ZipUtil.unZip(EMOTION_ZIP_PATH, EMOTION_PATH);
+        CharControl.getInstance().createEmotionPane();
     }
 
-    public void updateEmotionRequest() throws Exception{
-
+    public UpdateModel updateEmotionRequest() {
+        UpdateModel model = new UpdateModel();
+        model.setUpdateCode(Constants.UPDATE_CODE_EMOTION);
+        List<String> emotionList = new ArrayList<>();
+        try {
+            File file = new File(EMOTION_PATH);
+            if (file.exists()) {
+                model.setUserEmotionList(new ArrayList<String>(Arrays.asList(file.list())));
+            } else {
+                model.setUserEmotionList(emotionList);
+            }
+        } catch (Exception e) {
+            model.setUserEmotionList(emotionList);
+        }
+        return model;
     }
 
     public static void main(String[] args) throws Exception {

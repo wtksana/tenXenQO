@@ -1,6 +1,9 @@
 package com.tenXen.server;
 
-import com.tenXen.common.util.ZipUtil;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by wt on 2016/11/4.
@@ -8,12 +11,16 @@ import com.tenXen.common.util.ZipUtil;
 public class Test {
 
     public static void main(String[] args) {
-//        URL url = Test.class.getResource("/data/image/emotion");
-        String path = "data/server/emotion";
-        String newPath = path + "/emotion.zip";
-        String[] includes = {"*.png", "*.jpg", "*.gif"};
-        String[] excludes = {""};
-        ZipUtil.doZip(path, newPath, includes, null);
-//        ZipUtil.unZip(newPath,path);
+        List<String> list1 = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
+        File file1 = new File("data/server/emotion");
+        File file2 = new File("data/client/emotion");
+        if (file1.exists()) {
+            list1 = new ArrayList<String>(Arrays.asList(file1.list()));
+        }
+        if (file2.exists()) {
+            list2 = new ArrayList<String>(Arrays.asList(file2.list()));
+        }
+        list2.removeAll(list1);
     }
 }

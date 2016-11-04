@@ -24,7 +24,7 @@ public class UpdateHandler extends ChannelHandlerAdapter {
             UpdateModel model = (UpdateModel) msg;
             if (model.getUpdateCode() == Constants.UPDATE_CODE_EMOTION) {
                 if (model.getResultCode() == Constants.RESULT_SUC) {
-                    EmotionWorker.getInstance().updateEmotion(model);
+                    EmotionWorker.getInstance().updateEmotionResponse(model);
                 }
             }
         } else {

@@ -23,5 +23,17 @@
             <version>0.1</version>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.7.0</version>
+                <configuration>
+                    <vendor>tenXen</vendor>
+                    <mainClass>com.tenXen.client.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

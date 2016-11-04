@@ -1,6 +1,7 @@
 package com.tenXen.server.handler;
 
 import com.tenXen.common.constant.Constants;
+import com.tenXen.common.util.FileUtil;
 import com.tenXen.core.model.UpdateModel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,9 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by wt on 2016/11/4.
@@ -32,17 +31,24 @@ public class UpdateHandler extends ChannelHandlerAdapter {
             UpdateModel model = (UpdateModel) msg;
             if (model.getUpdateCode() == Constants.UPDATE_CODE_EMOTION) {
                 File file = new File(emotionPath);
-                List<String> fileList = new ArrayList();
+                List<String> fileList = new ArrayList<>();
+                Map<String, byte[]> emotionList = new HashMap<>();
                 if (file.exists()) {
-                    fileList = Arrays.asList(file.list());
+                    fileList = new ArrayList<String>(Arrays.asList(file.list()));
                 }
                 List userEmotionList = model.getUserEmotionList();
                 if (!userEmotionList.containsAll(fileList)) {
                     fileList.removeAll(userEmotionList);
-                    for(String name : fileList){
-
+                    for (String name : fileList) {
+                        try {
+                            byte[] emotion = FileUtil.readFile(emotionPath + "/" + name);
+                            emotionList.put(name, emotion);
+                        } catch (Exception e) {
+                            fileList.remove(name);
+                        }
                     }
                 }
+                model.setServerEmotionMap(emotionList);
                 model.setResultCode(Constants.RESULT_SUC);
                 ctx.writeAndFlush(model);
             }

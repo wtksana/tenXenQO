@@ -2,6 +2,7 @@ package com.tenXen.core.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wt on 2016/11/4.
@@ -15,8 +16,7 @@ public class UpdateModel implements Serializable {
     private int resultCode;
     private Object updateFile;
     private List<String> userEmotionList;
-    private List<String> serverEmotionList;
-    private List<byte[]> emotionDatas;
+    private Map<String, byte[]> serverEmotionMap;
 
     public List<String> getUserEmotionList() {
         return userEmotionList;
@@ -26,20 +26,12 @@ public class UpdateModel implements Serializable {
         this.userEmotionList = userEmotionList;
     }
 
-    public List<String> getServerEmotionList() {
-        return serverEmotionList;
+    public Map<String, byte[]> getServerEmotionMap() {
+        return serverEmotionMap;
     }
 
-    public void setServerEmotionList(List<String> serverEmotionList) {
-        this.serverEmotionList = serverEmotionList;
-    }
-
-    public List<byte[]> getEmotionDatas() {
-        return emotionDatas;
-    }
-
-    public void setEmotionDatas(List<byte[]> emotionDatas) {
-        this.emotionDatas = emotionDatas;
+    public void setServerEmotionMap(Map<String, byte[]> serverEmotionMap) {
+        this.serverEmotionMap = serverEmotionMap;
     }
 
     public int getUpdateCode() {
