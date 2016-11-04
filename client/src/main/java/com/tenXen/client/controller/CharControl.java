@@ -187,9 +187,9 @@ public class CharControl {
                 Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
                 TrayIcon trayIcon = new TrayIcon(image);
                 trayIcon.addActionListener(event -> show());
-                MenuItem openItem = new MenuItem("显示");
+                MenuItem openItem = new MenuItem("show");
                 openItem.addActionListener(event -> show());
-                MenuItem exitItem = new MenuItem("退出");
+                MenuItem exitItem = new MenuItem("exit");
                 exitItem.addActionListener(event -> exit());
                 final PopupMenu popup = new PopupMenu();
                 popup.add(openItem);
