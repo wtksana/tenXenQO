@@ -47,12 +47,12 @@ public class UserHandler extends ChannelHandlerAdapter {
             }
             Log.info(model.getMsg());
             ctx.writeAndFlush(model);
-            if (model.getHandlerCode() == Constants.LOGOUT_CODE || model.getHandlerCode() == Constants.LOGIN_CODE && model.getResultCode() == Constants.RESULT_SUC) {
-                UserModel m = userService.getOnlineUserList();
-                if (m.getResultCode() == Constants.RESULT_SUC) {
-                    ChannelGroups.broadcast(m);
-                }
-            }
+//            if (model.getHandlerCode() == Constants.LOGOUT_CODE || model.getHandlerCode() == Constants.LOGIN_CODE && model.getResultCode() == Constants.RESULT_SUC) {
+//                UserModel m = userService.getOnlineUserList();
+//                if (m.getResultCode() == Constants.RESULT_SUC) {
+//                    ChannelGroups.broadcast(m);
+//                }
+//            }
         } else {
             ctx.fireChannelRead(msg);
         }

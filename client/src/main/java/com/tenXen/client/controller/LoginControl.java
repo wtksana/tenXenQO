@@ -106,7 +106,7 @@ public class LoginControl {
         } else {
             setOutput("连接失败...请检查连接设置...");
         }
-        new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
+//        new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
     }
 
     @FXML
@@ -150,7 +150,7 @@ public class LoginControl {
         if (model.getResultCode() == Constants.RESULT_SUC) {
             this.loginStage.close();
             ConnectContainer.SELF = model.getSelf();
-            CharControl.getInstance().initCharLayout();
+            MainControl.getInstance().initMainLayout();
         } else {
             setOutput(model.getMsg());
         }

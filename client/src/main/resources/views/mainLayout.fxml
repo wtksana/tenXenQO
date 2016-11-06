@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+    <effect>
+        <DropShadow color="#3c3c3c" height="10.0" radius="4.5" width="10.0" />
+    </effect>
+    <children>
+        <ImageView fx:id="headImage" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+            <image>
+                <Image url="@../image/qo_48X48.jpg" />
+            </image>
+         <effect>
+            <DropShadow height="10.0" radius="4.5" width="10.0" />
+         </effect>
+        </ImageView>
+        <Label fx:id="nickname" text="nickname" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="40.0">
+         <effect>
+            <DropShadow color="#282828" height="10.0" radius="4.5" width="10.0" />
+         </effect></Label>
+        <TextField fx:id="searchBar" prefHeight="20.0" promptText="搜索好友、群组" AnchorPane.bottomAnchor="460.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+        <TabPane prefHeight="450.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="20.0" tabMaxWidth="40.0" tabMinHeight="20.0" tabMinWidth="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
+            <tabs>
+                <Tab closable="false" text="好友">
+                    <content>
+                        <ScrollPane hbarPolicy="NEVER">
+                            <content>
+                                <VBox fx:id="friendsBox" />
+                            </content>
+                        </ScrollPane>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="群组" />
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

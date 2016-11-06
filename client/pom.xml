@@ -30,7 +30,9 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>8.7.0</version>
                 <configuration>
-                    <vendor>tenXen</vendor>
+                    <title>tenXenQO</title>
+                    <appName>tenXenQO</appName>
+                    <vendor>tt</vendor>
                     <mainClass>com.tenXen.client.Main</mainClass>
                 </configuration>
             </plugin>

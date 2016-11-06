@@ -67,7 +67,7 @@ public class EmotionWorker {
                 }
             }
         }
-        CharControl.getInstance().createEmotionPane();
+//        CharControl.getInstance().createEmotionPane();
     }
 
     public UpdateModel updateEmotionRequest() {

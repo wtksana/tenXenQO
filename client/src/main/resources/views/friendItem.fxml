@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxWidth="150.0" prefWidth="150.0" stylesheets="@css/fx.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fx:id="headImage" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <effect>
+            <DropShadow height="10.0" radius="4.5" width="10.0" />
+         </effect></ImageView>
+        <Label fx:id="userName" maxWidth="90.0" text="admin" textFill="#515151" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="5.0">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <font>
+                <Font size="14.0" />
+            </font>
+         <effect>
+            <DropShadow color="#7c7c7c" height="5.0" radius="2.0" width="5.0" />
+         </effect>
+        </Label>
+      <Label maxWidth="90.0" text="Label" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="30.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Label>
+    </children>
+</AnchorPane>

@@ -73,8 +73,8 @@ public class CharControl {
     public void initCharLayout() {
         try {
             this.charStage = new Stage();
-            Platform.setImplicitExit(false);
-            createTrayIcon(charStage);
+//            Platform.setImplicitExit(false);
+//            createTrayIcon(charStage);
             FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAR);
             loader.setController(CharControl.getInstance());
             Parent charLayout = loader.load();
@@ -103,7 +103,7 @@ public class CharControl {
         this.send.setOnMouseReleased(event -> doSend());
         this.emotion.setOnMousePressed(event -> toggleEmotionPane());
         this.emotionPane.setVisible(false);
-//        createEmotionPane();
+        createEmotionPane();
     }
 
     @FXML
@@ -174,71 +174,7 @@ public class CharControl {
         this.userBox.setItems(users);
     }
 
-    private void createTrayIcon(Stage stage) {
-        Platform.runLater(() -> {
-            try {
-                Toolkit.getDefaultToolkit();
-                if (!SystemTray.isSupported()) {
-                    Platform.exit();
-                    return;
-                }
-                stage.setOnCloseRequest(t -> hide());
-                SystemTray tray = SystemTray.getSystemTray();
-                Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
-                TrayIcon trayIcon = new TrayIcon(image);
-                trayIcon.addActionListener(event -> show());
-                MenuItem openItem = new MenuItem("show");
-                openItem.addActionListener(event -> show());
-                MenuItem exitItem = new MenuItem("exit");
-                exitItem.addActionListener(event -> exit());
-                final PopupMenu popup = new PopupMenu();
-                popup.add(openItem);
-                popup.addSeparator();
-                popup.add(exitItem);
-                trayIcon.setPopupMenu(popup);
-                tray.add(trayIcon);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
 
-    private void show() {
-        Platform.runLater(() -> {
-            if (charStage != null) {
-                charStage.show();
-                charStage.toFront();
-            }
-        });
-    }
-
-    private void hide() {
-        Platform.runLater(() -> {
-            if (SystemTray.isSupported()) {
-                charStage.hide();
-            } else {
-                System.exit(0);
-            }
-        });
-    }
-
-    private void exit() {
-        Platform.runLater(() -> {
-            System.out.print("监听到窗口关闭");
-            try {
-                UserModel model = new UserModel();
-                model.setHandlerCode(Constants.LOGOUT_CODE);
-                model.setSelf(ConnectContainer.SELF);
-                model.setResultCode(Constants.RESULT_FAIL);
-                ConnectContainer.CHANNEL.writeAndFlush(model);
-                ConnectContainer.USER_GROUP.shutdownGracefully();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                System.exit(0);
-            }
-        });
-    }
 
     public void createEmotionPane() {
         Platform.runLater(() -> {

@@ -18,6 +18,7 @@ public class LayoutLoader {
      * 注册界面
      */
     public static URL REGISTER = LayoutLoader.class.getResource("/views/registerLayout.fxml");
+    public static URL MAIN = LayoutLoader.class.getResource("/views/mainLayout.fxml");
     /**
      * 聊天界面
      */
