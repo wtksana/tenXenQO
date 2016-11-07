@@ -17,3 +17,12 @@
     -fx-background-color: #EAEAEA;
     -fx-max-width: 120;
 }
+
+.mainLayout {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, black, 5, 0, 0, 0);
+}
+
+.mainShadow {
+    -fx-background-color: transparent;
+}

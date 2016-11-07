@@ -30,8 +30,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -126,7 +124,7 @@ public class CharControl {
                 User u = ConnectContainer.SELF;
                 if (u != null) {
                     model.setUser(u.getId());
-                    model.setTouser(0);
+                    model.setToUser(0);
                     model.setCreateTime(new Date());
                     model.setUserName(u.getUserName());
                     model.setNickName(u.getNickname());
@@ -173,7 +171,6 @@ public class CharControl {
         ObservableList<String> users = FXCollections.observableArrayList(userNames);
         this.userBox.setItems(users);
     }
-
 
 
     public void createEmotionPane() {
@@ -229,7 +226,7 @@ public class CharControl {
             User u = ConnectContainer.SELF;
             if (u != null) {
                 model.setUser(u.getId());
-                model.setTouser(0);
+                model.setToUser(0);
                 model.setCreateTime(new Date());
                 model.setUserName(u.getUserName());
                 model.setNickName(u.getNickname());

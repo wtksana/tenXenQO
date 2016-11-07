@@ -1,7 +1,9 @@
 package com.tenXen.core.service.impl;
 
 import com.tenXen.common.constant.Constants;
+import com.tenXen.core.dao.GroupMapper;
 import com.tenXen.core.dao.UserMapper;
+import com.tenXen.core.dao.UserRelationMapper;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.UserModel;
 import com.tenXen.core.service.UserService;
@@ -10,12 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author createUser
- * @ClassName: UserServiceImpl
- * @date 10月31日 10:20
- * wt
- */
 @Service()
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 

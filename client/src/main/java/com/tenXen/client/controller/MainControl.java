@@ -8,14 +8,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,7 +22,7 @@ import java.io.IOException;
 /**
  * Created by wt on 2016/11/6.
  */
-public class MainControl {
+public class MainControl extends BaseControl {
 
     private MainControl() {
     }
@@ -43,69 +41,35 @@ public class MainControl {
     private TextField searchBar;
     @FXML
     private VBox friendsBox;
-
+    @FXML
+    private ImageView minImage;
+    @FXML
+    private ImageView closeImage;
     private Stage mainStage;
+    private Parent mainLayout;
 
-    public void initMainLayout() {
-        try {
-            this.mainStage = new Stage();
-            Platform.setImplicitExit(false);
-            createTrayIcon(mainStage);
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.MAIN);
-            loader.setController(MainControl.getInstance());
-            Parent mainLayout = loader.load();
-            mainStage.getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
-            mainStage.setTitle("tenXenQO");
-            mainStage.initModality(Modality.NONE);
-            mainStage.setScene(new Scene(mainLayout));
-            mainStage.initStyle(StageStyle.UNIFIED);
-            mainStage.setResizable(false);
-            mainStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    @Override
+    protected Stage getStage() {
+        return mainStage;
     }
 
-    private void createTrayIcon(Stage stage) {
-        Platform.runLater(() -> {
-            try {
-                Toolkit.getDefaultToolkit();
-                if (!SystemTray.isSupported()) {
-                    Platform.exit();
-                    return;
-                }
-                stage.setOnCloseRequest(t -> hide());
-                SystemTray tray = SystemTray.getSystemTray();
-                Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
-                TrayIcon trayIcon = new TrayIcon(image);
-                trayIcon.addActionListener(event -> show());
-                MenuItem openItem = new MenuItem("show");
-                openItem.addActionListener(event -> show());
-                MenuItem exitItem = new MenuItem("exit");
-                exitItem.addActionListener(event -> exit());
-                final PopupMenu popup = new PopupMenu();
-                popup.add(openItem);
-                popup.addSeparator();
-                popup.add(exitItem);
-                trayIcon.setPopupMenu(popup);
-                tray.add(trayIcon);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+    @Override
+    protected Parent getRoot() {
+        return mainLayout;
     }
 
-    private void show() {
-        Platform.runLater(() -> {
-            if (mainStage != null) {
-                mainStage.show();
-                mainStage.toFront();
-            }
-        });
+    @Override
+    protected ImageView getMinImage() {
+        return minImage;
     }
 
-    private void hide() {
+    @Override
+    protected ImageView getCloseImage() {
+        return closeImage;
+    }
+
+    @Override
+    protected void onMin() {
         Platform.runLater(() -> {
             if (SystemTray.isSupported()) {
                 mainStage.hide();
@@ -115,9 +79,10 @@ public class MainControl {
         });
     }
 
-    private void exit() {
+    @Override
+    protected void onClose() {
         Platform.runLater(() -> {
-            System.out.print("监听到窗口关闭");
+            Log.info("监听到主窗口关闭");
             try {
                 UserModel model = new UserModel();
                 model.setHandlerCode(Constants.LOGOUT_CODE);
@@ -132,4 +97,52 @@ public class MainControl {
             }
         });
     }
+
+    public void initMainLayout() {
+        try {
+            this.mainStage = new Stage();
+            Platform.setImplicitExit(false);
+            createTrayIcon(mainStage);
+            FXMLLoader loader = LayoutLoader.load(LayoutLoader.MAIN);
+            loader.setController(MainControl.getInstance());
+            mainLayout = loader.load();
+            mainStage.setTitle("tenXenQO");
+            mainStage.initModality(Modality.NONE);
+            mainStage.setResizable(false);
+            super.init();
+            super.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void createTrayIcon(Stage stage) {
+        Platform.runLater(() -> {
+            try {
+                Toolkit.getDefaultToolkit();
+                if (!SystemTray.isSupported()) {
+                    Platform.exit();
+                    return;
+                }
+                SystemTray tray = SystemTray.getSystemTray();
+                Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
+                TrayIcon trayIcon = new TrayIcon(image);
+                trayIcon.addActionListener(event -> show());
+                MenuItem openItem = new MenuItem("show");
+                openItem.addActionListener(event -> show());
+                MenuItem exitItem = new MenuItem("exit");
+                exitItem.addActionListener(event -> onClose());
+                final PopupMenu popup = new PopupMenu();
+                popup.add(openItem);
+                popup.addSeparator();
+                popup.add(exitItem);
+                trayIcon.setPopupMenu(popup);
+                tray.add(trayIcon);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 }

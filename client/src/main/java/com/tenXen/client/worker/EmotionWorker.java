@@ -1,6 +1,5 @@
 package com.tenXen.client.worker;
 
-import com.tenXen.client.controller.CharControl;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.FileUtil;
 import com.tenXen.core.model.UpdateModel;

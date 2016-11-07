@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenXen.core.dao.GroupMapper">
+    <!-- Result Map-->
+    <resultMap id="baseResultMap" type="com.tenXen.core.domain.Group">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="friends" property="friends"/>
+        <result column="groups" property="groups"/>
+        <result column="remark" property="remark"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- group table all fields -->
+    <sql id="base_column_list">
+	 id,user_id,friends,groups,remark,status,create_time,update_time
+    s</sql>
+
+    <!-- 查询条件 -->
+    <sql id="base_where_clause">
+        where 1=1
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="friends != null">
+                and friends = #{friends}
+            </if>
+            <if test="groups != null">
+                and groups = #{groups}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 插入记录 -->
+    <insert id="saveModel" parameterType="com.tenXen.core.domain.Group" useGeneratedKeys="true" keyProperty="id">
+        insert into group (
+        <trim suffixOverrides=",">
+            id ,
+            <if test="userId != null  ">
+                user_id,
+            </if>
+            <if test="friends != null  ">
+                friends,
+            </if>
+            <if test="groups != null  ">
+                groups,
+            </if>
+            <if test="remark != null  and remark != '' ">
+                remark,
+            </if>
+            <if test="status != null  ">
+                status,
+            </if>
+            <if test="createTime != null  ">
+                create_time,
+            </if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            #{id} ,
+            <if test="userId != null  ">
+                #{userId},
+            </if>
+            <if test="friends != null  ">
+                #{friends},
+            </if>
+            <if test="groups != null  ">
+                #{groups},
+            </if>
+            <if test="remark != null  and remark != '' ">
+                #{remark},
+            </if>
+            <if test="status != null  ">
+                #{status},
+            </if>
+            <if test="createTime != null  ">
+                now(),
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <!-- 根据id，修改记录-->
+    <update id="updateModelById" parameterType="com.tenXen.core.domain.Group">
+    update group set user_id=#{userId},friends=#{friends},groups=#{groups},remark=#{remark},status=#{status},update_time=now() where id=#{id}
+    </update>
+
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.Group">
+        update group set
+        <trim suffixOverrides=",">
+            <if test="userId != null  ">
+                user_id=#{userId},
+            </if>
+            <if test="friends != null  ">
+                friends=#{friends},
+            </if>
+            <if test="groups != null  ">
+                groups=#{groups},
+            </if>
+            <if test="remark != null  and remark != '' ">
+                remark=#{remark},
+            </if>
+            <if test="status != null  ">
+                status=#{status},
+            </if>
+            <if test="updateTime != null  ">
+                update_time=#{updateTime},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteModelById" parameterType="com.tenXen.core.domain.Group">
+	delete 	 from group where id = #{id}
+    </delete>
+
+    <!-- 根据id查询 群组表 -->
+    <select id="getModelById" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Group">
+        select
+        <include refid="base_column_list"/>
+        from group where id = #{id}
+    </select>
+
+    <!-- 群组表 列表总数-->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.tenXen.core.domain.Group">
+        select count(1) from group
+        <include refid="base_where_clause"/>
+    </select>
+
+    <!-- 查询群组表列表 -->
+    <select id="findModelList" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Group">
+        select
+        <include refid="base_column_list"/>
+        from group
+        <include refid="base_where_clause"/>
+    </select>
+
+</mapper>   

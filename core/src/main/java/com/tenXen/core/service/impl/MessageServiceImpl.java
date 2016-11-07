@@ -6,12 +6,6 @@ import com.tenXen.core.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author createUser
- * @ClassName: MessageServiceImpl
- * @date 10月31日 10:20
- * wt
- */
 @Service()
 public class MessageServiceImpl extends BaseServiceImpl<Message> implements MessageService {
 

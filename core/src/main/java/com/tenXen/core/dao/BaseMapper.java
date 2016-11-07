@@ -9,7 +9,7 @@ import java.util.List;
  * @ClassName: BaseMapper
  * @Description: 数据基本操作类
  * @param <T>
- *            实体对象
+ * 实体对象
  */
 public interface BaseMapper<T> {
     /**

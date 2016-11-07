@@ -1,5 +1,6 @@
 package com.tenXen.core.model;
 
+import com.tenXen.core.domain.Group;
 import com.tenXen.core.domain.User;
 
 import java.util.List;
@@ -20,6 +21,26 @@ public class UserModel extends User {
     private List userList;
 
     private User self;
+
+    private List<Group> groups;
+
+    private List<User> friends;
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
 
     public User getSelf() {
         return self;

@@ -5,13 +5,6 @@ import com.tenXen.core.domain.BaseDomain;
 
 import java.util.List;
 
-/**
- * @param <T> 实体对象
- * @author liugang
- * @date 2016年5月17日 上午11:05:27
- * @ClassName: BaseService
- * @Description: 基本服务类接口
- */
 public interface BaseService<T extends BaseDomain> {
     /**
      * 获取单个实体

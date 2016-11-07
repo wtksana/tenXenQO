@@ -3,11 +3,10 @@ package com.tenXen.client.controller;
 import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.ConnectUtil;
 import com.tenXen.client.util.LayoutLoader;
-import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.UserModel;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,11 +15,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
-public class LoginControl {
+public class LoginControl extends BaseControl {
 
     private LoginControl() {
     }
@@ -47,8 +46,47 @@ public class LoginControl {
     private Button login;
     @FXML
     private Button register;
+    @FXML
+    private ImageView minImage;
+    @FXML
+    private ImageView closeImage;
 
     private Stage loginStage;
+    private Parent loginLayout;
+
+    @Override
+    protected Stage getStage() {
+        return loginStage;
+    }
+
+    @Override
+    protected Parent getRoot() {
+        return loginLayout;
+    }
+
+    @Override
+    protected ImageView getMinImage() {
+        return minImage;
+    }
+
+    @Override
+    protected ImageView getCloseImage() {
+        return closeImage;
+    }
+
+    @Override
+    protected void onClose() {
+        Platform.runLater(() -> {
+            try {
+                Log.info("监听到登录窗口关闭");
+                ConnectContainer.USER_GROUP.shutdownGracefully();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                System.exit(0);
+            }
+        });
+    }
 
     public void initLoginLayout(Stage primaryStage) {
         try {
@@ -57,27 +95,9 @@ public class LoginControl {
 
             FXMLLoader loader = LayoutLoader.load(LayoutLoader.LOGIN);
             loader.setController(LoginControl.getInstance());
-            Parent loginLayout = (Parent) loader.load();
-
-            Scene loginScene = new Scene(loginLayout);
-            loginStage.setScene(loginScene);
-            loginStage.initStyle(StageStyle.UNIFIED);
-            loginStage.show();
-            primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    try {
-                        System.out.print("监听到窗口关闭");
-                        if (ConnectContainer.USER_GROUP != null) {
-                            ConnectContainer.USER_GROUP.shutdownGracefully();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        System.exit(0);
-                    }
-                }
-            });
+            loginLayout = loader.load();
+            super.init();
+            super.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,11 +132,6 @@ public class LoginControl {
     @FXML
     private void register() {
         RegisterControl.getInstance().initRegisterLayout(this.loginStage);
-    }
-
-    @FXML
-    private void close() throws Exception {
-        this.loginStage.close();
     }
 
     @FXML

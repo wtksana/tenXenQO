@@ -5,23 +5,20 @@ import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
 /**
  * Created by wt on 2016/9/4.
  */
-public class RegisterControl {
+public class RegisterControl extends BaseControl {
 
     private RegisterControl() {
     }
@@ -42,28 +39,54 @@ public class RegisterControl {
     private Button cancel;
     @FXML
     private Button register;
+    @FXML
+    private ImageView minImage;
+    @FXML
+    private ImageView closeImage;
 
     private Stage registerStage;
+    private Parent registerLayout;
+
+    @Override
+    protected Stage getStage() {
+        return registerStage;
+    }
+
+    @Override
+    protected Parent getRoot() {
+        return registerLayout;
+    }
+
+    @Override
+    protected ImageView getMinImage() {
+        return minImage;
+    }
+
+    @Override
+    protected ImageView getCloseImage() {
+        return closeImage;
+    }
+
+    @Override
+    protected void onClose() {
+        Platform.runLater(() -> {
+            Log.info("监听到注册窗口关闭");
+            registerStage.close();
+        });
+    }
 
     public void initRegisterLayout(Stage owner) {
         try {
             FXMLLoader loader = LayoutLoader.load(LayoutLoader.REGISTER);
             loader.setController(RegisterControl.getInstance());
-            Parent registerLayout = loader.load();
+            registerLayout = loader.load();
 
             this.registerStage = new Stage();
             registerStage.setTitle("tenXenQO");
             registerStage.initModality(Modality.WINDOW_MODAL);
             registerStage.initOwner(owner);
-            registerStage.setScene(new Scene(registerLayout));
-            registerStage.initStyle(StageStyle.UNIFIED);
-            registerStage.show();
-            registerStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    System.out.print("监听到窗口关闭");
-                }
-            });
+            super.init();
+            super.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +94,7 @@ public class RegisterControl {
 
     @FXML
     private void initialize() {
-        this.cancel.setOnMouseReleased(event -> close());
+        this.cancel.setOnMouseReleased(event -> onClose());
         this.register.setOnMouseReleased(event -> doRegister());
     }
 
@@ -94,11 +117,6 @@ public class RegisterControl {
                 setOutput("连接失败...请检查连接设置...");
             }
         });
-    }
-
-    @FXML
-    private void close() {
-        this.registerStage.close();
     }
 
     public void setOutput(String msg) {
