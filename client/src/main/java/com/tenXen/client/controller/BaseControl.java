@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.Light.Point;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.slf4j.Logger;
@@ -31,7 +32,9 @@ public abstract class BaseControl {
 //    protected abstract void handle();
 
     public void init() {
-        getStage().setScene(new Scene(getRoot()));
+        Scene scene = new Scene(getRoot());
+        scene.setFill(Color.TRANSPARENT);
+        getStage().setScene(scene);
         getStage().getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
         getStage().initStyle(StageStyle.TRANSPARENT);
         getRoot().setOnMousePressed(event -> {

@@ -214,4 +214,12 @@
         UPDATE user SET online = 0 WHERE id = #{id}
     </select>
 
+    <select id="getListByIds" resultMap="baseResultMap" parameterType="String">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM user WHERE id IN
+        <foreach collection="userIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>   

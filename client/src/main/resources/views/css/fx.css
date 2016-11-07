@@ -18,11 +18,9 @@
     -fx-max-width: 120;
 }
 
-.mainLayout {
+._shadow {
     -fx-background-color: white;
-    -fx-effect: dropshadow(gaussian, black, 5, 0, 0, 0);
-}
-
-.mainShadow {
-    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);
+    -fx-background-insets: 5;
+    -fx-background-radius: 5;
 }

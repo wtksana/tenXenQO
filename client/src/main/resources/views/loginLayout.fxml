@@ -4,14 +4,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="200.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="200.0" prefWidth="250.0" styleClass="_shadow" stylesheets="@css/fx.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fx:id="closeImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ImageView fx:id="closeImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
             <image>
                 <Image url="@../image/close.png"/>
             </image>
         </ImageView>
-        <ImageView fx:id="minImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="0.0">
+        <ImageView fx:id="minImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="5.0">
             <image>
                 <Image url="@../image/min.png"/>
             </image>
@@ -35,7 +35,8 @@
         <Button fx:id="login" mnemonicParsing="false" text="登入" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="110.0"/>
         <Button fx:id="register" mnemonicParsing="false" text="注册" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="110.0"/>
         <Button fx:id="showConfig" mnemonicParsing="false" text="连接设置" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="110.0"/>
-        <TextArea fx:id="output" editable="false" prefHeight="50.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0"/>
+        <TextArea fx:id="output" editable="false" prefHeight="50.0" prefWidth="250.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+                  AnchorPane.topAnchor="150.0"/>
         <TextField fx:id="config" promptText="请输入IP" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="165.0"/>
         <Button fx:id="modify" mnemonicParsing="false" text="确定" visible="false" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="165.0"/>
     </children>

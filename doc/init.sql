@@ -21,9 +21,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
   `id` int(16) NOT NULL COMMENT '主键',
-  `user_id` int(16) DEFAULT NULL COMMENT '用户ID',
-  `friends` text COMMENT '好友',
-  `groups` text COMMENT '群组',
+  `title` varchar(255) DEFAULT NULL COMMENT '用户ID',
+  `users` text COMMENT '好友',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',

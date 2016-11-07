@@ -1,5 +1,7 @@
 package com.tenXen.core.service.impl;
 
+import com.tenXen.common.util.StringUtil;
+import com.tenXen.core.dao.UserMapper;
 import com.tenXen.core.dao.UserRelationMapper;
 import com.tenXen.core.domain.Group;
 import com.tenXen.core.domain.User;
@@ -15,9 +17,17 @@ public class UserRelationServiceImpl extends BaseServiceImpl<UserRelation> imple
 
     @Autowired
     private UserRelationMapper userRelationMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public List<User> getFriendsByUserId(int userId) {
+        UserRelation userRelation = userRelationMapper.getRelationByUserId(userId);
+        if (userRelation != null) {
+            if (StringUtil.isNotBlank(userRelation.formatFriends())) {
+
+            }
+        }
         return null;
     }
 
