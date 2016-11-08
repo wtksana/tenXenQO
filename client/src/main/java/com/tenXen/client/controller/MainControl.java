@@ -1,8 +1,10 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
+import com.tenXen.client.controller.component.FriendItemControl;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
+import com.tenXen.core.model.UserFriendModel;
 import com.tenXen.core.model.UserModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by wt on 2016/11/6.
@@ -112,9 +115,38 @@ public class MainControl extends BaseControl {
             mainStage.setResizable(false);
             super.init();
             super.show();
+            initFriends();
+            initGroups();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+//    @FXML
+//    private void initialize() {
+//    }
+
+    private void initFriends() {
+        Platform.runLater(() -> {
+            try {
+                List<UserFriendModel> friends = ConnectContainer.FRIENDS;
+                if (friends != null && friends.size() > 0) {
+                    for (UserFriendModel model : friends) {
+                        FXMLLoader loader = LayoutLoader.load(LayoutLoader.FRIEND_ITEM);
+                        FriendItemControl friendItem = new FriendItemControl(model);
+                        loader.setController(friendItem);
+                        Parent friend = loader.load();
+                        this.friendsBox.getChildren().add(friend);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void initGroups() {
 
     }
 

@@ -34,8 +34,8 @@ public abstract class BaseControl {
     public void init() {
         Scene scene = new Scene(getRoot());
         scene.setFill(Color.TRANSPARENT);
-        getStage().setScene(scene);
         getStage().getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
+        getStage().setScene(scene);
         getStage().initStyle(StageStyle.TRANSPARENT);
         getRoot().setOnMousePressed(event -> {
             MouseEvent e = event;
@@ -77,25 +77,25 @@ public abstract class BaseControl {
 
         minImage.setOnMouseClicked(event -> onMin());
 
-        minImage.setOnMouseEntered(event -> {
+//        minImage.setOnMouseEntered(event -> {
 //                minImage.setImage(ResourceContainer.getMin_1());
-        });
+//        });
 
-        minImage.setOnMouseExited(event -> {
+//        minImage.setOnMouseExited(event -> {
 //                minImage.setImage(ResourceContainer.getMin());
-        });
+//        });
 
         ImageView closeImage = getCloseImage();
 
         closeImage.setOnMouseClicked(event -> onClose());
 
-        closeImage.setOnMouseEntered(event -> {
+//        closeImage.setOnMouseEntered(event -> {
 //                closeImage.setImage(ResourceContainer.getClose_1());
-        });
+//        });
 
-        closeImage.setOnMouseExited(event -> {
+//        closeImage.setOnMouseExited(event -> {
 //                closeImage.setImage(ResourceContainer.getClose());
-        });
+//        });
     }
 
     protected void show() {

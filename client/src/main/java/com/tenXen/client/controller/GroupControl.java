@@ -9,12 +9,18 @@ import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.MessageModel;
-import com.tenXen.core.model.UserFriendModel;
+import com.tenXen.core.model.UserModel;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
@@ -22,21 +28,24 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by wt on 2016/10/28.
  */
-public class CharControl extends BaseControl {
+public class GroupControl {
 
-    private CharControl() {
+    private GroupControl() {
     }
 
-    private static CharControl instance = new CharControl();
+    private static GroupControl instance = new GroupControl();
 
-    public static CharControl getInstance() {
+    public static GroupControl getInstance() {
         return instance;
     }
 
@@ -56,57 +65,24 @@ public class CharControl extends BaseControl {
     private ScrollPane emotionPane;
     @FXML
     private Button emotion;
-    @FXML
-    private ImageView minImage;
-    @FXML
-    private ImageView closeImage;
-    @FXML
-    private Label friendName;
 
     private Stage charStage;
-    private Parent charLayout;
-    private UserFriendModel userFriendModel;
 
-    @Override
-    protected Stage getStage() {
-        return charStage;
-    }
-
-    @Override
-    protected Parent getRoot() {
-        return charLayout;
-    }
-
-    @Override
-    protected ImageView getMinImage() {
-        return minImage;
-    }
-
-    @Override
-    protected ImageView getCloseImage() {
-        return closeImage;
-    }
-
-    @Override
-    protected void onClose() {
-        Platform.runLater(() -> {
-            Log.info("监听到聊天窗口关闭" + friendName.getText());
-            charStage.close();
-        });
-    }
-
-    public void initCharLayout(UserFriendModel model) {
+    public void initCharLayout() {
         try {
-            charStage = new Stage();
-            userFriendModel = model;
+            this.charStage = new Stage();
+//            Platform.setImplicitExit(false);
+//            createTrayIcon(charStage);
             FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAR);
-            loader.setController(CharControl.getInstance());
-            charLayout = loader.load();
+            loader.setController(GroupControl.getInstance());
+            Parent charLayout = loader.load();
+            charStage.getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
             charStage.setTitle("tenXenQO");
             charStage.initModality(Modality.NONE);
+            charStage.setScene(new Scene(charLayout));
+            charStage.initStyle(StageStyle.UNIFIED);
             charStage.setResizable(false);
-            super.init();
-            super.show();
+            charStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,18 +90,17 @@ public class CharControl extends BaseControl {
 
     @FXML
     private void initialize() {
-        friendName.setText(userFriendModel.getFriend_userName());
-        charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
+        this.charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
                 charScroll.setVvalue((Double) newValue)
         );
-        sendBox.setOnKeyPressed(event -> {
+        this.sendBox.setOnKeyPressed(event -> {
             if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
                 doSend();
             }
         });
-        send.setOnMouseReleased(event -> doSend());
-        emotion.setOnMousePressed(event -> toggleEmotionPane());
-        emotionPane.setVisible(false);
+        this.send.setOnMouseReleased(event -> doSend());
+        this.emotion.setOnMousePressed(event -> toggleEmotionPane());
+        this.emotionPane.setVisible(false);
         createEmotionPane();
     }
 
@@ -139,20 +114,21 @@ public class CharControl extends BaseControl {
 
     @FXML
     private void doSend() {
+        String sms = this.sendBox.getText();
+        this.sendBox.setText("");
         Platform.runLater(() -> {
-            String sms = sendBox.getText();
-            sendBox.setText("");
-            User u = ConnectContainer.SELF;
-            if (!StringUtil.isBlank(sms) && u != null) {
+            if (!StringUtil.isBlank(sms)) {
                 MessageModel model = new MessageModel();
                 model.setIsEmotion(Constants.NO);
-                model.setUser(u.getId());
-                model.setToUser(userFriendModel.getFriendId());
                 model.setContent(sms);
-                model.setType(1);
-                model.setCreateTime(new Date());
-                model.setUserName(u.getUserName());
-                model.setNickName(u.getNickname());
+                User u = ConnectContainer.SELF;
+                if (u != null) {
+                    model.setUser(u.getId());
+                    model.setToUser(0);
+                    model.setCreateTime(new Date());
+                    model.setUserName(u.getUserName());
+                    model.setNickName(u.getNickname());
+                }
                 ConnectContainer.CHANNEL.writeAndFlush(model);
             }
         });
@@ -171,21 +147,38 @@ public class CharControl extends BaseControl {
                 loader.setController(charItemControl);
             }
             Pane charItem = loader.load();
-            charBox.getChildren().add(charItem);
-            if (charBox.getChildren().size() > 50) {
-                charBox.getChildren().remove(0, 20);
+            this.charBox.getChildren().add(charItem);
+            if (this.charBox.getChildren().size() > 50) {
+                this.charBox.getChildren().remove(0, 20);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void updateOnlineUser(UserModel model) {
+        List<User> list = model.getUserList();
+        List<String> userNames = new ArrayList();
+        for (User user : list) {
+            String userName = user.getUserName();
+            String name = user.getNickname();
+            if (!StringUtil.isBlank(name)) {
+                userNames.add(name);
+            } else {
+                userNames.add(userName);
+            }
+        }
+        ObservableList<String> users = FXCollections.observableArrayList(userNames);
+        this.userBox.setItems(users);
+    }
+
+
     public void createEmotionPane() {
         Platform.runLater(() -> {
             try {
-                emotionPane.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                this.emotionPane.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (!newValue) {
-                        emotionPane.setVisible(false);
+                        this.emotionPane.setVisible(false);
                     }
                 });
                 Map<String, javafx.scene.image.Image> emotions = EmotionWorker.getInstance().getAllEmotion();
@@ -207,7 +200,7 @@ public class CharControl extends BaseControl {
                         i++;
                     }
                     vBox.getChildren().add(hBox);
-                    emotionPane.setContent(vBox);
+                    this.emotionPane.setContent(vBox);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -226,7 +219,7 @@ public class CharControl extends BaseControl {
 
     private void doSendEmotion(String name) {
         Platform.runLater(() -> {
-            emotionPane.setVisible(false);
+            this.emotionPane.setVisible(false);
             MessageModel model = new MessageModel();
             model.setIsEmotion(Constants.YES);
             model.setContent(name);

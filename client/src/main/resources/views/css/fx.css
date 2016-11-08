@@ -24,3 +24,27 @@
     -fx-background-insets: 5;
     -fx-background-radius: 5;
 }
+
+.tab .tab-label {
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER;
+    -fx-text-fill: #000000;
+}
+
+.tab {
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-background-color: #BFEFFF;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: white;
+}
+
+.tab:selected {
+    -fx-background-color: #00BFFF;
+}
+
+.friendItemMask {
+    -fx-background-color: rgba(100, 100, 100, 0);
+}

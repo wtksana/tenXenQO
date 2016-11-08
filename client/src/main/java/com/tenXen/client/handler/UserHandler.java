@@ -1,6 +1,7 @@
 package com.tenXen.client.handler;
 
 import com.tenXen.client.controller.CharControl;
+import com.tenXen.client.controller.GroupControl;
 import com.tenXen.client.controller.LoginControl;
 import com.tenXen.client.controller.RegisterControl;
 import com.tenXen.common.constant.Constants;
@@ -31,7 +32,7 @@ public class UserHandler extends ChannelHandlerAdapter {
                 Platform.runLater(() -> LoginControl.getInstance().handleLogin(model));
             }
             if (model.getHandlerCode() == Constants.UPDATE_ONLINE_USER) {
-                Platform.runLater(() -> CharControl.getInstance().updateOnlineUser(model));
+                Platform.runLater(() -> GroupControl.getInstance().updateOnlineUser(model));
             }
         } else {
             ctx.fireChannelRead(msg);

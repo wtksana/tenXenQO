@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/fx.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="_shadow" stylesheets="@css/fx.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ScrollPane fx:id="userScroll" layoutX="400.0" prefHeight="400.0" prefWidth="120.0" AnchorPane.leftAnchor="480.0" AnchorPane.topAnchor="0.0">
+        <ImageView fx:id="closeImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <image>
+                <Image url="@../image/close.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="minImage" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="5.0">
+            <image>
+                <Image url="@../image/min.png"/>
+            </image>
+        </ImageView>
+        <Label fx:id="friendName" text="Label" AnchorPane.leftAnchor="230.0" AnchorPane.topAnchor="15.0"/>
+        <ScrollPane fx:id="charScroll" hbarPolicy="NEVER" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
             <content>
-                <ListView fx:id="userBox" prefHeight="400.0" prefWidth="105.0"/>
+                <VBox fx:id="charBox"/>
             </content>
         </ScrollPane>
-        <TextArea fx:id="sendBox" layoutY="330.0" prefHeight="70.0" prefWidth="480.0" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="330.0"/>
-        <Button fx:id="send" layoutX="368.0" layoutY="374.0" mnemonicParsing="false" styleClass="sendButton" text="发送(Ctrl+Enter)"/>
-        <ScrollPane fx:id="charScroll" hbarPolicy="NEVER" prefHeight="300.0" prefWidth="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <content>
-                <VBox fx:id="charBox" prefHeight="300.0" prefWidth="465.0"/>
-            </content>
+        <Button fx:id="emotion" mnemonicParsing="false" styleClass="sendButton" text="表情" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="403.0"/>
+        <Button fx:id="send" mnemonicParsing="false" styleClass="sendButton" text="发送(Ctrl+Enter)" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="403.0"/>
+        <ScrollPane fx:id="emotionPane" hbarPolicy="NEVER" maxHeight="250.0" maxWidth="400.0" minHeight="250.0" minWidth="400.0" prefHeight="250.0" prefWidth="400.0" vbarPolicy="NEVER" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="160.0">
         </ScrollPane>
-        <Button fx:id="emotion" mnemonicParsing="false" styleClass="emotion" text="表情" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="303.0"/>
-        <ScrollPane fx:id="emotionPane" hbarPolicy="NEVER" maxHeight="250.0" maxWidth="400.0" minHeight="250.0" minWidth="400.0" prefHeight="250.0" prefWidth="400.0" vbarPolicy="NEVER" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="55.0">
-        </ScrollPane>
+        <TextArea fx:id="sendBox" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="430.0"/>
     </children>
 </AnchorPane>
