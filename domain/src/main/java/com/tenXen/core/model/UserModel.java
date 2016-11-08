@@ -22,23 +22,23 @@ public class UserModel extends User {
 
     private User self;
 
-    private List<Group> groups;
+    private List<UserGroupModel> groups;
 
-    private List<User> friends;
+    private List<UserFriendModel> friends;
 
-    public List<Group> getGroups() {
+    public List<UserGroupModel> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(List<UserGroupModel> groups) {
         this.groups = groups;
     }
 
-    public List<User> getFriends() {
+    public List<UserFriendModel> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(List<UserFriendModel> friends) {
         this.friends = friends;
     }
 

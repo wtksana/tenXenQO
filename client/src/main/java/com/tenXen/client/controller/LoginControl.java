@@ -10,14 +10,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class LoginControl extends BaseControl {
 
@@ -165,6 +163,8 @@ public class LoginControl extends BaseControl {
         if (model.getResultCode() == Constants.RESULT_SUC) {
             this.loginStage.close();
             ConnectContainer.SELF = model.getSelf();
+            ConnectContainer.FRIENDS = model.getFriends();
+            ConnectContainer.GROUPS = model.getGroups();
             MainControl.getInstance().initMainLayout();
         } else {
             setOutput(model.getMsg());

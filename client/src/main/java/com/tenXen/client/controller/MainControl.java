@@ -45,6 +45,7 @@ public class MainControl extends BaseControl {
     private ImageView minImage;
     @FXML
     private ImageView closeImage;
+
     private Stage mainStage;
     private Parent mainLayout;
 

@@ -1,182 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tenXen.core.dao.MessageMapper" > 
-<!-- Result Map-->
-<resultMap id="baseResultMap" type="com.tenXen.core.domain.Message" >
-	<result column="id" property="id"/>
-	<result column="user" property="user"/>
-	<result column="to_user" property="toUser"/>
-	<result column="to_group" property="toGroup"/>
-	<result column="type" property="type"/>
-	<result column="content" property="content"/>
-	<result column="is_read" property="isRead"/>
-	<result column="status" property="status"/>
-	<result column="create_time" property="createTime"/>
-	<result column="update_time" property="updateTime"/>
-</resultMap>
-       
-<!-- message table all fields -->
-<sql id="base_column_list" >
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenXen.core.dao.MessageMapper">
+    <!-- Result Map-->
+    <resultMap id="baseResultMap" type="com.tenXen.core.domain.Message">
+        <result column="id" property="id"/>
+        <result column="user" property="user"/>
+        <result column="to_user" property="toUser"/>
+        <result column="to_group" property="toGroup"/>
+        <result column="type" property="type"/>
+        <result column="content" property="content"/>
+        <result column="is_read" property="isRead"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- message table all fields -->
+    <sql id="base_column_list">
 	 id,user,to_user,to_group,type,content,is_read,status,create_time,update_time
 </sql>
-   
-<!-- 查询条件 -->
-<sql id="base_where_clause">
-where 1=1
-<trim  suffixOverrides="," >
-	<if test="id != null" >
-	    and id =  #{id}
-	</if>
-	<if test="user != null" >
-	    and user =  #{user}
-	</if>
-	<if test="toUser != null" >
-	    and to_user =  #{toUser}
-	</if>
-	<if test="toGroup != null" >
-	    and to_group =  #{toGroup}
-	</if>
-	<if test="type != null" >
-	    and type =  #{type}
-	</if>
-	<if test="content != null" >
-	    and content =  #{content}
-	</if>
-	<if test="isRead != null" >
-	    and is_read =  #{isRead}
-	</if>
-	<if test="status != null" >
-	    and status =  #{status}
-	</if>
-	<if test="createTime != null" >
-	    and create_time =  #{createTime}
-	</if>
-	<if test="updateTime != null" >
-	    and update_time =  #{updateTime}
-	</if>
-</trim>
-</sql>
 
-<!-- 插入记录 -->
-<insert id="saveModel" parameterType="com.tenXen.core.domain.Message"  useGeneratedKeys="true" keyProperty="id" >
-  insert into message ( 
-	<trim  suffixOverrides="," >
-		 id , 
-	<if test="user != null  ">
-		user,
-	</if>
-	<if test="toUser != null  ">
-		to_user,
-	</if>
-	<if test="toGroup != null  ">
-		to_group,
-	</if>
-	<if test="type != null  ">
-		type,
-	</if>
-	<if test="content != null  ">
-		content,
-	</if>
-	<if test="isRead != null  ">
-		is_read,
-	</if>
-	<if test="status != null  ">
-		status,
-	</if>
-	<if test="createTime != null  ">
-		create_time,
-	</if>
-	</trim> )  values  ( 
-	<trim  suffixOverrides="," >
-		 #{id} , 
-	<if test="user != null  ">
-		#{user},
-	</if>
-	<if test="toUser != null  ">
-		#{toUser},
-	</if>
-	<if test="toGroup != null  ">
-		#{toGroup},
-	</if>
-	<if test="type != null  ">
-		#{type},
-	</if>
-	<if test="content != null  ">
-		#{content},
-	</if>
-	<if test="isRead != null  ">
-		#{isRead},
-	</if>
-	<if test="status != null  ">
-		#{status},
-	</if>
-	<if test="createTime != null  ">
-		now(),
-	</if>
-	</trim> ) 
-</insert>
+    <!-- 查询条件 -->
+    <sql id="base_where_clause">
+        where 1=1
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="user != null">
+                and user = #{user}
+            </if>
+            <if test="toUser != null">
+                and to_user = #{toUser}
+            </if>
+            <if test="toGroup != null">
+                and to_group = #{toGroup}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="isRead != null">
+                and is_read = #{isRead}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </trim>
+    </sql>
 
-<!-- 根据id，修改记录-->  
- <update id="updateModelById" parameterType="com.tenXen.core.domain.Message" >
+    <!-- 插入记录 -->
+    <insert id="saveModel" parameterType="com.tenXen.core.domain.Message" useGeneratedKeys="true" keyProperty="id">
+        insert into message (
+        <trim suffixOverrides=",">
+            id ,
+            <if test="user != null  ">
+                user,
+            </if>
+            <if test="toUser != null  ">
+                to_user,
+            </if>
+            <if test="toGroup != null  ">
+                to_group,
+            </if>
+            <if test="type != null  ">
+                type,
+            </if>
+            <if test="content != null  and content != '' ">
+                content,
+            </if>
+            <if test="isRead != null  ">
+                is_read,
+            </if>
+            <if test="status != null  ">
+                status,
+            </if>
+            <if test="createTime != null  ">
+                create_time,
+            </if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            #{id} ,
+            <if test="user != null  ">
+                #{user},
+            </if>
+            <if test="toUser != null  ">
+                #{toUser},
+            </if>
+            <if test="toGroup != null  ">
+                #{toGroup},
+            </if>
+            <if test="type != null  ">
+                #{type},
+            </if>
+            <if test="content != null  and content != '' ">
+                #{content},
+            </if>
+            <if test="isRead != null  ">
+                #{isRead},
+            </if>
+            <if test="status != null  ">
+                #{status},
+            </if>
+            <if test="createTime != null  ">
+                now(),
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <!-- 根据id，修改记录-->
+    <update id="updateModelById" parameterType="com.tenXen.core.domain.Message">
   update message set user=#{user},to_user=#{toUser},to_group=#{toGroup},type=#{type},content=#{content},is_read=#{isRead},status=#{status},update_time=now() where id=#{id}
  </update>
- 
- <!-- 修改记录，只修改只不为空的字段 -->
-<update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.Message">
-	update message set 
-	<trim  suffixOverrides="," >
-	<if test="user != null  ">
-		user=#{user},
-	</if>
-	<if test="toUser != null  ">
-		to_user=#{toUser},
-	</if>
-	<if test="toGroup != null  ">
-		to_group=#{toGroup},
-	</if>
-	<if test="type != null  ">
-		type=#{type},
-	</if>
-	<if test="content != null  ">
-		content=#{content},
-	</if>
-	<if test="isRead != null  ">
-		is_read=#{isRead},
-	</if>
-	<if test="status != null  ">
-		status=#{status},
-	</if>
-	<if test="updateTime != null  ">
-		update_time=#{updateTime},
-	</if>
-	</trim> where id=#{id}
-</update>
 
-<!-- 删除记录 -->
-<delete id="deleteModelById" parameterType="com.tenXen.core.domain.Message">
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.Message">
+        update message set
+        <trim suffixOverrides=",">
+            <if test="user != null  ">
+                user=#{user},
+            </if>
+            <if test="toUser != null  ">
+                to_user=#{toUser},
+            </if>
+            <if test="toGroup != null  ">
+                to_group=#{toGroup},
+            </if>
+            <if test="type != null  ">
+                type=#{type},
+            </if>
+            <if test="content != null  and content != '' ">
+                content=#{content},
+            </if>
+            <if test="isRead != null  ">
+                is_read=#{isRead},
+            </if>
+            <if test="status != null  ">
+                status=#{status},
+            </if>
+            <if test="updateTime != null  ">
+                update_time=#{updateTime},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteModelById" parameterType="com.tenXen.core.domain.Message">
 	delete 	 from message where id = #{id}
 </delete>
- 
-<!-- 根据id查询 消息表 -->
-<select id="getModelById"  resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Message">
-	select <include refid="base_column_list" /> 
-	 from message where id = #{id}
-</select>
 
-<!-- 消息表 列表总数-->
-<select id="getCount" resultType="java.lang.Integer"  parameterType="com.tenXen.core.domain.Message">
-	select count(1) from message 
-	<include refid="base_where_clause"/>
-</select>
-  	
-<!-- 查询消息表列表 -->
-<select id="findModelList" resultMap="baseResultMap"  parameterType="com.tenXen.core.domain.Message">
-	select 
-	<include refid="base_column_list"/>
-	from message 
-	<include refid="base_where_clause"/>
-</select>
-  	
+    <!-- 根据id查询 群组表 -->
+    <select id="getModelById" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Message">
+        select
+        <include refid="base_column_list"/>
+        from message where id = #{id}
+    </select>
+
+    <!-- 群组表 列表总数-->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.tenXen.core.domain.Message">
+        select count(1) from message
+        <include refid="base_where_clause"/>
+    </select>
+
+    <!-- 查询群组表列表 -->
+    <select id="findModelList" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Message">
+        select
+        <include refid="base_column_list"/>
+        from message
+        <include refid="base_where_clause"/>
+    </select>
+
 </mapper>   

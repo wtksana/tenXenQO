@@ -1,10 +1,12 @@
 package com.tenXen.core.service.impl;
 
 import com.tenXen.common.constant.Constants;
-import com.tenXen.core.dao.GroupMapper;
+import com.tenXen.core.dao.UserFriendMapper;
+import com.tenXen.core.dao.UserGroupMapper;
 import com.tenXen.core.dao.UserMapper;
-import com.tenXen.core.dao.UserRelationMapper;
 import com.tenXen.core.domain.User;
+import com.tenXen.core.model.UserFriendModel;
+import com.tenXen.core.model.UserGroupModel;
 import com.tenXen.core.model.UserModel;
 import com.tenXen.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserFriendMapper userFriendMapper;
+    @Autowired
+    private UserGroupMapper userGroupMapper;
 
     @Override
     public UserModel doRegister(UserModel model) throws Exception {
@@ -53,6 +59,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
             if (list != null && list.size() > 0) {
                 u = list.get(0);
                 userMapper.setUserOnline(u.getId());
+                List<UserFriendModel> friends = userFriendMapper.getFriendsByUserId(u.getId());
+                if (friends != null && friends.size() > 0) {
+                    model.setFriends(friends);
+                }
+                List<UserGroupModel> groups = userGroupMapper.getGroupsByUserId(u.getId());
+                if (groups != null && groups.size() > 0) {
+                    model.setGroups(groups);
+                }
                 model.setSelf(u);
                 model.setMsg("登录成功" + u.getUserName());
                 model.setResultCode(Constants.RESULT_SUC);
@@ -90,4 +104,5 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         }
         return model;
     }
+
 }

@@ -6,10 +6,10 @@
     <!-- Result Map-->
     <resultMap id="baseResultMap" type="com.tenXen.core.domain.Group">
         <result column="id" property="id"/>
-        <result column="user_id" property="userId"/>
-        <result column="friends" property="friends"/>
-        <result column="groups" property="groups"/>
+        <result column="owner" property="owner"/>
+        <result column="title" property="title"/>
         <result column="remark" property="remark"/>
+        <result column="pic_path" property="picPath"/>
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -17,8 +17,8 @@
 
     <!-- group table all fields -->
     <sql id="base_column_list">
-	 id,user_id,friends,groups,remark,status,create_time,update_time
-    s</sql>
+	 id,owner,title,remark,pic_path,status,create_time,update_time
+</sql>
 
     <!-- 查询条件 -->
     <sql id="base_where_clause">
@@ -27,17 +27,17 @@
             <if test="id != null">
                 and id = #{id}
             </if>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="owner != null">
+                and owner = #{owner}
             </if>
-            <if test="friends != null">
-                and friends = #{friends}
-            </if>
-            <if test="groups != null">
-                and groups = #{groups}
+            <if test="title != null and title != ''">
+                and title = #{title}
             </if>
             <if test="remark != null and remark != ''">
                 and remark = #{remark}
+            </if>
+            <if test="picPath != null and picPath != ''">
+                and pic_path = #{picPath}
             </if>
             <if test="status != null">
                 and status = #{status}
@@ -56,17 +56,17 @@
         insert into group (
         <trim suffixOverrides=",">
             id ,
-            <if test="userId != null  ">
-                user_id,
+            <if test="owner != null  ">
+                owner,
             </if>
-            <if test="friends != null  ">
-                friends,
-            </if>
-            <if test="groups != null  ">
-                groups,
+            <if test="title != null  and title != '' ">
+                title,
             </if>
             <if test="remark != null  and remark != '' ">
                 remark,
+            </if>
+            <if test="picPath != null  and picPath != '' ">
+                pic_path,
             </if>
             <if test="status != null  ">
                 status,
@@ -78,17 +78,17 @@
         ) values (
         <trim suffixOverrides=",">
             #{id} ,
-            <if test="userId != null  ">
-                #{userId},
+            <if test="owner != null  ">
+                #{owner},
             </if>
-            <if test="friends != null  ">
-                #{friends},
-            </if>
-            <if test="groups != null  ">
-                #{groups},
+            <if test="title != null  and title != '' ">
+                #{title},
             </if>
             <if test="remark != null  and remark != '' ">
                 #{remark},
+            </if>
+            <if test="picPath != null  and picPath != '' ">
+                #{picPath},
             </if>
             <if test="status != null  ">
                 #{status},
@@ -102,24 +102,24 @@
 
     <!-- 根据id，修改记录-->
     <update id="updateModelById" parameterType="com.tenXen.core.domain.Group">
-    update group set user_id=#{userId},friends=#{friends},groups=#{groups},remark=#{remark},status=#{status},update_time=now() where id=#{id}
-    </update>
+  update group set owner=#{owner},title=#{title},remark=#{remark},pic_path=#{picPath},status=#{status},update_time=now() where id=#{id}
+ </update>
 
     <!-- 修改记录，只修改只不为空的字段 -->
     <update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.Group">
         update group set
         <trim suffixOverrides=",">
-            <if test="userId != null  ">
-                user_id=#{userId},
+            <if test="owner != null  ">
+                owner=#{owner},
             </if>
-            <if test="friends != null  ">
-                friends=#{friends},
-            </if>
-            <if test="groups != null  ">
-                groups=#{groups},
+            <if test="title != null  and title != '' ">
+                title=#{title},
             </if>
             <if test="remark != null  and remark != '' ">
                 remark=#{remark},
+            </if>
+            <if test="picPath != null  and picPath != '' ">
+                pic_path=#{picPath},
             </if>
             <if test="status != null  ">
                 status=#{status},
@@ -134,22 +134,22 @@
     <!-- 删除记录 -->
     <delete id="deleteModelById" parameterType="com.tenXen.core.domain.Group">
 	delete 	 from group where id = #{id}
-    </delete>
+</delete>
 
-    <!-- 根据id查询 群组表 -->
+    <!-- 根据id查询 用户关系表 -->
     <select id="getModelById" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Group">
         select
         <include refid="base_column_list"/>
         from group where id = #{id}
     </select>
 
-    <!-- 群组表 列表总数-->
+    <!-- 用户关系表 列表总数-->
     <select id="getCount" resultType="java.lang.Integer" parameterType="com.tenXen.core.domain.Group">
         select count(1) from group
         <include refid="base_where_clause"/>
     </select>
 
-    <!-- 查询群组表列表 -->
+    <!-- 查询用户关系表列表 -->
     <select id="findModelList" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.Group">
         select
         <include refid="base_column_list"/>

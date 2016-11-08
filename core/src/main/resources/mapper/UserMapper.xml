@@ -12,15 +12,16 @@
         <result column="signature" property="signature"/>
         <result column="mobile" property="mobile"/>
         <result column="address" property="address"/>
+        <result column="pic_path" property="picPath"/>
+        <result column="online" property="online"/>
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
-        <result column="online" property="online"/>
     </resultMap>
 
     <!-- user table all fields -->
     <sql id="base_column_list">
-	 id,user_name,pwd,nickname,signature,mobile,address,status,create_time,update_time,online
+	 id,user_name,pwd,nickname,signature,mobile,address,pic_path,online,status,create_time,update_time
 </sql>
 
     <!-- 查询条件 -->
@@ -48,6 +49,12 @@
             <if test="address != null and address != ''">
                 and address = #{address}
             </if>
+            <if test="picPath != null and picPath != ''">
+                and pic_path = #{picPath}
+            </if>
+            <if test="online != null">
+                and online = #{online}
+            </if>
             <if test="status != null">
                 and status = #{status}
             </if>
@@ -56,9 +63,6 @@
             </if>
             <if test="updateTime != null">
                 and update_time = #{updateTime}
-            </if>
-            <if test="online != null">
-                and online = #{online}
             </if>
         </trim>
     </sql>
@@ -86,14 +90,17 @@
             <if test="address != null  and address != '' ">
                 address,
             </if>
+            <if test="picPath != null  and picPath != '' ">
+                pic_path,
+            </if>
+            <if test="online != null  ">
+                online,
+            </if>
             <if test="status != null  ">
                 status,
             </if>
             <if test="createTime != null  ">
                 create_time,
-            </if>
-            <if test="online != null  ">
-                online,
             </if>
         </trim>
         ) values (
@@ -117,14 +124,17 @@
             <if test="address != null  and address != '' ">
                 #{address},
             </if>
+            <if test="picPath != null  and picPath != '' ">
+                #{picPath},
+            </if>
+            <if test="online != null  ">
+                #{online},
+            </if>
             <if test="status != null  ">
                 #{status},
             </if>
             <if test="createTime != null  ">
                 now(),
-            </if>
-            <if test="online != null  ">
-                #{online},
             </if>
         </trim>
         )
@@ -132,7 +142,7 @@
 
     <!-- 根据id，修改记录-->
     <update id="updateModelById" parameterType="com.tenXen.core.domain.User">
-  update user set user_name=#{userName},pwd=#{pwd},nickname=#{nickname},signature=#{signature},mobile=#{mobile},address=#{address},status=#{status},update_time=now(),online = #{online} where id=#{id}
+  update user set user_name=#{userName},pwd=#{pwd},nickname=#{nickname},signature=#{signature},mobile=#{mobile},address=#{address},pic_path=#{picPath},online=#{online},status=#{status},update_time=now() where id=#{id}
  </update>
 
     <!-- 修改记录，只修改只不为空的字段 -->
@@ -157,14 +167,17 @@
             <if test="address != null  and address != '' ">
                 address=#{address},
             </if>
+            <if test="picPath != null  and picPath != '' ">
+                pic_path=#{picPath},
+            </if>
+            <if test="online != null  ">
+                online=#{online},
+            </if>
             <if test="status != null  ">
                 status=#{status},
             </if>
             <if test="updateTime != null  ">
                 update_time=#{updateTime},
-            </if>
-            <if test="online != null  ">
-                online=#{online},
             </if>
         </trim>
         where id=#{id}
@@ -175,20 +188,20 @@
 	delete 	 from user where id = #{id}
 </delete>
 
-    <!-- 根据id查询 用户表 -->
+    <!-- 根据id查询 消息表 -->
     <select id="getModelById" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.User">
         select
         <include refid="base_column_list"/>
         from user where id = #{id}
     </select>
 
-    <!-- 用户表 列表总数-->
+    <!-- 消息表 列表总数-->
     <select id="getCount" resultType="java.lang.Integer" parameterType="com.tenXen.core.domain.User">
         select count(1) from user
         <include refid="base_where_clause"/>
     </select>
 
-    <!-- 查询用户表列表 -->
+    <!-- 查询消息表列表 -->
     <select id="findModelList" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.User">
         select
         <include refid="base_column_list"/>
@@ -214,7 +227,7 @@
         UPDATE user SET online = 0 WHERE id = #{id}
     </select>
 
-    <select id="getListByIds" resultMap="baseResultMap" parameterType="String">
+    <select id="getListByIds" resultMap="baseResultMap" parameterType="List">
         SELECT
         <include refid="base_column_list"/>
         FROM user WHERE id IN

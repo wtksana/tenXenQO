@@ -14,6 +14,4 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<User> getOnlineUserList();
 
-    List<User> getListByIds(String userIds);
-
 }

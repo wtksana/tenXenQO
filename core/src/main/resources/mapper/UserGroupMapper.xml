@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenXen.core.dao.UserGroupMapper">
+    <!-- Result Map-->
+    <resultMap id="baseResultMap" type="com.tenXen.core.domain.UserGroup">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="relation" property="relation"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="modelResultMap" extends="baseResultMap" type="com.tenXen.core.model.UserGroupModel">
+        <result column="title" property="group_title"/>
+        <result column="remark" property="group_remark"/>
+        <result column="pic_path" property="group_picPath"/>
+    </resultMap>
+
+    <!-- user_group table all fields -->
+    <sql id="base_column_list">
+	 id,user_id,group_id,relation,status,create_time,update_time
+</sql>
+
+    <!-- 查询条件 -->
+    <sql id="base_where_clause">
+        where 1=1
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="groupId != null">
+                and group_id = #{groupId}
+            </if>
+            <if test="relation != null">
+                and relation = #{relation}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 插入记录 -->
+    <insert id="saveModel" parameterType="com.tenXen.core.domain.UserGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into user_group (
+        <trim suffixOverrides=",">
+            id ,
+            <if test="userId != null  ">
+                user_id,
+            </if>
+            <if test="groupId != null  ">
+                group_id,
+            </if>
+            <if test="relation != null  ">
+                relation,
+            </if>
+            <if test="status != null  ">
+                status,
+            </if>
+            <if test="createTime != null  ">
+                create_time,
+            </if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            #{id} ,
+            <if test="userId != null  ">
+                #{userId},
+            </if>
+            <if test="groupId != null  ">
+                #{groupId},
+            </if>
+            <if test="relation != null  ">
+                #{relation},
+            </if>
+            <if test="status != null  ">
+                #{status},
+            </if>
+            <if test="createTime != null  ">
+                now(),
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <!-- 根据id，修改记录-->
+    <update id="updateModelById" parameterType="com.tenXen.core.domain.UserGroup">
+  update user_group set user_id=#{userId},group_id=#{groupId},relation=#{relation},status=#{status},update_time=now() where id=#{id}
+ </update>
+
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateModelBySelectiveAndId" parameterType="com.tenXen.core.domain.UserGroup">
+        update user_group set
+        <trim suffixOverrides=",">
+            <if test="userId != null  ">
+                user_id=#{userId},
+            </if>
+            <if test="groupId != null  ">
+                group_id=#{groupId},
+            </if>
+            <if test="relation != null  ">
+                relation=#{relation},
+            </if>
+            <if test="status != null  ">
+                status=#{status},
+            </if>
+            <if test="updateTime != null  ">
+                update_time=#{updateTime},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteModelById" parameterType="com.tenXen.core.domain.UserGroup">
+	delete 	 from user_group where id = #{id}
+</delete>
+
+    <!-- 根据id查询 消息表 -->
+    <select id="getModelById" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.UserGroup">
+        select
+        <include refid="base_column_list"/>
+        from user_group where id = #{id}
+    </select>
+
+    <!-- 消息表 列表总数-->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.tenXen.core.domain.UserGroup">
+        select count(1) from user_group
+        <include refid="base_where_clause"/>
+    </select>
+
+    <!-- 查询消息表列表 -->
+    <select id="findModelList" resultMap="baseResultMap" parameterType="com.tenXen.core.domain.UserGroup">
+        select
+        <include refid="base_column_list"/>
+        from user_group
+        <include refid="base_where_clause"/>
+    </select>
+
+    <sql id="model_column_list">
+        g.id,
+        g.user_id,
+        g.group_id,
+        g.relation,
+        g.STATUS,
+        g.create_time,
+        g.update_time,
+        p.title,
+        p.remark,
+        p.pic_path
+    </sql>
+
+    <select id="getGroupsByUserId" resultMap="modelResultMap" parameterType="int">
+        SELECT
+        <include refid="model_column_list"/>
+        FROM
+        `user_group` g
+        LEFT JOIN `group` p ON g.group_id = p.id
+        WHERE g.user_id = #{userId}
+    </select>
+</mapper>   
