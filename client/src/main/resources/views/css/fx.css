@@ -25,10 +25,26 @@
     -fx-background-radius: 5;
 }
 
+._charBox{
+    -fx-background-color: #BFEFFF;
+}
+
+._charTitle{
+    -fx-font-size: 14;
+}
+
 .tab .tab-label {
     -fx-background-color: transparent;
     -fx-alignment: CENTER;
     -fx-text-fill: #000000;
+    -fx-max-width: 10;
+}
+
+.tab-pane {
+    -fx-tab-min-width:30px;
+    -fx-tab-max-width:60px;
+    -fx-tab-min-height:20px;
+    -fx-tab-max-height:20px;
 }
 
 .tab {

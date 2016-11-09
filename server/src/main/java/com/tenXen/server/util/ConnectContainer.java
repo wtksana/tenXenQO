@@ -23,4 +23,8 @@ public class ConnectContainer {
     public static boolean isOnline(Integer userId) {
         return ONLINE_USER.containsKey(userId);
     }
+
+    public static Channel getChannel(Integer userId) {
+        return ONLINE_USER.get(userId);
+    }
 }

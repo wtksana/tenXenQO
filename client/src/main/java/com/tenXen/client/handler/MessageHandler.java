@@ -23,7 +23,7 @@ public class MessageHandler extends ChannelHandlerAdapter {
         if (msg instanceof MessageModel) {
             MessageModel model = (MessageModel) msg;
             if (model.getResultCode() == Constants.RESULT_SUC) {
-                Platform.runLater(() -> CharControl.getInstance().receiveMessage(model));
+//                Platform.runLater(() -> CharControl.getInstance().receiveMessage(model));
             } else {
                 Log.info("clientMessageHandler...fail");
             }

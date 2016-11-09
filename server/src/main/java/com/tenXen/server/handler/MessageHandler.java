@@ -3,6 +3,7 @@ package com.tenXen.server.handler;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.MessageModel;
 import com.tenXen.core.service.MessageService;
+import com.tenXen.server.util.ConnectContainer;
 import com.tenXen.server.util.SpringContainer;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -29,8 +30,14 @@ public class MessageHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof MessageModel) {
             MessageModel model = (MessageModel) msg;
-            messageService.saveModel(model);
             model.setResultCode(Constants.RESULT_SUC);
+            if (ConnectContainer.isOnline(model.getToUser())) {
+                ConnectContainer.getChannel(model.getToUser()).writeAndFlush(model);
+                model.setIsRead(Constants.YES);
+            } else {
+                model.setIsRead(Constants.NO);
+            }
+            messageService.saveModel(model);
 //            ChannelGroups.broadcast(model);
             Log.info(model.getMsg());
         } else {

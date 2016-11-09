@@ -42,16 +42,16 @@ public class CharControl extends BaseControl {
 
     @FXML
     private TextArea sendBox;
-    @FXML
-    private VBox charBox;
+//    @FXML
+//    private VBox charBox;
     @FXML
     private ListView userBox;
     @FXML
     private Button send;
     @FXML
     private ScrollPane userScroll;
-    @FXML
-    private ScrollPane charScroll;
+//    @FXML
+//    private ScrollPane charScroll;
     @FXML
     private ScrollPane emotionPane;
     @FXML
@@ -61,7 +61,9 @@ public class CharControl extends BaseControl {
     @FXML
     private ImageView closeImage;
     @FXML
-    private Label friendName;
+    private Label title;
+    @FXML
+    private TabPane charTabPane;
 
     private Stage charStage;
     private Parent charLayout;
@@ -90,7 +92,7 @@ public class CharControl extends BaseControl {
     @Override
     protected void onClose() {
         Platform.runLater(() -> {
-            Log.info("监听到聊天窗口关闭" + friendName.getText());
+            Log.info("监听到聊天窗口关闭" + title.getText());
             charStage.close();
         });
     }
@@ -114,10 +116,10 @@ public class CharControl extends BaseControl {
 
     @FXML
     private void initialize() {
-        friendName.setText(userFriendModel.getFriend_userName());
-        charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
-                charScroll.setVvalue((Double) newValue)
-        );
+        title.setText(userFriendModel.getFriend_userName());
+//        charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
+//                charScroll.setVvalue((Double) newValue)
+//        );
         sendBox.setOnKeyPressed(event -> {
             if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
                 doSend();
@@ -127,6 +129,7 @@ public class CharControl extends BaseControl {
         emotion.setOnMousePressed(event -> toggleEmotionPane());
         emotionPane.setVisible(false);
         createEmotionPane();
+        addCharBox();
     }
 
     @FXML
@@ -171,10 +174,10 @@ public class CharControl extends BaseControl {
                 loader.setController(charItemControl);
             }
             Pane charItem = loader.load();
-            charBox.getChildren().add(charItem);
-            if (charBox.getChildren().size() > 50) {
-                charBox.getChildren().remove(0, 20);
-            }
+//            charBox.getChildren().add(charItem);
+//            if (charBox.getChildren().size() > 50) {
+//                charBox.getChildren().remove(0, 20);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -240,5 +243,20 @@ public class CharControl extends BaseControl {
             }
             ConnectContainer.CHANNEL.writeAndFlush(model);
         });
+    }
+
+    public void addCharBox() {
+        VBox vBox = new VBox();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setContent(vBox);
+        Tab tab = new Tab(userFriendModel.getFriend_nickname());
+        tab.setContent(scrollPane);
+        tab.setOnSelectionChanged(event -> {
+            if(tab.isSelected()){
+                Log.info(tab.getText());
+            }
+        });
+        charTabPane.getTabs().add(tab);
     }
 }
