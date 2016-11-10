@@ -1,6 +1,5 @@
 package com.tenXen.client.handler;
 
-import com.tenXen.client.controller.CharControl;
 import com.tenXen.client.controller.GroupControl;
 import com.tenXen.client.controller.LoginControl;
 import com.tenXen.client.controller.RegisterControl;

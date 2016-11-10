@@ -6,8 +6,8 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="_shadow" stylesheets="@css/fx.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label fx:id="title" styleClass="_charTitle" text="Label" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
-        <TabPane fx:id="charTabPane" layoutX="5.0" layoutY="60.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
+        <Label fx:id="title" styleClass="_chatTitle" text="Label" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
+        <TabPane fx:id="chatTabPane" layoutX="5.0" layoutY="60.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
             <!--<tabs>
                 <Tab>
                     <content>

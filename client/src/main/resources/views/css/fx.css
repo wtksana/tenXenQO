@@ -25,11 +25,11 @@
     -fx-background-radius: 5;
 }
 
-._charBox{
+._chatBox {
     -fx-background-color: #BFEFFF;
 }
 
-._charTitle{
+._chatTitle {
     -fx-font-size: 14;
 }
 

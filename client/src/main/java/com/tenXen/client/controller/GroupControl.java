@@ -1,8 +1,8 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
-import com.tenXen.client.controller.component.CharEmotionControl;
-import com.tenXen.client.controller.component.CharItemControl;
+import com.tenXen.client.controller.component.ChatEmotionControl;
+import com.tenXen.client.controller.component.ChatItemControl;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
@@ -52,7 +52,7 @@ public class GroupControl {
     @FXML
     private TextArea sendBox;
     @FXML
-    private VBox charBox;
+    private VBox chatBox;
     @FXML
     private ListView userBox;
     @FXML
@@ -73,7 +73,7 @@ public class GroupControl {
             this.charStage = new Stage();
 //            Platform.setImplicitExit(false);
 //            createTrayIcon(charStage);
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAR);
+            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAT);
             loader.setController(GroupControl.getInstance());
             Parent charLayout = loader.load();
             charStage.getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
@@ -90,7 +90,7 @@ public class GroupControl {
 
     @FXML
     private void initialize() {
-        this.charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
+        this.chatBox.heightProperty().addListener((observable, oldvalue, newValue) ->
                 charScroll.setVvalue((Double) newValue)
         );
         this.sendBox.setOnKeyPressed(event -> {
@@ -138,18 +138,18 @@ public class GroupControl {
         try {
             FXMLLoader loader;
             if (model.getIsEmotion() == Constants.YES) {
-                CharEmotionControl charEmotionControl = new CharEmotionControl(model);
-                loader = LayoutLoader.load(LayoutLoader.CHAR_EMOTION);
-                loader.setController(charEmotionControl);
+                ChatEmotionControl chatEmotionControl = new ChatEmotionControl(model);
+                loader = LayoutLoader.load(LayoutLoader.CHAT_EMOTION);
+                loader.setController(chatEmotionControl);
             } else {
-                CharItemControl charItemControl = new CharItemControl(model);
-                loader = LayoutLoader.load(LayoutLoader.CHAR_ITEM);
-                loader.setController(charItemControl);
+                ChatItemControl chatItemControl = new ChatItemControl(model);
+                loader = LayoutLoader.load(LayoutLoader.CHAT_ITEM);
+                loader.setController(chatItemControl);
             }
             Pane charItem = loader.load();
-            this.charBox.getChildren().add(charItem);
-            if (this.charBox.getChildren().size() > 50) {
-                this.charBox.getChildren().remove(0, 20);
+            this.chatBox.getChildren().add(charItem);
+            if (this.chatBox.getChildren().size() > 50) {
+                this.chatBox.getChildren().remove(0, 20);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,12 +1,9 @@
 package com.tenXen.client.handler;
 
-import com.tenXen.client.common.LayoutContainer;
-import com.tenXen.client.controller.CharControl;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.MessageModel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

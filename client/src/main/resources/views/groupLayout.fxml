@@ -11,9 +11,9 @@
         </ScrollPane>
         <TextArea fx:id="sendBox" layoutY="330.0" prefHeight="70.0" prefWidth="480.0" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="330.0"/>
         <Button fx:id="send" layoutX="368.0" layoutY="374.0" mnemonicParsing="false" styleClass="sendButton" text="发送(Ctrl+Enter)"/>
-        <ScrollPane fx:id="charScroll" hbarPolicy="NEVER" prefHeight="300.0" prefWidth="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ScrollPane fx:id="chatScroll" hbarPolicy="NEVER" prefHeight="300.0" prefWidth="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
-                <VBox fx:id="charBox" prefHeight="300.0" prefWidth="465.0"/>
+                <VBox fx:id="chatBox" prefHeight="300.0" prefWidth="465.0"/>
             </content>
         </ScrollPane>
         <Button fx:id="emotion" mnemonicParsing="false" styleClass="emotion" text="表情" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="303.0"/>

@@ -86,6 +86,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         User u = model.getSelf();
         if (u != null) {
             userMapper.setUserOffline(u.getId());
+            model.setResultCode(Constants.RESULT_SUC);
+            model.setMsg("登出成功" + u.getUserName());
+        } else {
+            model.setResultCode(Constants.RESULT_FAIL);
+            model.setMsg("登出失败" + u.getUserName());
         }
         return model;
     }

@@ -25,16 +25,16 @@ public class LayoutLoader {
     /**
      * 聊天界面
      */
-    public static URL CHAR = LayoutLoader.class.getResource("/views/charLayout.fxml");
+    public static URL CHAT = LayoutLoader.class.getResource("/views/chatLayout.fxml");
     public static URL GROUP = LayoutLoader.class.getResource("/views/groupLayout.fxml");
     /**
      * 聊天记录
      */
-    public static URL CHAR_ITEM = LayoutLoader.class.getResource("/views/charItem.fxml");
+    public static URL CHAT_ITEM = LayoutLoader.class.getResource("/views/chatItem.fxml");
     /**
      * 发送表情
      */
-    public static URL CHAR_EMOTION = LayoutLoader.class.getResource("/views/charEmotion.fxml");
+    public static URL CHAT_EMOTION = LayoutLoader.class.getResource("/views/chatEmotion.fxml");
     /**
      * 好友
      */
@@ -42,7 +42,7 @@ public class LayoutLoader {
     /**
      * 系统托盘图标
      */
-    public static URL TRAY_IMAGE = LayoutLoader.class.getResource("/image/qoTray.jpg");
+    public static URL TRAY_IMAGE = LayoutLoader.class.getResource("/image/qoTray_16X16.jpg");
 
     public static InputStream STAG_IMAGE = LayoutLoader.class.getResourceAsStream("/image/qo_48X48.jpg");
 

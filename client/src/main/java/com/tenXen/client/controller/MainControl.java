@@ -4,6 +4,7 @@ import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.controller.component.FriendItemControl;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.common.constant.Constants;
+import com.tenXen.core.model.MessageModel;
 import com.tenXen.core.model.UserFriendModel;
 import com.tenXen.core.model.UserModel;
 import javafx.application.Platform;
@@ -16,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -174,6 +176,16 @@ public class MainControl extends BaseControl {
                 tray.add(trayIcon);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        });
+    }
+
+    private void createNotify(MessageModel model) {
+        Platform.runLater(() -> {
+            if (model.getIsEmotion() == Constants.YES) {
+                Notifications.create().title(model.getNickName()).text("【图片】").show();
+            } else {
+                Notifications.create().title(model.getNickName()).text(model.getContent()).show();
             }
         });
     }

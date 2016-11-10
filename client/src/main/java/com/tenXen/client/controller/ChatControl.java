@@ -1,8 +1,10 @@
 package com.tenXen.client.controller;
 
+import com.tenXen.client.common.ChatTabBox;
 import com.tenXen.client.common.ConnectContainer;
-import com.tenXen.client.controller.component.CharEmotionControl;
-import com.tenXen.client.controller.component.CharItemControl;
+import com.tenXen.client.common.LayoutContainer;
+import com.tenXen.client.controller.component.ChatEmotionControl;
+import com.tenXen.client.controller.component.ChatItemControl;
 import com.tenXen.client.util.LayoutLoader;
 import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
@@ -29,29 +31,25 @@ import java.util.Map;
 /**
  * Created by wt on 2016/10/28.
  */
-public class CharControl extends BaseControl {
+public class ChatControl extends BaseControl {
 
-    private CharControl() {
+    private ChatControl() {
     }
 
-    private static CharControl instance = new CharControl();
+    private static ChatControl instance = new ChatControl();
 
-    public static CharControl getInstance() {
+    public static ChatControl getInstance() {
         return instance;
     }
 
     @FXML
     private TextArea sendBox;
-//    @FXML
-//    private VBox charBox;
     @FXML
     private ListView userBox;
     @FXML
     private Button send;
     @FXML
     private ScrollPane userScroll;
-//    @FXML
-//    private ScrollPane charScroll;
     @FXML
     private ScrollPane emotionPane;
     @FXML
@@ -63,20 +61,21 @@ public class CharControl extends BaseControl {
     @FXML
     private Label title;
     @FXML
-    private TabPane charTabPane;
+    private TabPane chatTabPane;
 
-    private Stage charStage;
-    private Parent charLayout;
+    private Stage chatStage;
+    private Parent chatLayout;
     private UserFriendModel userFriendModel;
+    private VBox chatingBox;
 
     @Override
     protected Stage getStage() {
-        return charStage;
+        return chatStage;
     }
 
     @Override
     protected Parent getRoot() {
-        return charLayout;
+        return chatLayout;
     }
 
     @Override
@@ -93,22 +92,24 @@ public class CharControl extends BaseControl {
     protected void onClose() {
         Platform.runLater(() -> {
             Log.info("监听到聊天窗口关闭" + title.getText());
-            charStage.close();
+            chatStage.close();
+            if (!LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
+                LayoutContainer.CHAT_TAB_BOX.clear();
+            }
         });
     }
 
-    public void initCharLayout(UserFriendModel model) {
+    public void initChatLayout(UserFriendModel model) {
         try {
-            charStage = new Stage();
+            chatStage = new Stage();
             userFriendModel = model;
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAR);
-            loader.setController(CharControl.getInstance());
-            charLayout = loader.load();
-            charStage.setTitle("tenXenQO");
-            charStage.initModality(Modality.NONE);
-            charStage.setResizable(false);
+            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAT);
+            loader.setController(ChatControl.getInstance());
+            chatLayout = loader.load();
+            chatStage.setTitle("tenXenQO");
+            chatStage.initModality(Modality.NONE);
+            chatStage.setResizable(false);
             super.init();
-            super.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,7 +130,6 @@ public class CharControl extends BaseControl {
         emotion.setOnMousePressed(event -> toggleEmotionPane());
         emotionPane.setVisible(false);
         createEmotionPane();
-        addCharBox();
     }
 
     @FXML
@@ -140,7 +140,6 @@ public class CharControl extends BaseControl {
         }
     }
 
-    @FXML
     private void doSend() {
         Platform.runLater(() -> {
             String sms = sendBox.getText();
@@ -157,27 +156,38 @@ public class CharControl extends BaseControl {
                 model.setUserName(u.getUserName());
                 model.setNickName(u.getNickname());
                 ConnectContainer.CHANNEL.writeAndFlush(model);
+                locationMessageAdd(model);
+            }
+        });
+    }
+
+    private void locationMessageAdd(MessageModel model) {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader;
+                if (model.getIsEmotion() == Constants.YES) {
+                    ChatEmotionControl chatEmotionControl = new ChatEmotionControl(model);
+                    loader = LayoutLoader.load(LayoutLoader.CHAT_EMOTION);
+                    loader.setController(chatEmotionControl);
+                } else {
+                    ChatItemControl chatItemControl = new ChatItemControl(model);
+                    loader = LayoutLoader.load(LayoutLoader.CHAT_ITEM);
+                    loader.setController(chatItemControl);
+                }
+                Pane charItem = loader.load();
+                chatingBox.getChildren().add(charItem);
+                if (chatingBox.getChildren().size() > 50) {
+                    chatingBox.getChildren().remove(0, 20);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
     public void receiveMessage(MessageModel model) {
         try {
-            FXMLLoader loader;
-            if (model.getIsEmotion() == Constants.YES) {
-                CharEmotionControl charEmotionControl = new CharEmotionControl(model);
-                loader = LayoutLoader.load(LayoutLoader.CHAR_EMOTION);
-                loader.setController(charEmotionControl);
-            } else {
-                CharItemControl charItemControl = new CharItemControl(model);
-                loader = LayoutLoader.load(LayoutLoader.CHAR_ITEM);
-                loader.setController(charItemControl);
-            }
-            Pane charItem = loader.load();
-//            charBox.getChildren().add(charItem);
-//            if (charBox.getChildren().size() > 50) {
-//                charBox.getChildren().remove(0, 20);
-//            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -230,33 +240,58 @@ public class CharControl extends BaseControl {
     private void doSendEmotion(String name) {
         Platform.runLater(() -> {
             emotionPane.setVisible(false);
-            MessageModel model = new MessageModel();
-            model.setIsEmotion(Constants.YES);
-            model.setContent(name);
             User u = ConnectContainer.SELF;
             if (u != null) {
+                MessageModel model = new MessageModel();
+                model.setIsEmotion(Constants.YES);
                 model.setUser(u.getId());
+                model.setContent(name);
                 model.setToUser(0);
                 model.setCreateTime(new Date());
                 model.setUserName(u.getUserName());
                 model.setNickName(u.getNickname());
+                ConnectContainer.CHANNEL.writeAndFlush(model);
+                locationMessageAdd(model);
             }
-            ConnectContainer.CHANNEL.writeAndFlush(model);
         });
     }
 
-    public void addCharBox() {
-        VBox vBox = new VBox();
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setContent(vBox);
-        Tab tab = new Tab(userFriendModel.getFriend_nickname());
-        tab.setContent(scrollPane);
-        tab.setOnSelectionChanged(event -> {
-            if(tab.isSelected()){
-                Log.info(tab.getText());
+    public void addChatBox(UserFriendModel model) {
+        Platform.runLater(() -> {
+            VBox vBox = new VBox();
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setContent(vBox);
+            Tab tab = new Tab(model.getFriend_nickname());
+            tab.setContent(scrollPane);
+            tab.setOnSelectionChanged(event -> {
+                if (tab.isSelected()) {
+                    userFriendModel = model;
+                    chatingBox = vBox;
+                    title.setText(model.getFriend_userName());
+                }
+            });
+            tab.setOnClosed(event -> {
+                LayoutContainer.CHAT_TAB_BOX.remove(model.getFriend_userName());
+                if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
+                    onClose();
+                }
+            });
+            LayoutContainer.CHAT_TAB_BOX.put(model.getFriend_userName(), new ChatTabBox(tab, vBox));
+            chatTabPane.getTabs().add(tab);
+            super.show();
+        });
+    }
+
+    public void showToFront(UserFriendModel model) {
+        Platform.runLater(() -> {
+            if (getStage() != null) {
+                chatTabPane.getSelectionModel().select(LayoutContainer.CHAT_TAB_BOX.get(model.getFriend_userName()).getTab());
+                chatStage.show();
+                chatStage.toFront();
+            } else {
+                System.exit(0);
             }
         });
-        charTabPane.getTabs().add(tab);
     }
 }
