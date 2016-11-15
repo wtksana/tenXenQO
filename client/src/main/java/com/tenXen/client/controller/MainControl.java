@@ -53,6 +53,7 @@ public class MainControl extends BaseControl {
 
     private Stage mainStage;
     private Parent mainLayout;
+    private TrayIcon trayIcon;
 
     @Override
     protected Stage getStage() {
@@ -108,7 +109,7 @@ public class MainControl extends BaseControl {
         try {
             this.mainStage = new Stage();
             Platform.setImplicitExit(false);
-            createTrayIcon(mainStage);
+            createTrayIcon();
             FXMLLoader loader = LayoutLoader.load(LayoutLoader.MAIN);
             loader.setController(MainControl.getInstance());
             mainLayout = loader.load();
@@ -152,7 +153,7 @@ public class MainControl extends BaseControl {
 
     }
 
-    private void createTrayIcon(Stage stage) {
+    private void createTrayIcon() {
         Platform.runLater(() -> {
             try {
                 Toolkit.getDefaultToolkit();
@@ -162,7 +163,7 @@ public class MainControl extends BaseControl {
                 }
                 SystemTray tray = SystemTray.getSystemTray();
                 Image image = ImageIO.read(LayoutLoader.TRAY_IMAGE);
-                TrayIcon trayIcon = new TrayIcon(image);
+                trayIcon = new TrayIcon(image);
                 trayIcon.addActionListener(event -> show());
                 MenuItem openItem = new MenuItem("show");
                 openItem.addActionListener(event -> show());
@@ -175,19 +176,27 @@ public class MainControl extends BaseControl {
                 trayIcon.setPopupMenu(popup);
                 tray.add(trayIcon);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.info(e.getMessage());
+                System.exit(0);
             }
         });
+    }
+
+    public void receiveMessage(MessageModel model) {
+        createNotify(model);
     }
 
     private void createNotify(MessageModel model) {
         Platform.runLater(() -> {
             if (model.getIsEmotion() == Constants.YES) {
-                Notifications.create().title(model.getNickName()).text("【图片】").show();
+                Notifications.create().title(model.getNickName()).text("【图片】").onAction(event -> notifyOnAction(model)).show();
             } else {
-                Notifications.create().title(model.getNickName()).text(model.getContent()).show();
+                Notifications.create().title(model.getNickName()).text(model.getContent()).onAction(event -> notifyOnAction(model)).show();
             }
         });
     }
 
+    private void notifyOnAction(MessageModel model) {
+        ChatControl.getInstance().receiveMessage(model);
+    }
 }

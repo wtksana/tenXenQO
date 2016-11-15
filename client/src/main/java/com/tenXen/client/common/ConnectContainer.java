@@ -1,6 +1,7 @@
 package com.tenXen.client.common;
 
 import com.tenXen.core.domain.User;
+import com.tenXen.core.model.MessageModel;
 import com.tenXen.core.model.UserFriendModel;
 import com.tenXen.core.model.UserGroupModel;
 import io.netty.channel.Channel;
@@ -22,4 +23,6 @@ public class ConnectContainer {
     public static List<UserFriendModel> FRIENDS;
 
     public static List<UserGroupModel> GROUPS;
+
+    public static List<MessageModel> UNREAD_MSG;
 }

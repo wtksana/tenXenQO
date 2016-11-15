@@ -3,6 +3,7 @@ package com.tenXen.client.controller;
 import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.ConnectUtil;
 import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.UserModel;
@@ -124,7 +125,7 @@ public class LoginControl extends BaseControl {
         } else {
             setOutput("连接失败...请检查连接设置...");
         }
-//        new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
+        new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
     }
 
     @FXML

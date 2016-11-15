@@ -1,6 +1,5 @@
 package com.tenXen.client.controller.component;
 
-import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.client.controller.ChatControl;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.UserFriendModel;
@@ -51,31 +50,18 @@ public class FriendItemControl {
     }
 
     private void onMouseEnter() {
-        Platform.runLater(() -> {
-            this.itemPane.setStyle("-fx-background-color:#E0FFFF");
-        });
+        Platform.runLater(() -> this.itemPane.setStyle("-fx-background-color:#E0FFFF"));
     }
 
     private void onMouseExit() {
-        Platform.runLater(() -> {
-            this.itemPane.setStyle("-fx-background-color:#FFFFFF");
-        });
+        Platform.runLater(() -> this.itemPane.setStyle("-fx-background-color:#FFFFFF"));
     }
 
     private void onMouseClick(MouseEvent mouseEvent) {
         Platform.runLater(() -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
-                        ChatControl.getInstance().initChatLayout(model);
-                        ChatControl.getInstance().addChatBox(model);
-                    } else {
-                        if (LayoutContainer.CHAT_TAB_BOX.containsKey(model.getFriend_userName())) {
-                            ChatControl.getInstance().showToFront(model);
-                        } else {
-                            ChatControl.getInstance().addChatBox(model);
-                        }
-                    }
+                    ChatControl.getInstance().openChatBox(model.getFriend_userName(), model.getFriend_nickname(), model.getFriendId());
                 }
             }
         });

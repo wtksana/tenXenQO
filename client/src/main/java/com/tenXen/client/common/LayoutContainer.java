@@ -8,6 +8,6 @@ import java.util.Map;
  */
 public class LayoutContainer {
 
-    public static Map<String, ChatTabBox> CHAT_TAB_BOX = new HashMap<>();
+    public static Map<String, ChatTabBoxModel> CHAT_TAB_BOX = new HashMap<>();
 
 }
