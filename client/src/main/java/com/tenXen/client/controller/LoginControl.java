@@ -2,7 +2,7 @@ package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.ConnectUtil;
-import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
@@ -91,8 +91,7 @@ public class LoginControl extends BaseControl {
         try {
             this.loginStage = primaryStage;
             loginStage.setTitle("tenXenQO");
-
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.LOGIN);
+            FXMLLoader loader = LayoutUtil.load(LayoutUtil.LOGIN);
             loader.setController(LoginControl.getInstance());
             loginLayout = loader.load();
             super.init();
@@ -125,7 +124,6 @@ public class LoginControl extends BaseControl {
         } else {
             setOutput("连接失败...请检查连接设置...");
         }
-        new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
     }
 
     @FXML
@@ -162,6 +160,7 @@ public class LoginControl extends BaseControl {
 
     public void handleLogin(UserModel model) {
         if (model.getResultCode() == Constants.RESULT_SUC) {
+            new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
             this.loginStage.close();
             ConnectContainer.SELF = model.getSelf();
             ConnectContainer.FRIENDS = model.getFriends();

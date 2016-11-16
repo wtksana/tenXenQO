@@ -7,7 +7,9 @@ import com.tenXen.core.model.UserGroupModel;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wt on 2016/10/25.
@@ -24,5 +26,5 @@ public class ConnectContainer {
 
     public static List<UserGroupModel> GROUPS;
 
-    public static List<MessageModel> UNREAD_MSG;
+    public static Map<String, List<MessageModel>> UNREAD_MSG = new HashMap<>();
 }

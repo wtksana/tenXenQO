@@ -1,7 +1,7 @@
 package com.tenXen.client.controller;
 
 import com.tenXen.client.common.ConnectContainer;
-import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
 import javafx.application.Platform;
@@ -77,7 +77,7 @@ public class RegisterControl extends BaseControl {
 
     public void initRegisterLayout(Stage owner) {
         try {
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.REGISTER);
+            FXMLLoader loader = LayoutUtil.load(LayoutUtil.REGISTER);
             loader.setController(RegisterControl.getInstance());
             registerLayout = loader.load();
 

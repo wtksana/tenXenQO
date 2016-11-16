@@ -1,6 +1,6 @@
 package com.tenXen.client.controller;
 
-import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.util.LayoutUtil;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,7 +34,7 @@ public abstract class BaseControl {
     public void init() {
         Scene scene = new Scene(getRoot());
         scene.setFill(Color.TRANSPARENT);
-        getStage().getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
+        getStage().getIcons().add(new javafx.scene.image.Image(LayoutUtil.STAG_IMAGE));
         getStage().setScene(scene);
         getStage().initStyle(StageStyle.TRANSPARENT);
         getRoot().setOnMousePressed(event -> {

@@ -12,9 +12,9 @@ public class SpringContainer implements ApplicationContextAware {
 
     public static void init() {
         applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-        for (String name : applicationContext.getBeanDefinitionNames()) {
-            System.out.println(name);
-        }
+//        for (String name : applicationContext.getBeanDefinitionNames()) {
+//            System.out.println(name);
+//        }
     }
 
     public static <T> T getBean(Class<T> paramClass) {

@@ -34,8 +34,10 @@ public class MessageHandler extends ChannelHandlerAdapter {
             if (ConnectContainer.isOnline(model.getToUser())) {
                 ConnectContainer.getChannel(model.getToUser()).writeAndFlush(model);
                 model.setIsRead(Constants.YES);
+                model.setMsg("用户在线，消息已发送");
             } else {
                 model.setIsRead(Constants.NO);
+                model.setMsg("用户未在线，消息保存");
             }
             messageService.saveModel(model);
 //            ChannelGroups.broadcast(model);

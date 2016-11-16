@@ -5,7 +5,7 @@ import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.common.LayoutContainer;
 import com.tenXen.client.controller.component.ChatEmotionControl;
 import com.tenXen.client.controller.component.ChatItemControl;
-import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
@@ -18,13 +18,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -103,7 +104,7 @@ public class ChatControl extends BaseControl {
         try {
             chatStage = new Stage();
             chatingFriendUserName = userName;
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAT);
+            FXMLLoader loader = LayoutUtil.load(LayoutUtil.CHAT);
             loader.setController(ChatControl.getInstance());
             chatLayout = loader.load();
             chatStage.setTitle("tenXenQO");
@@ -118,9 +119,6 @@ public class ChatControl extends BaseControl {
     @FXML
     private void initialize() {
         title.setText(chatingFriendUserName);
-//        charBox.heightProperty().addListener((observable, oldvalue, newValue) ->
-//                charScroll.setVvalue((Double) newValue)
-//        );
         sendBox.setOnKeyPressed(event -> {
             if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
                 doSend();
@@ -182,18 +180,13 @@ public class ChatControl extends BaseControl {
 
     private void locationMessageAdd(MessageModel model) {
         Platform.runLater(() -> {
-            try {
-                FXMLLoader loader;
-                if (model.getIsEmotion() == Constants.YES) {
-                    ChatEmotionControl chatEmotionControl = new ChatEmotionControl(model);
-                    loader = LayoutLoader.load(LayoutLoader.CHAT_EMOTION);
-                    loader.setController(chatEmotionControl);
-                } else {
-                    ChatItemControl chatItemControl = new ChatItemControl(model);
-                    loader = LayoutLoader.load(LayoutLoader.CHAT_ITEM);
-                    loader.setController(chatItemControl);
-                }
-                Pane charItem = loader.load();
+            AnchorPane charItem = null;
+            if (model.getIsEmotion() == Constants.YES) {
+                charItem = new ChatEmotionControl(model).create();
+            } else {
+                charItem = new ChatItemControl(model).create();
+            }
+            if (charItem != null) {
                 if (model.getResultCode() == Constants.RESULT_SUC) {
                     LayoutContainer.CHAT_TAB_BOX.get(model.getUserName()).getvBox().getChildren().add(charItem);
                 } else {
@@ -202,8 +195,6 @@ public class ChatControl extends BaseControl {
 //                        chatingBox.getChildren().remove(0, 20);
 //                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         });
     }
@@ -212,7 +203,20 @@ public class ChatControl extends BaseControl {
         Platform.runLater(() -> {
             try {
                 openChatBox(model.getUserName(), model.getNickName(), model.getUser());
-                locationMessageAdd(model);
+                List<MessageModel> msg = ConnectContainer.UNREAD_MSG.get(model.getUserName());
+                VBox vBox = LayoutContainer.CHAT_TAB_BOX.get(model.getUserName()).getvBox();
+                for (MessageModel m : msg) {
+                    AnchorPane charItem = null;
+                    if (m.getIsEmotion() == Constants.YES) {
+                        charItem = new ChatEmotionControl(model).create();
+                    } else {
+                        charItem = new ChatItemControl(model).create();
+                    }
+                    if (charItem != null) {
+                        vBox.getChildren().add(charItem);
+                    }
+                }
+                msg.clear();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -264,29 +268,32 @@ public class ChatControl extends BaseControl {
     }
 
     public void addChatBox(String userName, String nickname, int id) {
-        Platform.runLater(() -> {
-            VBox vBox = new VBox();
-            Tab tab = new Tab(nickname);
-            LayoutContainer.CHAT_TAB_BOX.put(userName, new ChatTabBoxModel(tab, vBox, nickname, userName));
-            ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            scrollPane.setContent(vBox);
-            tab.setContent(scrollPane);
-            tab.setOnSelectionChanged(event -> {
-                if (tab.isSelected()) {
-                    chatingFriendId = id;
-                    chatingBox = vBox;
-                    title.setText(userName);
-                }
-            });
-            tab.setOnClosed(event -> {
-                LayoutContainer.CHAT_TAB_BOX.remove(userName);
-                if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
-                    onClose();
-                }
-            });
-            chatTabPane.getTabs().add(tab);
+//        Platform.runLater(() -> {
+        VBox vBox = new VBox();
+        ScrollPane scrollPane = new ScrollPane();
+        Tab tab = new Tab(nickname);
+        LayoutContainer.CHAT_TAB_BOX.put(userName, new ChatTabBoxModel(tab, vBox, nickname, userName));
+        vBox.heightProperty().addListener((observable, oldvalue, newValue) ->
+                scrollPane.setVvalue((Double) newValue)
+        );
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setContent(vBox);
+        tab.setContent(scrollPane);
+        tab.setOnSelectionChanged(event -> {
+            if (tab.isSelected()) {
+                chatingFriendId = id;
+                chatingBox = vBox;
+                title.setText(userName);
+            }
         });
+        tab.setOnClosed(event -> {
+            LayoutContainer.CHAT_TAB_BOX.remove(userName);
+            if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
+                onClose();
+            }
+        });
+        chatTabPane.getTabs().add(tab);
+//        });
     }
 
     public void showToFront(String userName) {

@@ -1,16 +1,20 @@
 package com.tenXen.client.controller.component;
 
 import com.tenXen.client.controller.ChatControl;
+import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.UserFriendModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 /**
  * Created by wt on 2016/11/8.
@@ -30,6 +34,18 @@ public class FriendItemControl {
 
     public FriendItemControl(UserFriendModel model) {
         this.model = model;
+    }
+
+    public AnchorPane create() {
+        FXMLLoader loader = LayoutUtil.load(LayoutUtil.FRIEND_ITEM);
+        loader.setController(this);
+        AnchorPane pane = null;
+        try {
+            pane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pane;
     }
 
     @FXML

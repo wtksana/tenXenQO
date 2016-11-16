@@ -7,8 +7,8 @@ public class Constants {
     /**
      * 服务端IP
      */
-//    public static final String SERVER_HOST = "127.0.0.1";
-    public static final String SERVER_HOST = "10.10.1.63";
+    public static final String SERVER_HOST = "127.0.0.1";
+//    public static final String SERVER_HOST = "10.10.1.63";
 //    public static final String SERVER_HOST = "192.168.31.104";
     /**
      * 服务端端口

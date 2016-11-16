@@ -3,7 +3,7 @@ package com.tenXen.client.controller;
 import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.controller.component.ChatEmotionControl;
 import com.tenXen.client.controller.component.ChatItemControl;
-import com.tenXen.client.util.LayoutLoader;
+import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
@@ -73,10 +73,10 @@ public class GroupControl {
             this.charStage = new Stage();
 //            Platform.setImplicitExit(false);
 //            createTrayIcon(charStage);
-            FXMLLoader loader = LayoutLoader.load(LayoutLoader.CHAT);
+            FXMLLoader loader = LayoutUtil.load(LayoutUtil.CHAT);
             loader.setController(GroupControl.getInstance());
             Parent charLayout = loader.load();
-            charStage.getIcons().add(new javafx.scene.image.Image(LayoutLoader.STAG_IMAGE));
+            charStage.getIcons().add(new javafx.scene.image.Image(LayoutUtil.STAG_IMAGE));
             charStage.setTitle("tenXenQO");
             charStage.initModality(Modality.NONE);
             charStage.setScene(new Scene(charLayout));
@@ -139,11 +139,11 @@ public class GroupControl {
             FXMLLoader loader;
             if (model.getIsEmotion() == Constants.YES) {
                 ChatEmotionControl chatEmotionControl = new ChatEmotionControl(model);
-                loader = LayoutLoader.load(LayoutLoader.CHAT_EMOTION);
+                loader = LayoutUtil.load(LayoutUtil.CHAT_EMOTION);
                 loader.setController(chatEmotionControl);
             } else {
                 ChatItemControl chatItemControl = new ChatItemControl(model);
-                loader = LayoutLoader.load(LayoutLoader.CHAT_ITEM);
+                loader = LayoutUtil.load(LayoutUtil.CHAT_ITEM);
                 loader.setController(chatItemControl);
             }
             Pane charItem = loader.load();

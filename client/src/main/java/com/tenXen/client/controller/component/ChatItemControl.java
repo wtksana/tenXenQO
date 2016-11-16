@@ -1,11 +1,15 @@
 package com.tenXen.client.controller.component;
 
+import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.common.util.DateUtil;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.MessageModel;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 /**
  * Created by wt on 2016/10/31.
@@ -19,7 +23,7 @@ public class ChatItemControl {
     @FXML
     private Label content;
     @FXML
-    private Pane chatItem;
+    private AnchorPane chatItem;
 
     private MessageModel messageModel;
 
@@ -27,6 +31,17 @@ public class ChatItemControl {
         this.messageModel = messageModel;
     }
 
+    public AnchorPane create() {
+        FXMLLoader loader = LayoutUtil.load(LayoutUtil.CHAT_ITEM);
+        loader.setController(this);
+        AnchorPane pane = null;
+        try {
+            pane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pane;
+    }
 
     @FXML
     private void initialize() {
