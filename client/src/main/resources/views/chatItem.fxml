@@ -3,29 +3,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <AnchorPane fx:id="chatItem" maxWidth="465.0" prefWidth="465.0" stylesheets="@css/fx.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label fx:id="userName" text="admin" textFill="#515151" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </padding>
-            <font>
-                <Font size="14.0"/>
-            </font>
-        </Label>
-        <Label fx:id="createTime" text="2016年11月11日 11:11:11" textFill="#838383" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="0.0">
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="7.0"/>
-            </padding>
+        <Label fx:id="userName" style="-fx-text-fill: #0000DD; -fx-background-color: #E0FFFF; -fx-font-size: 14;" text="admin" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0"/>
+        <Label fx:id="createTime" style="-fx-text-fill: #838383;" text="2016年11月11日 11:11:11" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="5.0">
             <opaqueInsets>
                 <Insets/>
             </opaqueInsets>
         </Label>
-        <Label fx:id="content" styleClass="contentLabel" text="content" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="30.0">
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </padding>
-        </Label>
+        <Label fx:id="content" style="-fx-font-size: 14; -fx-text-fill: #242424;" text="content" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="25.0"/>
     </children>
 </AnchorPane>

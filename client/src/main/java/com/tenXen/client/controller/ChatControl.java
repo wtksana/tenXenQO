@@ -11,6 +11,7 @@ import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.domain.User;
 import com.tenXen.core.model.MessageModel;
+import com.tenXen.core.model.UserFriendModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,7 +67,6 @@ public class ChatControl extends BaseControl {
     private Stage chatStage;
     private Parent chatLayout;
     private VBox chatingBox;
-    private String chatingFriendUserName;
     private int chatingFriendId;
 
     @Override
@@ -91,19 +91,16 @@ public class ChatControl extends BaseControl {
 
     @Override
     protected void onClose() {
-        Platform.runLater(() -> {
-            Log.info("监听到聊天窗口关闭" + title.getText());
-            chatStage.close();
-            if (!LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
-                LayoutContainer.CHAT_TAB_BOX.clear();
-            }
-        });
+        Log.info("监听到聊天窗口关闭" + title.getText());
+        chatStage.close();
+        if (!LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
+            LayoutContainer.CHAT_TAB_BOX.clear();
+        }
     }
 
-    public void initChatLayout(String userName) {
+    public void initChatLayout() {
         try {
             chatStage = new Stage();
-            chatingFriendUserName = userName;
             FXMLLoader loader = LayoutUtil.load(LayoutUtil.CHAT);
             loader.setController(ChatControl.getInstance());
             chatLayout = loader.load();
@@ -118,7 +115,6 @@ public class ChatControl extends BaseControl {
 
     @FXML
     private void initialize() {
-        title.setText(chatingFriendUserName);
         sendBox.setOnKeyPressed(event -> {
             if (event.isControlDown() && event.getCode() == KeyCode.ENTER) {
                 doSend();
@@ -127,7 +123,7 @@ public class ChatControl extends BaseControl {
         send.setOnMouseReleased(event -> doSend());
         emotion.setOnMousePressed(event -> toggleEmotionPane());
         emotionPane.setVisible(false);
-        createEmotionPane();
+        Platform.runLater(() -> createEmotionPane());
     }
 
     private void toggleEmotionPane() {
@@ -138,124 +134,127 @@ public class ChatControl extends BaseControl {
     }
 
     private void doSend() {
-        Platform.runLater(() -> {
-            String sms = sendBox.getText();
-            sendBox.setText("");
-            User u = ConnectContainer.SELF;
-            if (!StringUtil.isBlank(sms) && u != null) {
-                MessageModel model = new MessageModel();
-                model.setIsEmotion(Constants.NO);
-                model.setUser(u.getId());
-                model.setToUser(chatingFriendId);
-                model.setContent(sms);
-                model.setType(1);
-                model.setCreateTime(new Date());
-                model.setUserName(u.getUserName());
-                model.setNickName(u.getNickname());
-                ConnectContainer.CHANNEL.writeAndFlush(model);
-                locationMessageAdd(model);
-            }
-        });
+        String sms = sendBox.getText();
+        sendBox.setText("");
+        User u = ConnectContainer.SELF;
+        if (!StringUtil.isBlank(sms) && u != null) {
+            MessageModel model = new MessageModel();
+            model.setIsEmotion(Constants.NO);
+            model.setUser(u.getId());
+            model.setToUser(chatingFriendId);
+            model.setContent(sms);
+            model.setType(1);
+            model.setCreateTime(new Date());
+            model.setUserName(u.getUserName());
+            model.setNickName(u.getNickname());
+            ConnectContainer.CHANNEL.writeAndFlush(model);
+            Platform.runLater(() -> locationMessageAdd(model));
+        }
     }
 
     private void doSendEmotion(String name) {
-        Platform.runLater(() -> {
-            emotionPane.setVisible(false);
-            User u = ConnectContainer.SELF;
-            if (u != null) {
-                MessageModel model = new MessageModel();
-                model.setIsEmotion(Constants.YES);
-                model.setUser(u.getId());
-                model.setToUser(chatingFriendId);
-                model.setContent(name);
-                model.setType(2);
-                model.setCreateTime(new Date());
-                model.setUserName(u.getUserName());
-                model.setNickName(u.getNickname());
-                ConnectContainer.CHANNEL.writeAndFlush(model);
-                locationMessageAdd(model);
-            }
-        });
+        emotionPane.setVisible(false);
+        User u = ConnectContainer.SELF;
+        if (u != null) {
+            MessageModel model = new MessageModel();
+            model.setIsEmotion(Constants.YES);
+            model.setUser(u.getId());
+            model.setToUser(chatingFriendId);
+            model.setContent(name);
+            model.setType(2);
+            model.setCreateTime(new Date());
+            model.setUserName(u.getUserName());
+            model.setNickName(u.getNickname());
+            ConnectContainer.CHANNEL.writeAndFlush(model);
+            Platform.runLater(() -> locationMessageAdd(model));
+        }
     }
 
     private void locationMessageAdd(MessageModel model) {
-        Platform.runLater(() -> {
-            AnchorPane charItem = null;
-            if (model.getIsEmotion() == Constants.YES) {
-                charItem = new ChatEmotionControl(model).create();
+        AnchorPane charItem;
+        if (model.getIsEmotion() == Constants.YES) {
+            charItem = new ChatEmotionControl(model).create();
+        } else {
+            charItem = new ChatItemControl(model).create();
+        }
+        if (charItem != null) {
+            if (model.getResultCode() == Constants.RESULT_SUC) {
+                LayoutContainer.CHAT_TAB_BOX.get(model.getUserName()).getvBox().getChildren().add(charItem);
             } else {
-                charItem = new ChatItemControl(model).create();
-            }
-            if (charItem != null) {
-                if (model.getResultCode() == Constants.RESULT_SUC) {
-                    LayoutContainer.CHAT_TAB_BOX.get(model.getUserName()).getvBox().getChildren().add(charItem);
-                } else {
-                    chatingBox.getChildren().add(charItem);
+                chatingBox.getChildren().add(charItem);
 //                    if (chatingBox.getChildren().size() > 50) {
 //                        chatingBox.getChildren().remove(0, 20);
 //                    }
-                }
             }
-        });
+        }
     }
 
-    public void receiveMessage(MessageModel model) {
-        Platform.runLater(() -> {
-            try {
-                openChatBox(model.getUserName(), model.getNickName(), model.getUser());
-                List<MessageModel> msg = ConnectContainer.UNREAD_MSG.get(model.getUserName());
-                VBox vBox = LayoutContainer.CHAT_TAB_BOX.get(model.getUserName()).getvBox();
-                for (MessageModel m : msg) {
-                    AnchorPane charItem = null;
-                    if (m.getIsEmotion() == Constants.YES) {
-                        charItem = new ChatEmotionControl(model).create();
-                    } else {
-                        charItem = new ChatItemControl(model).create();
-                    }
-                    if (charItem != null) {
-                        vBox.getChildren().add(charItem);
-                    }
+    public void receiveMessage(String userName) {
+        try {
+            createChatBox(userName);
+            VBox vBox = LayoutContainer.CHAT_TAB_BOX.get(userName).getvBox();
+            List<MessageModel> msg = ConnectContainer.UNREAD_MSG.get(userName);
+            for (MessageModel m : msg) {
+                AnchorPane charItem = null;
+                if (m.getIsEmotion() == Constants.YES) {
+                    charItem = new ChatEmotionControl(m).create();
+                } else {
+                    charItem = new ChatItemControl(m).create();
                 }
-                msg.clear();
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (charItem != null) {
+                    vBox.getChildren().add(charItem);
+                }
             }
-        });
+            Platform.runLater(() -> showToFront(userName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void receiveAllMessage() {
+        try {
+            Map<String, List<MessageModel>> map = ConnectContainer.UNREAD_MSG;
+            if (!map.isEmpty()) {
+                map.keySet().forEach(this::receiveMessage);
+                map.clear();
+            }
+            Platform.runLater(() -> showToFront());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void createEmotionPane() {
-        Platform.runLater(() -> {
-            try {
-                emotionPane.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                    if (!newValue) {
-                        emotionPane.setVisible(false);
-                    }
-                });
-                Map<String, javafx.scene.image.Image> emotions = EmotionWorker.getInstance().getAllEmotion();
-                if (!emotions.isEmpty()) {
-                    int i = 1;
-                    VBox vBox = new VBox();
-                    vBox.setPrefWidth(400);
-                    HBox hBox = new HBox();
-                    hBox.setPrefHeight(80);
-                    hBox.setPrefWidth(400);
-                    for (Map.Entry<String, javafx.scene.image.Image> entry : emotions.entrySet()) {
-                        hBox.getChildren().add(createEmotion(entry.getKey(), entry.getValue()));
-                        if (i % 5 == 0) {
-                            vBox.getChildren().add(hBox);
-                            hBox = new HBox();
-                            hBox.setPrefHeight(80);
-                            hBox.setPrefWidth(400);
-                        }
-                        i++;
-                    }
-                    vBox.getChildren().add(hBox);
-                    emotionPane.setContent(vBox);
+        try {
+            emotionPane.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue) {
+                    emotionPane.setVisible(false);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            });
+            Map<String, javafx.scene.image.Image> emotions = EmotionWorker.getInstance().getAllEmotion();
+            if (!emotions.isEmpty()) {
+                int i = 1;
+                VBox vBox = new VBox();
+                vBox.setPrefWidth(400);
+                HBox hBox = new HBox();
+                hBox.setPrefHeight(80);
+                hBox.setPrefWidth(400);
+                for (Map.Entry<String, javafx.scene.image.Image> entry : emotions.entrySet()) {
+                    hBox.getChildren().add(createEmotion(entry.getKey(), entry.getValue()));
+                    if (i % 5 == 0) {
+                        vBox.getChildren().add(hBox);
+                        hBox = new HBox();
+                        hBox.setPrefHeight(80);
+                        hBox.setPrefWidth(400);
+                    }
+                    i++;
+                }
+                vBox.getChildren().add(hBox);
+                emotionPane.setContent(vBox);
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ImageView createEmotion(String name, javafx.scene.image.Image image) {
@@ -267,59 +266,61 @@ public class ChatControl extends BaseControl {
         return emotion;
     }
 
-    public void addChatBox(String userName, String nickname, int id) {
-//        Platform.runLater(() -> {
-        VBox vBox = new VBox();
-        ScrollPane scrollPane = new ScrollPane();
-        Tab tab = new Tab(nickname);
-        LayoutContainer.CHAT_TAB_BOX.put(userName, new ChatTabBoxModel(tab, vBox, nickname, userName));
-        vBox.heightProperty().addListener((observable, oldvalue, newValue) ->
-                scrollPane.setVvalue((Double) newValue)
-        );
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setContent(vBox);
-        tab.setContent(scrollPane);
-        tab.setOnSelectionChanged(event -> {
-            if (tab.isSelected()) {
-                chatingFriendId = id;
-                chatingBox = vBox;
-                title.setText(userName);
-            }
-        });
-        tab.setOnClosed(event -> {
-            LayoutContainer.CHAT_TAB_BOX.remove(userName);
-            if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
-                onClose();
-            }
-        });
-        chatTabPane.getTabs().add(tab);
-//        });
+    public void addChatBox(String userName) {
+        if (ConnectContainer.FRIENDS.containsKey(userName)) {
+            UserFriendModel model = ConnectContainer.FRIENDS.get(userName);
+            VBox vBox = new VBox();
+            ScrollPane scrollPane = new ScrollPane();
+            Tab tab = new Tab(model.getFriend_nickname());
+            LayoutContainer.CHAT_TAB_BOX.put(userName, new ChatTabBoxModel(tab, vBox, model.getFriend_nickname(), userName));
+            vBox.heightProperty().addListener((observable, oldvalue, newValue) ->
+                    scrollPane.setVvalue((Double) newValue)
+            );
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setContent(vBox);
+            tab.setContent(scrollPane);
+            tab.setOnSelectionChanged(event -> {
+                if (tab.isSelected()) {
+                    chatingFriendId = model.getFriendId();
+                    chatingBox = vBox;
+                    title.setText(userName);
+                }
+            });
+            tab.setOnClosed(event -> {
+                LayoutContainer.CHAT_TAB_BOX.remove(userName);
+                if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
+                    onClose();
+                }
+            });
+            chatTabPane.getTabs().add(tab);
+        }
     }
 
     public void showToFront(String userName) {
-        Platform.runLater(() -> {
-            if (getStage() != null) {
-                chatTabPane.getSelectionModel().select(LayoutContainer.CHAT_TAB_BOX.get(userName).getTab());
-                chatStage.show();
-                chatStage.toFront();
-            } else {
-                System.exit(0);
-            }
-        });
+        if (getStage() != null) {
+            chatTabPane.getSelectionModel().select(LayoutContainer.CHAT_TAB_BOX.get(userName).getTab());
+            chatStage.show();
+            chatStage.toFront();
+        } else {
+            System.exit(0);
+        }
     }
 
-    public void openChatBox(String userName, String nickName, int id) {
-        if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
-            initChatLayout(userName);
-            addChatBox(userName, nickName, id);
-            showToFront(userName);
+    public void showToFront() {
+        if (getStage() != null) {
+            chatStage.show();
+            chatStage.toFront();
         } else {
-            if (LayoutContainer.CHAT_TAB_BOX.containsKey(userName)) {
-                showToFront(userName);
-            } else {
-                addChatBox(userName, nickName, id);
-                showToFront(userName);
-            }
+            System.exit(0);
+        }
+    }
+
+    public void createChatBox(String userName) {
+        if (LayoutContainer.CHAT_TAB_BOX.isEmpty()) {
+            initChatLayout();
+            addChatBox(userName);
+        } else if (!LayoutContainer.CHAT_TAB_BOX.containsKey(userName)) {
+            addChatBox(userName);
         }
     }
 }

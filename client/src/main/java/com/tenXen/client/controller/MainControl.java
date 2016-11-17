@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,39 +79,35 @@ public class MainControl extends BaseControl {
 
     @Override
     protected void onMin() {
-        Platform.runLater(() -> {
-            if (SystemTray.isSupported()) {
-                mainStage.hide();
-            } else {
-                System.exit(0);
-            }
-        });
+        if (SystemTray.isSupported()) {
+            mainStage.hide();
+        } else {
+            System.exit(0);
+        }
     }
 
     @Override
     protected void onClose() {
-        Platform.runLater(() -> {
-            Log.info("监听到主窗口关闭");
-            try {
-                UserModel model = new UserModel();
-                model.setHandlerCode(Constants.LOGOUT_CODE);
-                model.setSelf(ConnectContainer.SELF);
-                model.setResultCode(Constants.RESULT_FAIL);
-                ConnectContainer.CHANNEL.writeAndFlush(model);
-                ConnectContainer.USER_GROUP.shutdownGracefully();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                System.exit(0);
-            }
-        });
+        Log.info("监听到主窗口关闭");
+        try {
+            UserModel model = new UserModel();
+            model.setHandlerCode(Constants.LOGOUT_CODE);
+            model.setSelf(ConnectContainer.SELF);
+            model.setResultCode(Constants.RESULT_FAIL);
+            ConnectContainer.CHANNEL.writeAndFlush(model);
+            ConnectContainer.USER_GROUP.shutdownGracefully();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.exit(0);
+        }
     }
 
     public void initMainLayout() {
         try {
             this.mainStage = new Stage();
             Platform.setImplicitExit(false);
-            createTrayIcon();
+            Platform.runLater(() -> createTrayIcon());
             FXMLLoader loader = LayoutUtil.load(LayoutUtil.MAIN);
             loader.setController(MainControl.getInstance());
             mainLayout = loader.load();
@@ -119,7 +116,7 @@ public class MainControl extends BaseControl {
             mainStage.setResizable(false);
             super.init();
             super.show();
-            initFriends();
+            Platform.runLater(() -> initFriends());
             initGroups();
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,18 +129,15 @@ public class MainControl extends BaseControl {
     }
 
     private void initFriends() {
-        Platform.runLater(() -> {
-            try {
-                List<UserFriendModel> friends = ConnectContainer.FRIENDS;
-                if (friends != null && friends.size() > 0) {
-                    for (UserFriendModel model : friends) {
-                        this.friendsBox.getChildren().add(new FriendItemControl(model).create());
-                    }
+        try {
+            if (!ConnectContainer.FRIENDS.isEmpty()) {
+                for (UserFriendModel model : ConnectContainer.FRIENDS.values()) {
+                    this.friendsBox.getChildren().add(new FriendItemControl(model).create());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initGroups() {
@@ -151,32 +145,29 @@ public class MainControl extends BaseControl {
     }
 
     private void createTrayIcon() {
-        Platform.runLater(() -> {
-            try {
-                Toolkit.getDefaultToolkit();
-                if (!SystemTray.isSupported()) {
-                    Platform.exit();
-                    return;
-                }
-                SystemTray tray = SystemTray.getSystemTray();
-                TrayIcon trayIcon = LayoutContainer.TRAYICON;
-                trayIcon = new TrayIcon(LayoutUtil.getTrayImage(LayoutUtil.TRAY_NORMAL));
-                trayIcon.addActionListener(event -> show());
-                MenuItem openItem = new MenuItem("show");
-                openItem.addActionListener(event -> show());
-                MenuItem exitItem = new MenuItem("exit");
-                exitItem.addActionListener(event -> onClose());
-                final PopupMenu popup = new PopupMenu();
-                popup.add(openItem);
-                popup.addSeparator();
-                popup.add(exitItem);
-                trayIcon.setPopupMenu(popup);
-                tray.add(trayIcon);
-            } catch (Exception e) {
-                Log.info(e.getMessage());
-                System.exit(0);
+        try {
+            Toolkit.getDefaultToolkit();
+            if (!SystemTray.isSupported()) {
+                Platform.exit();
+                return;
             }
-        });
+            SystemTray tray = SystemTray.getSystemTray();
+            LayoutContainer.TRAYICON = new TrayIcon(LayoutUtil.getTrayImage(LayoutUtil.TRAY_NORMAL));
+            LayoutContainer.TRAYICON.addActionListener(event -> Platform.runLater(() -> show()));
+            MenuItem openItem = new MenuItem("show");
+            openItem.addActionListener(event -> Platform.runLater(() -> show()));
+            MenuItem exitItem = new MenuItem("exit");
+            exitItem.addActionListener(event -> Platform.runLater(() -> onClose()));
+            final PopupMenu popup = new PopupMenu();
+            popup.add(openItem);
+            popup.addSeparator();
+            popup.add(exitItem);
+            LayoutContainer.TRAYICON.setPopupMenu(popup);
+            tray.add(LayoutContainer.TRAYICON);
+        } catch (Exception e) {
+            Log.info(e.getMessage());
+            System.exit(0);
+        }
     }
 
     public void receiveMessage(MessageModel model) {
@@ -189,26 +180,43 @@ public class MainControl extends BaseControl {
             list.add(model);
             msg.put(model.getUserName(), list);
         }
-        createNotify(model);
+//        Platform.runLater(() -> createNotify(model));
+        Platform.runLater(() -> setTrayIconMsg());
+    }
+
+//    private void createNotify(MessageModel model) {
+//        if (model.getIsEmotion() == Constants.YES) {
+//            Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickName()).text("【图片】").onAction(event -> notifyOnAction(model.getUserName())).show();
+//        } else {
+//            Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickName()).text(model.getContent()).onAction(event -> notifyOnAction(model.getUserName())).show();
+//        }
+//    }
+//
+//    private void notifyOnAction(String userName) {
+//        ChatControl.getInstance().receiveMessage(userName);
+//        ConnectContainer.UNREAD_MSG.remove(userName);
+//    }
+
+    private void setTrayIconNormal() {
         if (LayoutContainer.TRAYICON != null) {
-            LayoutContainer.TRAYICON.setImage(LayoutUtil.getTrayImage(LayoutUtil.TRAY_MSG));
+            LayoutContainer.TRAYICON.setImage(LayoutUtil.getTrayImage(LayoutUtil.TRAY_NORMAL));
+            for (ActionListener actionListener : LayoutContainer.TRAYICON.getActionListeners()) {
+                LayoutContainer.TRAYICON.removeActionListener(actionListener);
+            }
+            LayoutContainer.TRAYICON.addActionListener(e -> Platform.runLater(() -> show()));
         }
     }
 
-    private void createNotify(MessageModel model) {
-        Platform.runLater(() -> {
-            if (model.getIsEmotion() == Constants.YES) {
-                Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickName()).text("【图片】").onAction(event -> notifyOnAction(model)).show();
-            } else {
-                Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickName()).text(model.getContent()).onAction(event -> notifyOnAction(model)).show();
-            }
-        });
-    }
-
-    private void notifyOnAction(MessageModel model) {
-        ChatControl.getInstance().receiveMessage(model);
+    private void setTrayIconMsg() {
         if (LayoutContainer.TRAYICON != null) {
-            LayoutContainer.TRAYICON.setImage(LayoutUtil.getTrayImage(LayoutUtil.TRAY_NORMAL));
+            LayoutContainer.TRAYICON.setImage(LayoutUtil.getTrayImage(LayoutUtil.TRAY_MSG));
+            for (ActionListener actionListener : LayoutContainer.TRAYICON.getActionListeners()) {
+                LayoutContainer.TRAYICON.removeActionListener(actionListener);
+            }
+            LayoutContainer.TRAYICON.addActionListener(e -> {
+                Platform.runLater(() -> ChatControl.getInstance().receiveAllMessage());
+                setTrayIconNormal();
+            });
         }
     }
 }

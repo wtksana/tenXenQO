@@ -12,7 +12,9 @@ import com.tenXen.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service()
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
@@ -61,7 +63,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
                 userMapper.setUserOnline(u.getId());
                 List<UserFriendModel> friends = userFriendMapper.getFriendsByUserId(u.getId());
                 if (friends != null && friends.size() > 0) {
-                    model.setFriends(friends);
+                    Map<String, UserFriendModel> map = new HashMap<>();
+                    for (UserFriendModel m : friends) {
+                        map.put(m.getFriend_userName(), m);
+                    }
+                    model.setFriends(map);
                 }
                 List<UserGroupModel> groups = userGroupMapper.getGroupsByUserId(u.getId());
                 if (groups != null && groups.size() > 0) {

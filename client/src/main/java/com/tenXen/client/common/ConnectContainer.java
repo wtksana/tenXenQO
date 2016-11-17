@@ -22,7 +22,7 @@ public class ConnectContainer {
 
     public static User SELF;
 
-    public static List<UserFriendModel> FRIENDS;
+    public static Map<String, UserFriendModel> FRIENDS;
 
     public static List<UserGroupModel> GROUPS;
 

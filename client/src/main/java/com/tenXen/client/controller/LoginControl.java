@@ -7,7 +7,6 @@ import com.tenXen.client.worker.EmotionWorker;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.UserModel;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -75,16 +74,14 @@ public class LoginControl extends BaseControl {
 
     @Override
     protected void onClose() {
-        Platform.runLater(() -> {
-            try {
-                Log.info("监听到登录窗口关闭");
-                ConnectContainer.USER_GROUP.shutdownGracefully();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                System.exit(0);
-            }
-        });
+        try {
+            Log.info("监听到登录窗口关闭");
+            ConnectContainer.USER_GROUP.shutdownGracefully();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.exit(0);
+        }
     }
 
     public void initLoginLayout(Stage primaryStage) {

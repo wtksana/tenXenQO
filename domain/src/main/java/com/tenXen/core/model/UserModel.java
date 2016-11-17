@@ -1,9 +1,9 @@
 package com.tenXen.core.model;
 
-import com.tenXen.core.domain.Group;
 import com.tenXen.core.domain.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wt on 2016/10/26.
@@ -24,7 +24,7 @@ public class UserModel extends User {
 
     private List<UserGroupModel> groups;
 
-    private List<UserFriendModel> friends;
+    private Map<String, UserFriendModel> friends;
 
     public List<UserGroupModel> getGroups() {
         return groups;
@@ -34,11 +34,11 @@ public class UserModel extends User {
         this.groups = groups;
     }
 
-    public List<UserFriendModel> getFriends() {
+    public Map<String, UserFriendModel> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<UserFriendModel> friends) {
+    public void setFriends(Map<String, UserFriendModel> friends) {
         this.friends = friends;
     }
 

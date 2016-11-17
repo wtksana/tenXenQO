@@ -77,7 +77,8 @@ public class FriendItemControl {
         Platform.runLater(() -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    ChatControl.getInstance().openChatBox(model.getFriend_userName(), model.getFriend_nickname(), model.getFriendId());
+                    ChatControl.getInstance().createChatBox(model.getFriend_userName());
+                    ChatControl.getInstance().showToFront(model.getFriend_userName());
                 }
             }
         });

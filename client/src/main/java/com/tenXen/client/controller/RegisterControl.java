@@ -4,7 +4,6 @@ import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.common.constant.Constants;
 import com.tenXen.core.model.UserModel;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -69,10 +68,8 @@ public class RegisterControl extends BaseControl {
 
     @Override
     protected void onClose() {
-        Platform.runLater(() -> {
-            Log.info("监听到注册窗口关闭");
-            registerStage.close();
-        });
+        Log.info("监听到注册窗口关闭");
+        registerStage.close();
     }
 
     public void initRegisterLayout(Stage owner) {
@@ -100,23 +97,21 @@ public class RegisterControl extends BaseControl {
 
     @FXML
     private void doRegister() {
-        Platform.runLater(() -> {
-            this.userName.setDisable(true);
-            this.pwd.setDisable(true);
-            setOutput("注册中...");
-            String userName = this.userName.getText();
-            String pwd = this.pwd.getText();
-            UserModel model = new UserModel();
-            model.setUserName(userName);
-            model.setPwd(pwd);
-            model.setHandlerCode(Constants.REGISTER_CODE);
+        this.userName.setDisable(true);
+        this.pwd.setDisable(true);
+        setOutput("注册中...");
+        String userName = this.userName.getText();
+        String pwd = this.pwd.getText();
+        UserModel model = new UserModel();
+        model.setUserName(userName);
+        model.setPwd(pwd);
+        model.setHandlerCode(Constants.REGISTER_CODE);
 
-            if (ConnectContainer.CHANNEL != null) {
-                ConnectContainer.CHANNEL.writeAndFlush(model);
-            } else {
-                setOutput("连接失败...请检查连接设置...");
-            }
-        });
+        if (ConnectContainer.CHANNEL != null) {
+            ConnectContainer.CHANNEL.writeAndFlush(model);
+        } else {
+            setOutput("连接失败...请检查连接设置...");
+        }
     }
 
     public void setOutput(String msg) {

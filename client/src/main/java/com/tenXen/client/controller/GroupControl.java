@@ -174,7 +174,6 @@ public class GroupControl {
 
 
     public void createEmotionPane() {
-        Platform.runLater(() -> {
             try {
                 this.emotionPane.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (!newValue) {
@@ -205,7 +204,6 @@ public class GroupControl {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
     }
 
     private ImageView createEmotion(String name, javafx.scene.image.Image image) {
