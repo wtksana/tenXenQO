@@ -36,6 +36,10 @@ public class UserHandler extends ChannelHandlerAdapter {
             if (model.getHandlerCode() == Constants.LOGIN_CODE) {
                 model = userService.doLogin(model);
                 if (model.getResultCode() == Constants.RESULT_SUC) {
+                    if (ConnectContainer.isOnline(model.getSelf().getId())) {
+                        // TODO: 2016/11/18  踢下线处理
+                        ConnectContainer.userLogout(model.getSelf().getId());
+                    }
                     ConnectContainer.userLogin(model.getSelf().getId(), ctx.channel());
                 }
             }

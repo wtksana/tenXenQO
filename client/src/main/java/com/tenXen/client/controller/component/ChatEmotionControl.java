@@ -50,10 +50,10 @@ public class ChatEmotionControl {
     @FXML
     private void initialize() {
         if (this.messageModel != null) {
-            if (StringUtil.isBlank(this.messageModel.getNickName())) {
+            if (StringUtil.isBlank(this.messageModel.getNickname())) {
                 this.userName.setText(this.messageModel.getUserName());
             } else {
-                this.userName.setText(this.messageModel.getNickName());
+                this.userName.setText(this.messageModel.getNickname());
             }
             this.createTime.setText(DateUtil.dateStr4(this.messageModel.getCreateTime()));
             try {

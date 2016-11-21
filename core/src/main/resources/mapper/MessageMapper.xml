@@ -17,6 +17,11 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
+    <resultMap id="modelResultMap" type="com.tenXen.core.model.MessageModel">
+        <result column="userName" property="userName"/>
+        <result column="nickname" property="nickname"/>
+    </resultMap>
+
     <!-- message table all fields -->
     <sql id="base_column_list">
 	 id,user,to_user,to_group,type,content,is_read,status,create_time,update_time
@@ -181,6 +186,32 @@
         <include refid="base_column_list"/>
         from message
         <include refid="base_where_clause"/>
+    </select>
+
+    <sql id="model_column_list">
+       	m.id,
+        m.user,
+        m.to_user,
+        m.to_group,
+        m.type,
+        m.content,
+        m.is_read,
+        m.status,
+        m.create_time,
+        m.update_time,
+        u.user_name as userName,
+        u.nickname
+    </sql>
+
+    <select id="getUserUnreadMsgList" resultMap="modelResultMap" parameterType="int">
+        SELECT
+        <include refid="model_column_list"/>
+        FROM
+        `message` m
+        LEFT JOIN `user` u ON u.id = m.user
+        WHERE
+        m.is_read = 0
+        AND m.to_user = #{userId}
     </select>
 
 </mapper>   

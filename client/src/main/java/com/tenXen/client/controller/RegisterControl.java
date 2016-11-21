@@ -3,6 +3,7 @@ package com.tenXen.client.controller;
 import com.tenXen.client.common.ConnectContainer;
 import com.tenXen.client.util.LayoutUtil;
 import com.tenXen.common.constant.Constants;
+import com.tenXen.common.util.StringUtil;
 import com.tenXen.core.model.UserModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,8 @@ public class RegisterControl extends BaseControl {
     private TextField userName;
     @FXML
     private TextField pwd;
+    @FXML
+    private TextField nickname;
     @FXML
     private TextArea output;
     @FXML
@@ -97,16 +100,21 @@ public class RegisterControl extends BaseControl {
 
     @FXML
     private void doRegister() {
-        this.userName.setDisable(true);
-        this.pwd.setDisable(true);
         setOutput("注册中...");
         String userName = this.userName.getText();
         String pwd = this.pwd.getText();
+        String nickname = this.nickname.getText();
+        if (!checkInput(userName, pwd, nickname)) {
+            return;
+        }
+        this.userName.setDisable(true);
+        this.pwd.setDisable(true);
+        this.nickname.setDisable(true);
         UserModel model = new UserModel();
         model.setUserName(userName);
         model.setPwd(pwd);
+        model.setNickname(nickname);
         model.setHandlerCode(Constants.REGISTER_CODE);
-
         if (ConnectContainer.CHANNEL != null) {
             ConnectContainer.CHANNEL.writeAndFlush(model);
         } else {
@@ -114,7 +122,7 @@ public class RegisterControl extends BaseControl {
         }
     }
 
-    public void setOutput(String msg) {
+    private void setOutput(String msg) {
         this.output.setText(msg);
     }
 
@@ -125,7 +133,17 @@ public class RegisterControl extends BaseControl {
         } else {
             this.userName.setDisable(false);
             this.pwd.setDisable(false);
+            this.nickname.setDisable(false);
             setOutput(model.getMsg());
+        }
+    }
+
+    private boolean checkInput(String userName, String pwd, String nickname) {
+        if (StringUtil.checkUserName(userName) && StringUtil.checkUserName(pwd) && StringUtil.isNotBlank(nickname)) {
+            return true;
+        } else {
+            setOutput("用户名、密码必须在6-20位之间\n由数字或字母组成！");
+            return false;
         }
     }
 }

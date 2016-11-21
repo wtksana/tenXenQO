@@ -55,15 +55,17 @@ public class Constants {
      */
     public static final int UPDATE_CODE_EMOTION = 1;
     /**
-     * 在线消息handleCode
+     * 发送在线消息handleCode
      */
     public static final int MSG_ONLINE_CODE = 1;
-
     /**
-     * 离线消息handleCode
+     * 发送离线消息handleCode
      */
     public static final int MSG_OFFLINE_CODE = 2;
-
+    /**
+     * 获取未读消息handleCode
+     */
+    public static final int MSG_UNREAD_CODE = 9;
 
     /**
      * 分页查询每页条数

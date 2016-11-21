@@ -2,6 +2,8 @@ package com.tenXen.core.model;
 
 import com.tenXen.core.domain.Message;
 
+import java.util.List;
+
 /**
  * Created by wt on 2016/10/30.
  */
@@ -11,7 +13,7 @@ public class MessageModel extends Message {
 
     private String userName;
 
-    private String nickName;
+    private String nickname;
 
     private String toUserName;
 
@@ -23,6 +25,16 @@ public class MessageModel extends Message {
 
     private int isEmotion;
 
+    private List<MessageModel> unreadMsg;
+
+    public List<MessageModel> getUnreadMsg() {
+        return unreadMsg;
+    }
+
+    public void setUnreadMsg(List<MessageModel> unreadMsg) {
+        this.unreadMsg = unreadMsg;
+    }
+
     public int getIsEmotion() {
         return isEmotion;
     }
@@ -31,12 +43,12 @@ public class MessageModel extends Message {
         this.isEmotion = isEmotion;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getUserName() {

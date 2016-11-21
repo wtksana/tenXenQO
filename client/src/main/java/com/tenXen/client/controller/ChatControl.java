@@ -146,7 +146,7 @@ public class ChatControl extends BaseControl {
             model.setType(1);
             model.setCreateTime(new Date());
             model.setUserName(u.getUserName());
-            model.setNickName(u.getNickname());
+            model.setNickname(u.getNickname());
             ConnectContainer.CHANNEL.writeAndFlush(model);
             Platform.runLater(() -> locationMessageAdd(model));
         }
@@ -164,7 +164,7 @@ public class ChatControl extends BaseControl {
             model.setType(2);
             model.setCreateTime(new Date());
             model.setUserName(u.getUserName());
-            model.setNickName(u.getNickname());
+            model.setNickname(u.getNickname());
             ConnectContainer.CHANNEL.writeAndFlush(model);
             Platform.runLater(() -> locationMessageAdd(model));
         }

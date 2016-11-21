@@ -157,6 +157,7 @@ public class LoginControl extends BaseControl {
 
     public void handleLogin(UserModel model) {
         if (model.getResultCode() == Constants.RESULT_SUC) {
+            //更新表情
             new Thread(() -> ConnectContainer.CHANNEL.writeAndFlush(EmotionWorker.getInstance().updateEmotionRequest())).start();
             this.loginStage.close();
             ConnectContainer.SELF = model.getSelf();

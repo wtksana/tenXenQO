@@ -54,7 +54,7 @@ public class EmotionWorker {
 
     public void updateEmotionResponse(UpdateModel model) {
         if (model.getServerEmotionMap() == null || model.getServerEmotionMap().isEmpty()) {
-
+            return;
         } else {
             FileUtil.createFullFolder(EMOTION_PATH);
             Map<String, byte[]> emotion = model.getServerEmotionMap();

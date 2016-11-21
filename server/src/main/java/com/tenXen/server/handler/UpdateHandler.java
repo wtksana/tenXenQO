@@ -34,7 +34,7 @@ public class UpdateHandler extends ChannelHandlerAdapter {
                 List<String> fileList = new ArrayList<>();
                 Map<String, byte[]> emotionList = new HashMap<>();
                 if (file.exists()) {
-                    fileList = new ArrayList<String>(Arrays.asList(file.list()));
+                    fileList = new ArrayList<>(Arrays.asList(file.list()));
                 }
                 List userEmotionList = model.getUserEmotionList();
                 if (!userEmotionList.containsAll(fileList)) {

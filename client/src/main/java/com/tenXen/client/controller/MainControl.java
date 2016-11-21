@@ -18,7 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.controlsfx.control.Notifications;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -26,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by wt on 2016/11/6.
@@ -164,10 +164,28 @@ public class MainControl extends BaseControl {
             popup.add(exitItem);
             LayoutContainer.TRAYICON.setPopupMenu(popup);
             tray.add(LayoutContainer.TRAYICON);
+            //获取未读消息
+            MessageModel model = new MessageModel();
+            model.setHandlerCode(Constants.MSG_UNREAD_CODE);
+            model.setToUser(ConnectContainer.SELF.getId());
+            model.setResultCode(Constants.RESULT_FAIL);
+            ConnectContainer.CHANNEL.writeAndFlush(model);
         } catch (Exception e) {
             Log.info(e.getMessage());
             System.exit(0);
         }
+    }
+
+    public void receiveUnreadMsg(MessageModel model) {
+        List<MessageModel> list = model.getUnreadMsg();
+        list.stream().collect(Collectors.groupingBy(MessageModel::getUserName)).forEach((s, messageModels) -> {
+            if (ConnectContainer.UNREAD_MSG.containsKey(s)) {
+                ConnectContainer.UNREAD_MSG.get(s).addAll(messageModels);
+            } else {
+                ConnectContainer.UNREAD_MSG.put(s, messageModels);
+            }
+        });
+        Platform.runLater(() -> setTrayIconMsg());
     }
 
     public void receiveMessage(MessageModel model) {
@@ -186,9 +204,9 @@ public class MainControl extends BaseControl {
 
 //    private void createNotify(MessageModel model) {
 //        if (model.getIsEmotion() == Constants.YES) {
-//            Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickName()).text("【图片】").onAction(event -> notifyOnAction(model.getUserName())).show();
+//            Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickname()).text("【图片】").onAction(event -> notifyOnAction(model.getUserName())).show();
 //        } else {
-//            Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickName()).text(model.getContent()).onAction(event -> notifyOnAction(model.getUserName())).show();
+//            Notifications.create().graphic(new ImageView(getClass().getResource("/image/qo_48X48.jpg").toExternalForm())).title(model.getNickname()).text(model.getContent()).onAction(event -> notifyOnAction(model.getUserName())).show();
 //        }
 //    }
 //

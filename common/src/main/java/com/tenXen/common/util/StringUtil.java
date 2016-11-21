@@ -517,4 +517,18 @@ public class StringUtil extends StringUtils {
         return matcher.replaceAll("");
     }
 
+    /**
+     * 判断字符串是否由数字或字母组成 6-20位
+     * @param str
+     * @return
+     */
+    public static boolean checkUserName(String str){
+        if(isBlank(str)){
+            return false;
+        }
+        Pattern regex = Pattern.compile("^[a-zA-Z0-9]{6,20}$");
+        Matcher matcher = regex.matcher(str);
+        boolean isMatched = matcher.matches();
+        return isMatched;
+    }
 }

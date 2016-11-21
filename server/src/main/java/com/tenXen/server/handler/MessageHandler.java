@@ -30,17 +30,21 @@ public class MessageHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof MessageModel) {
             MessageModel model = (MessageModel) msg;
-            model.setResultCode(Constants.RESULT_SUC);
-            if (ConnectContainer.isOnline(model.getToUser())) {
-                ConnectContainer.getChannel(model.getToUser()).writeAndFlush(model);
-                model.setIsRead(Constants.YES);
-                model.setMsg("用户在线，消息已发送");
+            if (model.getHandlerCode() == Constants.MSG_UNREAD_CODE) {
+                messageService.getUserUnreadMsgList(model);
+                ctx.writeAndFlush(model);
             } else {
-                model.setIsRead(Constants.NO);
-                model.setMsg("用户未在线，消息保存");
+                model.setResultCode(Constants.RESULT_SUC);
+                if (ConnectContainer.isOnline(model.getToUser())) {
+                    ConnectContainer.getChannel(model.getToUser()).writeAndFlush(model);
+                    model.setIsRead(Constants.YES);
+                    model.setMsg("用户在线，消息已发送");
+                } else {
+                    model.setIsRead(Constants.NO);
+                    model.setMsg("用户未在线，消息保存");
+                }
+                messageService.saveModel(model);
             }
-            messageService.saveModel(model);
-//            ChannelGroups.broadcast(model);
             Log.info(model.getMsg());
         } else {
             ctx.fireChannelRead(msg);

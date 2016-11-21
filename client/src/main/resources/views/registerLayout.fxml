@@ -18,23 +18,25 @@
         </ImageView>
         <GridPane prefWidth="185.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0">
             <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="98.00000190734863" minWidth="10.0" prefWidth="53.0"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="98" minWidth="10.0" prefWidth="53.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="122.0"/>
             </columnConstraints>
             <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
                 <Label text="用户名："/>
                 <Label text="密码：" GridPane.rowIndex="1"/>
+                <Label text="昵称：" GridPane.rowIndex="2"/>
                 <TextField fx:id="userName" prefHeight="23.0" prefWidth="143.0" GridPane.columnIndex="1"/>
                 <TextField fx:id="pwd" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <TextField fx:id="nickname" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             </children>
         </GridPane>
-        <Button fx:id="cancel" mnemonicParsing="false" text="取消" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="110.0"/>
-        <Button fx:id="register" mnemonicParsing="false" text="注册" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="110.0"/>
-        <TextArea fx:id="output" editable="false" layoutY="162.0" prefHeight="50.0" prefWidth="250.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-                  AnchorPane.topAnchor="150.0"/>
+        <Button fx:id="cancel" mnemonicParsing="false" text="取消" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="125.0"/>
+        <Button fx:id="register" mnemonicParsing="false" text="注册" AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="125.0"/>
+        <TextArea fx:id="output" editable="false" layoutY="162.0" prefHeight="50.0" prefWidth="250.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="160.0"/>
     </children>
 </AnchorPane>
