@@ -214,4 +214,8 @@
         AND m.to_user = #{userId}
     </select>
 
+    <select id="setUserAllMsgRead" parameterType="int">
+        UPDATE message SET is_read = 1 WHERE to_user = #{userId}
+    </select>
+
 </mapper>   

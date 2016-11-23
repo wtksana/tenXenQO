@@ -23,6 +23,9 @@ public class MessageServiceImpl extends BaseServiceImpl<Message> implements Mess
             model.setUnreadMsg(list);
             model.setResultCode(Constants.RESULT_SUC);
             model.setMsg("获取未读消息成功");
+            messageMapper.setUserAllMsgRead(model.getToUser());
+        } else {
+            model.setMsg("没有未读消息");
         }
         return model;
     }

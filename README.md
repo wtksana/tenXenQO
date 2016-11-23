@@ -10,6 +10,18 @@
 3.启动client包下的Main方法
 
 4.注册并登入
+###未完成功能
+1.加好友
+
+2.群组
+
+3.很多其他功能。。。
 
 ####相关图片
-![app](http://odskyj8je.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720161105000731.png)
+主界面
+
+![main](http://odskyj8je.bkt.clouddn.com/mainLayout.png)
+
+聊天窗口
+
+![box](http://odskyj8je.bkt.clouddn.com/chatBoxLayout.png)

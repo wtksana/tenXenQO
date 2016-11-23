@@ -9,4 +9,6 @@ public interface MessageMapper extends BaseMapper<Message> {
 
     List<MessageModel> getUserUnreadMsgList(int userId);
 
+    void setUserAllMsgRead(int userId);
+
 }
