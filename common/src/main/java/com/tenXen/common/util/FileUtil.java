@@ -2,11 +2,6 @@ package com.tenXen.common.util;
 
 import java.io.*;
 
-/**
- * date 2012-9-24 18:58:42
- *
- * @author XiaHui
- */
 public class FileUtil {
 
     public static boolean isFolderExists(String path) {
